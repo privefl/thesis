@@ -1,0 +1,8 @@
+rmd_files: ["index.Rmd"]
+output_dir: docs
+new_session: yes
+book_filename: "thesis_privefl"
+download: [["thesis_privefl.pdf", "PDF"]]
+language:
+  ui:
+    chapter_name: "Chapter "
