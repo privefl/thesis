@@ -1,0 +1,7 @@
+# Introduction
+
+```{r setup, include=FALSE}
+# WORDS_TO_IGNORE <- c("acknowledgements", "advisor", "apa", "apalike", "biblio", "BLUM", "bookdown", "Complexité", "csl", "de", "EDISCE", "Environnement", "et", "IMAG", "Informatique", "Ingénierie", "l'Ingénierie", "lof", "Mathématiques", "Médicale", "Santé", "TIMC")
+source("knitr-options.R")
+source("spelling-check.R")
+```

@@ -1,4 +1,4 @@
-rmd_files: ["index.Rmd"]
+rmd_files: ["index.Rmd", "intro.Rmd", "tools.Rmd", "PRS.Rmd", "prospects.Rmd", "appendix.Rmd"]
 output_dir: docs
 new_session: yes
 book_filename: "thesis_privefl"
