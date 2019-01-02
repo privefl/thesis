@@ -3,3 +3,9 @@
 .RData
 .Ruserdata
 spelling.errors
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.pdf
