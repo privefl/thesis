@@ -72,9 +72,9 @@ diseases \cite[]{torkamani2018personal}.
 
 \subsubsection{Different types of disease and mutations}
 
-Different types of mutations exist (Figure \ref{fig:rare-common}).
+Different types of mutations exist (Figure \ref{fig:rare-common}) [PARLER DE DISEASE ARCHITECTURE??].
 Like BRCA1 and BRCA2, many other highly penetrant mutations\footnote{most people carrying the mutation will develop the disease} are associated with diseases, and are searchable in an online database \cite[]{hamosh2005online}. Those mutation are often very rare and are either associated with some very rare disease or are explaining only a small proportion of common disease incidence. 
-In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease-common variant hypothesis. 
+In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease-common variant hypothesis. The hypothesis further suggests that such diseases are likely caused by a large number of common variants, each contributing only a small risk and thereby evading negative evolutionary selection \cite[]{salari2012personalized}.
 One common form of variation across human genomes is called a single nucleotide polymorphism (SNP). As indicated by the name, SNPs are single base changes in the DNA. 
 Sequencing technologies now exists to genotype hundreds of thousands of variants at once for around \$50 only. Starting with the \cite{wellcome2007genome}, these new sequencing technologies had led to many Genome-Wide Association Studies (GWAS).%, which we talk about in the next section. From these studies, it was found that effects of common variants that are associated with some disease are typically very small.
 
@@ -91,12 +91,19 @@ lines. Source: \cite{manolio2009finding}.}
 
 \subsubsection{From GWAS to Polygenic Risk Scores (PRS)}
 
+\subsubsection{The differing goals of association testing and risk prediction}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Genomic prediction}
 
 \subsubsection{Heritability and missing heritability}
 
-\subsubsection{The differing goals of association testing and risk prediction}
+The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only. 
+For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors \cite[]{visscher2008heritability}. 
+So, basically, heritability is the upper bound in terms of prediction power that we can get using a model from genetic variants only. [DONNER DES EXEMPLES]
+Methods now enable
 
 \subsubsection{Methods for genomic prediction}
 
