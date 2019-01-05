@@ -92,6 +92,7 @@ lines. Source: \cite{manolio2009finding}.}
 
 \subsubsection{Genome-Wide Association Studies (GWAS)}
 
+\cite{visscher201710} provide a thorough review of GWAS.
 The idea behind Genome-Wide Association Studies (GWAS) is simple: test each variant one by one for association with the phenotype of interest.
 For a continuous phenotype (e.g.\ height), linear regression is used and a t-test is performed for each SNP $j$ on $\beta^{(j)}$ where
 $$\hat{y} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,$$
@@ -105,6 +106,8 @@ It is well established that principal components of genotype data should be incl
 \caption{First two Principal Components of individuals from four European populations. PC1 correlates with latitude while PC2 correlates longitude.}\label{fig:pca}
 \end{figure}
 
+These simple tests can be used only if individuals are not related to one another. If they do, a common practice is to remove one individual from each pairs of related individuals. Another strategy is to use Linear Mixel Models (LMM) to take into account both relatedness and population structure; this has the potential to boost discovery power \cite[]{yang2014advantages}.
+
 More than 10,000 strong associations have been reported between genetic variants and one or more complex traits \cite[]{welter2013nhgri}, where ``strong'' is defined as statistically significant at the genome-wide p-value threshold of $5 \cdot 10^{-8}$, which corresponds to a type-I error of 5\%, Bonferroni-corrected for one million independent tests \cite[]{pe2008estimation}. Results of a GWAS are usually reported in a Manhattan plot (Figure \ref{fig:gwas}). This type of plot shows some association peaks (similar to skyscrapers in Manhattan) due to some local correlation between SNPs (Linkage Disequilibrium), with squared correlation roughly inversely proportional to distance between SNPs \cite[]{hudson2001two}.
 
 \begin{figure}[htb]
@@ -113,9 +116,20 @@ More than 10,000 strong associations have been reported between genetic variants
 \end{figure}
 
 
-[UNRELATED + SUMMARY STATISTICS]
+\subsubsection{GWAS data}
 
-\cite{visscher201710} provide a thorough review of GWAS.
+There are mainly three types of data: genotyped SNPs from genotyping chips, imputed SNPs from reference panels and Next Generation Sequencing (NGS) data. 
+Genotyping chips enables a quick and cheap genotyping of 200K to 2M SNPs, mostly common variants (Minor Allele Frequency (MAF) larger than 5\%). From this genotyping, you can get a matrix of 0s, 1s and 2s, counting the number of alternative alleles for each individual and each genome position. There are usually few missing values (less than 5\% in total).
+Imputation has a different meaning in genetics than in other Data Science fields; it does not refer to filling those 5\% missing values, but instead refers to adding completely new variants that were not genotyped by the chip used. Imputation is enabled by the fact that the genotypes of unobserved genetic variants can be predicted by the haplotypes inferred from multiple observed SNPs and the haplotypes observed from a fully sequenced reference
+panel [CITATIONS HRC + REVIEW IMPUTATION].
+
+Finally, NGS (also called Whole Genome Sequencing (WGS)) refers to fully sequenced data over more than 3M variants, including some rare variants, but this technology is still very expensive (around \$1000 per genome). 
+GWAS to date have been based on SNP arrays designed to tag common variants in the genome. These arrays do not cover all genetic variants in the population, and it would seem natural that future GWAS will be based on WGS. However, the price differential between SNP arrays and WGS is still substantial, and array technology remains more robust than sequencing \cite[]{visscher201710}. 
+
+Recently, some national biobanks projects have emerged. For example, the UK Biobank has released both genome-wide genotypes and rich phenotypic data on 500K individuals to the international research community.
+Yet, most of the time, only summary statistics for a GWAS dataset (effect sizes and p-values of SNPs) are available (not the individual-level genotype data). Because of the availability of such data en masse, specific methods for those summary data have been developed [CITATIONS]. The craze for such data can be explained by the fact that GWAS individual-level data, sometimes consisting of a meta-analysis of many small datasets, cannot be easily shared publicly, as opposed to summary data. Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers. 
+
+In this thesis, we used genotyped SNPs, imputed SNPs and summary statistics.
 
 \subsubsection{From GWAS to Polygenic Risk Scores (PRS)}
 
@@ -131,11 +145,16 @@ More than 10,000 strong associations have been reported between genetic variants
 The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only. 
 For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors \cite[]{visscher2008heritability}. 
 Methods now enable the estimation of chip-heritability (also called SNP-heritability: $h^2_{SNP}$) using linear mixed models and residual maximum likelihood. For example, for a chip of 300K SNPs, it was shown that those SNPs could account for 45\% of the variance of height \cite[]{yang2010common}. 
-Note that the heritability of height is estimated to be around 80\%; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability.
+Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability.
 
 So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
 The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of genomic prediction and my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
 [AJOUTER UNE PARTIE SUR LES POSSIBLES CAUSES DE MISSING HERITABILITY ET EN ARRIVER A UNE STRUCTURE POLYGENIQUE]
+
+First GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for protaste cancer, explaining a small part of heritability of these diseases \cite[]{jakobsdottir2009interpretation}. Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of heritability \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of heritability \cite[]{wood2014defining}.
+These results suggest that common diseases are mainly polygenic, with thousands of small effects that cannot be detect using current sample sizes. [REWORD + ADD]
+It suggests than the main source of difference between $R^2$ and $h^2_{SNP}$ is that sample size is not large enough to detect and estimate SNP effects precisely enough. 
+
 
 
 \subsubsection{Methods for genomic prediction}
