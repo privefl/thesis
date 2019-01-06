@@ -11,3 +11,5 @@ spelling.errors
 *.pdf
 *.upa
 *.upb
+*.bak
+*.synctex.gz

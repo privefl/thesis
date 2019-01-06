@@ -68,6 +68,10 @@ In my thesis work, we have been focusing on assessing someone's risk of disease 
 
 In this introduction, [TODO]
 
+\subsection{[SOMEWHERE?]}
+
+Selection might also be responsible for keeping genetic effect sizes low, since variants of larger effect may be selected against and eventually disappear \cite[]{pritchard2002allelic}.
+
 \subsection{Context}
 
 Today, clinical risk prediction for common adult-onset diseases often relies on basic demographic characteristics, such as age, gender and ethnicity; basic health parameters and lifestyle factors, such as body mass index, smoking status, alcohol consumption and physical exercise habits; measurement of clinical risk factors proximal to overt disease onset, such as blood pressure levels, blood chemistries or biomarkers indicative of ongoing disease processes; ascertainment of environmental exposures, such as air pollution, heavy metals and other environmental toxins; and family history \cite[]{torkamani2018personal}.
@@ -95,9 +99,13 @@ lines. Source: \cite{manolio2009finding}.}
 \cite{visscher201710} provide a thorough review of GWAS.
 The idea behind Genome-Wide Association Studies (GWAS) is simple: test each variant one by one for association with the phenotype of interest.
 For a continuous phenotype (e.g.\ height), linear regression is used and a t-test is performed for each SNP $j$ on $\beta^{(j)}$ where
-$$\hat{y} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,$$
+\begin{equation}
+\hat{y} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,\label{eq:gwas1}
+\end{equation}
 and $K$ is the number of covariables, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed for each SNP $j$ on $\beta^{(j)}$ where
-$$\log{\left(\frac{\hat{p}}{1-\hat{p}}\right)} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,$$
+\begin{equation}
+\log{\left(\frac{\hat{p}}{1-\hat{p}}\right)} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,\label{eq:gwas2}
+\end{equation}
 and $\hat{p} = \mathbb{P}(Y = 1)$ and $Y$ denotes the binary phenotype.
 It is well established that principal components of genotype data should be included as covariates in GWAS \cite[]{price2006principal}. Indeed, principal components of genotype data capture well population structure (as shown in figure \ref{fig:pca}). For example, consider a dataset where you have 900 Finnish people and only 100 Italian people. Because Finnish people are taller than Italian people, any SNP that has significantly different allele frequencies between these two populations would be incorrectly flagged as being associated with height. Adding principal components as covariates aims at preventing those SNPs from being false positive reports [PARLER DE QQ-PLOT ET DE LAMBDAGC??].
 
@@ -131,21 +139,23 @@ Yet, most of the time, only summary statistics for a GWAS dataset (effect sizes 
 
 In this thesis, we used genotyped SNPs, imputed SNPs and summary statistics.
 
-\subsubsection{From GWAS to Polygenic Risk Scores (PRS)}
-
-\subsubsection{The differing goals of association testing and risk prediction}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Genomic prediction}
+
+\subsubsection{From association to prediction}
+
+[COMMENCER PAR GWSignificant PUIS PLUS QUE CA (EPIDEMIOLOGY)]
+
+[CONCLUDE WITH The differing goals of association testing and risk prediction]
 
 \subsubsection{Heritability and missing heritability}
 
 The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only. 
 For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors \cite[]{visscher2008heritability}. 
 Methods now enable the estimation of chip-heritability (also called SNP-heritability: $h^2_{SNP}$) using linear mixed models and residual maximum likelihood. For example, for a chip of 300K SNPs, it was shown that those SNPs could account for 45\% of the variance of height \cite[]{yang2010common}. 
-Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability.
+Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants,visscher2006assumption}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability.
 
 So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
 The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of genomic prediction and my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
@@ -159,10 +169,12 @@ It suggests than the main source of difference between $R^2$ and $h^2_{SNP}$ is 
 
 \subsubsection{Methods for genomic prediction}
 
+The main method for computing Polygenic Risk Scores (PRS) is the widely used ``Clumping + Thresholding'' (C+T, also called ``Pruning + Thresholding'' in the literature) model based on univariate GWAS summary statistics as described in equations \eqref{eq:gwas1} and \eqref{eq:gwas2}.
+Under the C+T model, a coefficient of regression is learned independently for each SNP along with a corresponding p-value (the GWAS part). The SNPs are first clumped (C) so that there remains only SNPs that are weakly correlated with each other. Thresholding (T) consists in removing SNPs that are under a certain level of significance (p-value threshold to be determined). A polygenic risk score is defined as the sum of allele counts of the remaining SNPs weighted by the corresponding regression coefficients \cite[]{Chatterjee2013,Dudbridge2013,Euesden2015}. 
+
 [REFAIRE]
 The R packages also implement functions for computing Polygenic Risk Scores using two methods. 
-The first method is the widely-used ``Clumping + Thresholding'' (C+T, also called ``Pruning + Thresholding'' in the literature) model based on univariate GWAS summary statistics as described in previous equations.
-Under the C+T model, a coefficient of regression is learned independently for each SNP along with a corresponding p-value (the GWAS part). The SNPs are first clumped (C) so that there remains only SNPs that are weakly correlated with each other. Thresholding (T) consists in removing SNPs that are under a certain level of significance (P-value threshold to be determined). A polygenic risk score is defined as the sum of allele counts of the remaining SNPs weighted by the corresponding regression coefficients \cite[]{Chatterjee2013,Dudbridge2013,Euesden2015}. 
+
 On the contrary, the second approach does not use univariate summary statistics but instead train a multivariate model on all the SNPs and covariables \textit{at once}, optimally accounting for correlation between predictors \cite[]{Abraham2012}. The currently available models are very fast sparse linear and logistic regressions. These models include lasso and elastic-net regularizations, which reduce the number of  predictors (SNPs) included in the predictive models \cite[]{Friedman2010,Tibshirani1996,Zou2005}. Package bigstatsr provides a fast implementation of these models by using efficient rules to discard most of the predictors \cite[]{Tibshirani2012}. The implementation of these algorithms is based on modified versions of functions available in the R package biglasso \cite[]{Zeng2017}. These modifications allow to include covariates in the models, to use these algorithms on the special type of FBM called ``FBM.code256'' used in bigsnpr and to remove the need of choosing the regularization parameter.
 
 \subsubsection{Objective and main difficulties of the thesis}
