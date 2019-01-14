@@ -92,8 +92,8 @@ lines. Source: \cite{manolio2009finding}.}
 
 \subsubsection{Genome-Wide Association Studies (GWAS)}
 
-\cite{visscher201710} provide a thorough review of GWAS.
-The idea behind Genome-Wide Association Studies (GWAS) is simple: test each variant one by one for association with the phenotype of interest.
+\cite{visscher201710} provide a thorough review of the aims and outcomes of GWAS.
+The method behind Genome-Wide Association Studies (GWAS) is simple: test each variant one by one for association with the phenotype of interest.
 For a continuous phenotype (e.g.\ height), linear regression is used and a t-test is performed for each SNP $j$ on $\beta^{(j)}$ where
 $$\hat{y} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,$$
 and $K$ is the number of covariables, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed for each SNP $j$ on $\beta^{(j)}$ where
@@ -133,6 +133,10 @@ In this thesis, we used genotyped SNPs, imputed SNPs and summary statistics.
 
 \subsubsection{From GWAS to Polygenic Risk Scores (PRS)}
 
+[FIGURE WRAY 2014]
+
+Polygenic analysis methods were central in demonstrating that the first phase of GWAS were underpowered, which propelled the drive for larger sample sizes that is now starting to pay off \cite[]{wray2014research}.
+
 \subsubsection{The differing goals of association testing and risk prediction}
 
 
@@ -149,12 +153,11 @@ Note that the heritability of height is estimated to be around 80\% \cite[]{silv
 
 So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
 The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of genomic prediction and my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
-[AJOUTER UNE PARTIE SUR LES POSSIBLES CAUSES DE MISSING HERITABILITY ET EN ARRIVER A UNE STRUCTURE POLYGENIQUE]
 
 First GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for protaste cancer, explaining a small part of heritability of these diseases \cite[]{jakobsdottir2009interpretation}. Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of heritability \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of heritability \cite[]{wood2014defining}.
-These results suggest that common diseases are mainly polygenic, with thousands of small effects that cannot be detect using current sample sizes. [REWORD + ADD]
-It suggests than the main source of difference between $R^2$ and $h^2_{SNP}$ is that sample size is not large enough to detect and estimate SNP effects precisely enough. 
-
+Since most of the identified associated SNPs have effect size close to the limit dictated by the power of the studies, a likely explanation, at least in part, is that there are many common polymorphisms with effects that were too small to pass the stringent significance thresholds \cite[]{wray2008prediction}.
+Therefore, as results from multiple GWAS are combined, a larger fraction of the genetic variance is likely to be explained and accurate prediction of genetic risk to disease will become possible even though the risks conveyed by individual variants are small \cite[]{wray2008prediction}.
+%Therefore, sample size is not large enough to detect and estimate SNP effects precisely enough, but we can hope that with increasing sample sizes, more variants will be detected and more heritability could be explained by genetic variants. 
 
 
 \subsubsection{Methods for genomic prediction}
