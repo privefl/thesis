@@ -1,7 +1,0 @@
-rmd_files: ["index.Rmd", "intro.Rmd", "tools.Rmd", "PRS.Rmd", "prospects.Rmd", "appendix.Rmd"]
-output_dir: docs
-new_session: yes
-#download: [["_mail.pdf", "PDF"]]
-language:
-  ui:
-    chapter_name: "Chapter "

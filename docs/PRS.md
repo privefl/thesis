@@ -1,3 +1,0 @@
-# Polygenic Risk Scores
-
-
