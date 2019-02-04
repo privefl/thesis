@@ -81,10 +81,10 @@ diseases \cite[]{torkamani2018personal}.
 \subsubsection{Different types of disease and mutations}
 
 Different types of mutations exist (Figure \ref{fig:rare-common}) [PARLER DE DISEASE ARCHITECTURE??].
-Like BRCA1 and BRCA2, many other highly penetrant mutations\footnote{most people carrying the mutation will develop the disease} are associated with diseases, and are searchable in an online database \cite[]{hamosh2005online}. Those mutation are often very rare and are either associated with some very rare disease or are explaining only a small proportion of common disease incidence.
-In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease-common variant hypothesis. The hypothesis further suggests that such diseases are likely caused by a large number of common variants, each contributing only a small risk and thereby evading negative evolutionary selection \cite[]{salari2012personalized}.
+Along with harmful BRCA mutations, many other highly penetrant mutations\footnote{most people carrying the mutation will develop the disease} are associated with diseases, and are searchable in an online database \cite[]{hamosh2005online}. Those mutation are often very rare and are either associated with some very rare disease or are explaining only a small proportion of common disease incidence.
+In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease--common variant hypothesis \cite[]{pritchard2002allelic}. This hypothesis further suggests that such diseases are likely caused by a large number of common variants, each contributing only a small risk and thereby evading negative evolutionary selection \cite[]{salari2012personalized}.
 One common form of variation across human genomes is called a single nucleotide polymorphism (SNP). As indicated by the name, SNPs are single base changes in the DNA.
-Sequencing technologies now exists to genotype hundreds of thousands of variants at once for around \$50 only. Starting with the \cite{wellcome2007genome}, these new sequencing technologies had led to many Genome-Wide Association Studies (GWAS).%, which we talk about in the next section. From these studies, it was found that effects of common variants that are associated with some disease are typically very small.
+Sequencing technologies now exists to genotype hundreds of thousands of variants at once for around \$50 only. Starting with the \cite{wellcome2007genome}, these new sequencing technologies had led to many genome-wide association studies.%, which we talk about in the next section. From these studies, it was found that effects of common variants that are associated with some disease are typically very small.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.7\textwidth]{rare-common.jpg}}
@@ -97,45 +97,49 @@ lines. Source: \cite{manolio2009finding}.}
 \subsubsection{Genome-Wide Association Studies (GWAS)}
 
 \cite{visscher201710} provide a thorough review of the aims and outcomes of GWAS.
-The method behind Genome-Wide Association Studies (GWAS) is simple: test each variant one by one for association with the phenotype of interest.
-For a continuous phenotype (e.g.\ height), linear regression is used and a t-test is performed for each SNP $j$ on $\beta^{(j)}$ where
+The method behind GWAS is simple: test each variant one by one for association with a phenotype of interest.
+For a continuous phenotype (e.g.\ height), linear regression is used and a t-test is performed on $\beta^{(j)}$ for each SNP $j$ where
 \begin{equation}
-\hat{y} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,\label{eq:gwas1}
+\hat{y} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K + \epsilon~,\label{eq:gwas1}
 \end{equation}
-and $K$ is the number of covariables, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed for each SNP $j$ on $\beta^{(j)}$ where
+$K$ is the number of covariates, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed on $\beta^{(j)}$ for each SNP $j$ where
 \begin{equation}
-\log{\left(\frac{\hat{p}}{1-\hat{p}}\right)} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,\label{eq:gwas2}
+\log{\left(\frac{\hat{p}}{1-\hat{p}}\right)} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K + \epsilon~,\label{eq:gwas2}
 \end{equation}
-and $\hat{p} = \mathbb{P}(Y = 1)$ and $Y$ denotes the binary phenotype.
-It is well established that principal components of genotype data should be included as covariates in GWAS \cite[]{price2006principal}. Indeed, principal components of genotype data capture well population structure (as shown in figure \ref{fig:pca}). For example, consider a dataset where you have 900 Finnish people and only 100 Italian people. Because Finnish people are taller than Italian people, any SNP that has significantly different allele frequencies between these two populations would be incorrectly flagged as being associated with height. Adding principal components as covariates aims at preventing those SNPs from being false positive reports [PARLER DE QQ-PLOT ET DE LAMBDAGC??].
+$\hat{p} = \mathbb{P}(Y = 1)$ and $Y$ denotes the binary phenotype.
+It is well established that principal components of genotype data should be included as covariates in GWAS \cite[]{price2006principal}. Indeed, principal components of genotype data capture well population structure (as shown in figure \ref{fig:pca}). 
+For example, consider a dataset where you have 900 Finnish people and only 100 Italian people. Because Finnish people are taller than Italian people, any SNP with a large difference in allele frequency between these two populations would be flagged as being associated with height, leading to many false positive associations. Adding principal components as covariates aims at preventing those SNPs from being false positive reports [PARLER DE QQ-PLOT ET DE LAMBDAGC??].
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.6\textwidth]{celiac-pca.png}}
 \caption{First two Principal Components of individuals from four European populations. PC1 correlates with latitude while PC2 correlates longitude.}\label{fig:pca}
 \end{figure}
 
-These simple tests can be used only if individuals are not related to one another. If they do, a common practice is to remove one individual from each pairs of related individuals. Another strategy is to use Linear Mixel Models (LMM) to take into account both relatedness and population structure; this has the potential to boost discovery power \cite[]{yang2014advantages}.
+These simple tests can be used only if individuals are not related to one another. If they do, a common practice is to remove one individual from each pairs of related individuals. Another strategy is to use Linear Mixel Models (LMM) to take into account both relatedness and population structure; these mixed models have also the potential to increase discovery power \cite[]{yang2014advantages}.
 
-More than 10,000 strong associations have been reported between genetic variants and one or more complex traits \cite[]{welter2013nhgri}, where ``strong'' is defined as statistically significant at the genome-wide p-value threshold of $5 \cdot 10^{-8}$, which corresponds to a type-I error of 5\%, Bonferroni-corrected for one million independent tests \cite[]{pe2008estimation}. Results of a GWAS are usually reported in a Manhattan plot (Figure \ref{fig:gwas}). This type of plot shows some association peaks (similar to skyscrapers in Manhattan) due to some local correlation between SNPs (Linkage Disequilibrium), with squared correlation roughly inversely proportional to distance between SNPs \cite[]{hudson2001two}.
+To date, more than 10,000 strong associations have been reported between genetic variants and one or more complex traits \cite[]{welter2013nhgri}, where ``strong'' is defined as statistically significant at the genome-wide p-value threshold of $5 \cdot 10^{-8}$, which corresponds to a type-I error of 5\%, Bonferroni-corrected for one million independent tests \cite[]{pe2008estimation}. Results of a GWAS are usually reported in a Manhattan plot (Figure \ref{fig:gwas}). This type of plot shows some association peaks (similar to skyscrapers in Manhattan) due to some local correlation between SNPs (Linkage Disequilibrium), with squared correlation roughly inversely proportional to distance between SNPs \cite[]{hudson2001two}.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.95\textwidth]{gwas-height-20K.png}}
-\caption{Manhattan plot of GWAS of height based on 20K individuals.}\label{fig:gwas}
+\caption{Manhattan plot of GWAS of height based on 20,000 unrelated individuals.}\label{fig:gwas}
 \end{figure}
 
 
 \subsubsection{GWAS data}
 
 There are mainly three types of data: genotyped SNPs from genotyping chips, imputed SNPs from reference panels and Next Generation Sequencing (NGS) data.
-Genotyping chips enables a quick and cheap genotyping of 200K to 2M SNPs, mostly common variants (Minor Allele Frequency (MAF) larger than 5\%). From this genotyping, you can get a matrix of 0s, 1s and 2s, counting the number of alternative alleles for each individual and each genome position. There are usually few missing values (less than 5\% in total).
-Imputation has a different meaning in genetics than in other Data Science fields; it does not refer to filling those 5\% missing values, but instead refers to adding completely new variants that were not genotyped by the chip used. Imputation is enabled by the fact that the genotypes of unobserved genetic variants can be predicted by the haplotypes inferred from multiple observed SNPs and the haplotypes observed from a fully sequenced reference
-panel [CITATIONS HRC + REVIEW IMPUTATION].
+Genotyping chips enables a quick and cheap genotyping of 200K to 2M SNPs, mostly focusing on common variants (Minor Allele Frequency (MAF) larger than 5\%). From this genotyping, you can get a matrix of $0$s, $1$s and $2$s, counting the number of alternative alleles for each individual (row) and each genome position (column). There are usually few missing values (less than 5\% in total).
 
-Finally, NGS (also called Whole Genome Sequencing (WGS)) refers to fully sequenced data over more than 3M variants, including some rare variants, but this technology is still very expensive (around \$1000 per genome).
-GWAS to date have been based on SNP arrays designed to tag common variants in the genome. These arrays do not cover all genetic variants in the population, and it would seem natural that future GWAS will be based on WGS. However, the price differential between SNP arrays and WGS is still substantial, and array technology remains more robust than sequencing \cite[]{visscher201710}.
+Imputation has a different meaning in genetics than in other Data Science fields; it does not refer to filling those 5\% missing values, but instead refers to adding completely new variants that were not genotyped with the chip used. 
+Imputation is enabled by the fact that the genotypes of unobserved genetic variants can be predicted by the haplotypes inferred from multiple observed SNPs (the ones that were genotyped) and the haplotypes observed from a fully sequenced reference
+panel \cite[]{marchini2010genotype,mccarthy2016reference}.
+Imputation now allows to have datasets such as the UK Biobank: 90M SNPs for each of 500K individuals \cite[]{bycroft2017genome}.
 
-Recently, some national biobanks projects have emerged. For example, the UK Biobank has released both genome-wide genotypes and rich phenotypic data on 500K individuals to the international research community.
-Yet, most of the time, only summary statistics for a GWAS dataset (effect sizes and p-values of SNPs) are available (not the individual-level genotype data). Because of the availability of such data en masse, specific methods for those summary data have been developed [CITATIONS]. The craze for such data can be explained by the fact that GWAS individual-level data, sometimes consisting of a meta-analysis of many small datasets, cannot be easily shared publicly, as opposed to summary data. Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers.
+Finally, NGS (also called Whole Genome Sequencing (WGS)) refers to fully sequenced data over more than 3M variants, including some rare variants. Yet, this technology is still very expensive, with a cost of around \$1000 per genome.
+GWAS to date have been based on SNP arrays designed to tag common variants in the genome. These arrays do not cover all genetic variants in the population, and it seems natural that future GWAS will be based on WGS. However, the price differential between SNP arrays and WGS is still substantial, and array technology remains more robust than sequencing \cite[]{visscher201710}. An in-between solution could be to use extremely low-coverage sequencing \cite[]{pasaniuc2012extremely}.
+
+Recently, some national biobanks projects have emerged. For example, the UK Biobank has released both genome-wide genotypes and rich phenotypic data on 500K individuals to the international research community \cite[]{bycroft2017genome}.
+Yet, most of the time, only summary statistics for a GWAS dataset (estimated effect sizes and p-values of SNPs) are available (not the individual-level genotype data). Because of the availability of such data en masse, specific methods using those summary data have been developed \cite[]{pasaniuc2014fast,vilhjalmsson2015modeling,bulik2015ld,pasaniuc2017dissecting,speed2018sumher}. The craze for such data can be explained by the fact that GWAS individual-level data, sometimes consisting of a meta-analysis of many small datasets, cannot be easily shared publicly, as opposed to summary data. Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers.
 
 In this thesis, we used genotyped SNPs, imputed SNPs and summary statistics.
 
@@ -182,7 +186,7 @@ Under the C+T model, a coefficient of regression is learned independently for ea
 [REFAIRE]
 The R packages also implement functions for computing Polygenic Risk Scores using two methods.
 
-On the contrary, the second approach does not use univariate summary statistics but instead train a multivariate model on all the SNPs and covariables \textit{at once}, optimally accounting for correlation between predictors \cite[]{Abraham2012}. The currently available models are very fast sparse linear and logistic regressions. These models include lasso and elastic-net regularizations, which reduce the number of  predictors (SNPs) included in the predictive models \cite[]{Friedman2010,Tibshirani1996,Zou2005}. Package bigstatsr provides a fast implementation of these models by using efficient rules to discard most of the predictors \cite[]{Tibshirani2012}. The implementation of these algorithms is based on modified versions of functions available in the R package biglasso \cite[]{Zeng2017}. These modifications allow to include covariates in the models, to use these algorithms on the special type of FBM called ``FBM.code256'' used in bigsnpr and to remove the need of choosing the regularization parameter.
+On the contrary, the second approach does not use univariate summary statistics but instead train a multivariate model on all the SNPs and covariates \textit{at once}, optimally accounting for correlation between predictors \cite[]{Abraham2012}. The currently available models are very fast sparse linear and logistic regressions. These models include lasso and elastic-net regularizations, which reduce the number of  predictors (SNPs) included in the predictive models \cite[]{Friedman2010,Tibshirani1996,Zou2005}. Package bigstatsr provides a fast implementation of these models by using efficient rules to discard most of the predictors \cite[]{Tibshirani2012}. The implementation of these algorithms is based on modified versions of functions available in the R package biglasso \cite[]{Zeng2017}. These modifications allow to include covariates in the models, to use these algorithms on the special type of FBM called ``FBM.code256'' used in bigsnpr and to remove the need of choosing the regularization parameter.
 
 \subsubsection{Objective and main difficulties of the thesis}
 
