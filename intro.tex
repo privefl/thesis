@@ -10,7 +10,6 @@
 \usepackage{geometry}
 \geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \usepackage{rotating}
-\usepackage{color}
 \usepackage{graphicx}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{setspace}
@@ -32,8 +31,7 @@
 \usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
 
 %Pour les rajouts
-\usepackage{color}
-\definecolor{trustcolor}{rgb}{0,0,1}
+\usepackage{xcolor}
 
 \usepackage{dsfont}
 \usepackage[warn]{textcomp}
@@ -55,6 +53,9 @@
 
 %% Because html converters don't know tabularnewline
 \providecommand{\tabularnewline}{\\}
+\definecolor{clumping}{HTML}{38761D}
+\definecolor{thresholding}{HTML}{1515FF}
+%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
 
 \usepackage{babel}
 \makeatother
@@ -143,7 +144,29 @@ Yet, most of the time, only summary statistics for a GWAS dataset (estimated eff
 
 In this thesis, we used genotyped SNPs, imputed SNPs and summary statistics.
 
-\subsubsection{From GWAS to Polygenic Risk Scores (PRS)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{From GWAS to Polygenic Risk Scores (PRS)}
+
+\subsubsection{A standard way to compute PRS}
+
+The main method for computing Polygenic Risk Scores (PRS) is the widely used ``Clumping + Thresholding'' (C+T, also called ``Pruning + Thresholding'' in the literature) model based on univariate GWAS summary statistics as described in equations \eqref{eq:gwas1} and \eqref{eq:gwas2}.
+Under the C+T model, a coefficient of regression is learned independently for each SNP along with a corresponding p-value (the GWAS part). The SNPs are first clumped (C) so that there remains only SNPs that are weakly correlated with each other ($S_\text{clumping}$). Thresholding (T) consists in removing SNPs that are under a certain level of significance (p-value threshold $p_T$ to be determined). A polygenic risk score is defined as the sum of allele counts of the remaining SNPs weighted by the corresponding regression coefficients \cite[]{purcell2009common,Dudbridge2013,Euesden2015},
+\[\rm{PRS}_i = \sum_{\substack{j \in S_\text{clumping} \\ p_j~<~p_T}} \hat\beta_j \cdot G_{i,j}~,\] where $\hat\beta_j$ ($p_j$) are the effect sizes (p-values) learned from the GWAS and $G_{i,j}$ is the allele count (genotype) for individual $i$ and SNP $j$.
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=0.95\textwidth]{GWAS2PRS3.png}}
+\caption{Illustration of C+T looking at a Manhattan plot of GWAS of height based on 20,000 unrelated individuals. \textbf{\color{clumping}Clumping:} due to Linkage Disequilibrium, indirect associations provides only redundant information (see Figure \ref{fig:gwasLD}). \textbf{\color{thresholding}Thresholding:} SNPs are included in the polygenic score if they are significant enough in order to reduce noice in the score. [TODO: refaire]}\label{fig:gwas2}
+\end{figure}
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=0.5\textwidth]{indirect-association.png}}
+\caption{Illustration of an indirect association with a phenotype due to Linkage Disequilibrium between SNPs. Source: \cite{astle2009population}.}\label{fig:gwasLD}
+\end{figure}
+
+\subsubsection{PRS for epidemiology}
 
 [FIGURE WRAY 2014]
 
@@ -152,15 +175,12 @@ Polygenic analysis methods were central in demonstrating that the first phase of
 \subsubsection{The differing goals of association testing and risk prediction}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Genomic prediction}
-
-\subsubsection{From association to prediction}
-
 [COMMENCER PAR GWSignificant PUIS PLUS QUE CA (EPIDEMIOLOGY)]
 
 [CONCLUDE WITH The differing goals of association testing and risk prediction]
+
+
+\subsection{Genomic prediction}
 
 \subsubsection{Heritability and missing heritability}
 
@@ -180,11 +200,8 @@ Therefore, as results from multiple GWAS are combined, a larger fraction of the 
 
 \subsubsection{Methods for genomic prediction}
 
-The main method for computing Polygenic Risk Scores (PRS) is the widely used ``Clumping + Thresholding'' (C+T, also called ``Pruning + Thresholding'' in the literature) model based on univariate GWAS summary statistics as described in equations \eqref{eq:gwas1} and \eqref{eq:gwas2}.
-Under the C+T model, a coefficient of regression is learned independently for each SNP along with a corresponding p-value (the GWAS part). The SNPs are first clumped (C) so that there remains only SNPs that are weakly correlated with each other. Thresholding (T) consists in removing SNPs that are under a certain level of significance (p-value threshold to be determined). A polygenic risk score is defined as the sum of allele counts of the remaining SNPs weighted by the corresponding regression coefficients \cite[]{Chatterjee2013,Dudbridge2013,Euesden2015}.
 
-[REFAIRE]
-The R packages also implement functions for computing Polygenic Risk Scores using two methods.
+[TODO: REFAIRE]
 
 On the contrary, the second approach does not use univariate summary statistics but instead train a multivariate model on all the SNPs and covariates \textit{at once}, optimally accounting for correlation between predictors \cite[]{Abraham2012}. The currently available models are very fast sparse linear and logistic regressions. These models include lasso and elastic-net regularizations, which reduce the number of  predictors (SNPs) included in the predictive models \cite[]{Friedman2010,Tibshirani1996,Zou2005}. Package bigstatsr provides a fast implementation of these models by using efficient rules to discard most of the predictors \cite[]{Tibshirani2012}. The implementation of these algorithms is based on modified versions of functions available in the R package biglasso \cite[]{Zeng2017}. These modifications allow to include covariates in the models, to use these algorithms on the special type of FBM called ``FBM.code256'' used in bigsnpr and to remove the need of choosing the regularization parameter.
 
