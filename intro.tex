@@ -81,7 +81,8 @@ diseases \cite[]{torkamani2018personal}.
 
 \subsubsection{Different types of disease and mutations}
 
-Different types of mutations exist (Figure \ref{fig:rare-common}) [PARLER DE DISEASE ARCHITECTURE??].
+Different types of mutations exist (Figure \ref{fig:rare-common}).
+[PARLER DE DISEASE ARCHITECTURE??]
 Along with harmful BRCA mutations, many other highly penetrant mutations\footnote{most people carrying the mutation will develop the disease} are associated with diseases, and are searchable in an online database \cite[]{hamosh2005online}. Those mutation are often very rare and are either associated with some very rare disease or are explaining only a small proportion of common disease incidence.
 In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease--common variant hypothesis \cite[]{pritchard2002allelic}. This hypothesis further suggests that such diseases are likely caused by a large number of common variants, each contributing only a small risk and thereby evading negative evolutionary selection \cite[]{salari2012personalized}.
 One common form of variation across human genomes is called a single nucleotide polymorphism (SNP). As indicated by the name, SNPs are single base changes in the DNA.
@@ -150,7 +151,7 @@ In this thesis, we used genotyped SNPs, imputed SNPs and summary statistics.
 
 \subsection{From GWAS to Polygenic Risk Scores (PRS)}
 
-\subsubsection{A standard way to compute PRS}
+\subsubsection{A standard way to compute PRS}\label{sec:C+T}
 
 The main method for computing Polygenic Risk Scores (PRS) is the widely used ``Clumping + Thresholding'' (C+T, also called ``Pruning + Thresholding'' in the literature) model based on univariate GWAS summary statistics as described in equations \eqref{eq:gwas1} and \eqref{eq:gwas2}.
 Under the C+T model, a coefficient of regression is learned independently for each SNP along with a corresponding p-value (the GWAS part). The SNPs are first clumped (C) so that there remains only SNPs that are weakly correlated with each other ($S_\text{clumping}$). Thresholding (T) consists in removing SNPs that are under a certain level of significance (p-value threshold $p_T$ to be determined). A polygenic risk score is defined as the sum of allele counts of the remaining SNPs weighted by the corresponding regression coefficients \cite[]{purcell2009common,Dudbridge2013,Euesden2015},
@@ -218,7 +219,16 @@ Therefore, as results from multiple GWAS are combined, a larger fraction of the 
 
 \subsubsection{Methods for genomic prediction}
 
+Several methods have been developed to predict disease status based on SNP information.
+We can divide these methods in two categories: the ones that use summary statistics and the ones that use individual-level data only.
+The most widely used methods called ``Clumping + Thresholding'' (C+T) has been described in section \ref{sec:C+T}.
+Later, two other techniques have been developed that focus on using correlation structure of a reference panel to account for LD, instead of discarding SNPs in LD through clumping \cite{vilhjalmsson2015modeling,mak2017polygenic}. 
+[ADD OTHER BIORXIV PAPERS?? NPS/PRS-CS?]
 
+When using individual-level data only, the problem boils down to a statistical learning classification problem. Thus, some statistical learning methods have been used to derive PRS for complex human diseases by jointly estimating SNP effects. Such methods include joint logistic regression, Support Vector Machine (SVM) and random forests \cite[]{wei2009disease,abraham2012sparsnp,abraham2014accurate,botta2014exploiting,okser2014regularized}.
+Linear Mixed-Models (LMMs) are another widely-used method in fields such as plant and animal breeding or for predicting highly heritable quantitative human phenotypes such as height \cite[]{yang2010common}. 
+However, these methods and their derivatives are often computationally very demanding, both in terms of memory and time required \cite[]{zhou2013polygenic,golan2014effective,speed2014multiblup,maier2015joint}.
+Recently, two methods primarily designed for association testing, BOLT-LMM and SAIGE, have been developed to handle very large datasets \cite[]{loh2018mixed,zhou2018efficiently}.
 
 \subsubsection{Objective and main difficulties of the thesis}
 
