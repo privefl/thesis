@@ -168,21 +168,39 @@ Under the C+T model, a coefficient of regression is learned independently for ea
 
 \subsubsection{PRS for epidemiology}
 
-[FIGURE WRAY 2014]
+Polygenic Risk Scores (PRS) have been used for epidemiology before being used for prediction. The steps for a PRS analysis are illustrated in figure \ref{fig:steps-PRS} and have two goals. First, PRS can be used when there is no SNP detected in a GWAS in order to show that there is still a significant polygenic contribution to the phenotype of intereset. 
+For example, in 2009, a GWAS for Schizophrenia by \cite{purcell2009common} found only a single significantly associated SNP, although this disease is highly heritable. Yet, by constructing a PRS and testing it for association with Schizophrenia in another independent dataset, they proved that there is a polygenic contribution to Schizophrenia (Figure \ref{fig:epi-PRS}). 
+Thus, polygenic analysis methods were central in demonstrating that the first phase of GWAS were underpowered, which propelled the drive for larger sample sizes that is now starting to pay off \cite[]{wray2014research}.
 
-Polygenic analysis methods were central in demonstrating that the first phase of GWAS were underpowered, which propelled the drive for larger sample sizes that is now starting to pay off \cite[]{wray2014research}.
+\begin{figure}[htb]
+\centerline{\includegraphics[width=0.8\textwidth]{genomic-profile.png}}
+\caption{Illustration of the steps in genomic profile risk scoring. Source: \cite{wray2014research}.}\label{fig:steps-PRS}
+\end{figure}
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=0.65\textwidth]{purcell2009.png}}
+\caption{Replication of the polygenic component derived by the International Schizophrenia Consortium in independent schizophrenia and bipolar disorder samples. Source: \cite{purcell2009common}.}\label{fig:epi-PRS}
+\end{figure}
+
+Another use of PRS for epidemiology is to test the PRS for association with a phenotype that is different from the one used to construct the PRS.
+This technique enables researchers to prove that there is a common genetic contribution between two traits. 
+For example, it was shown that there is a common genetic contribution between Schizophrenia and bipolar disorder (Figure \ref{fig:epi-PRS}). 
+
 
 \subsubsection{The differing goals of association testing and risk prediction}
 
+Association testing (GWAS) and prediction have very different goals.
+First, GWAS aims at identifying highly replicable disease-associated variants by using a highly stringent p-value threshold to prevent false discoveries. However, using only hits from GWAS results in PRS of low predictive value (see section \ref{sec:missing}). 
+A common mistake is to report highly significant findings with large odds ratios as useful predictors of disease. 
+Thus, many people have reminded researchers over the years that GWAS findings are not predictive on their own, and that we would need scores that combine many SNPs in order to have a decent predictor of disease, i.e. polygenic scores \cite[]{pepe2004limitations,janssens2006predictive,jakobsdottir2009interpretation,wald2019illusion}.
+Finally, it should be noted that population stratification, usually considered an unwelcome confounder in GWAS, may be useful in risk prediction and may be leveraged to produce better models \cite{golan2014effective,abraham2015genomic}.
 
-[COMMENCER PAR GWSignificant PUIS PLUS QUE CA (EPIDEMIOLOGY)]
-
-[CONCLUDE WITH The differing goals of association testing and risk prediction]
+[AJOUTER DES CHOSES DE ABRAHAM 2015??]
 
 
 \subsection{Genomic prediction}
 
-\subsubsection{Heritability and missing heritability}
+\subsubsection{Heritability and missing heritability} \label{sec:missing}
 
 The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only.
 For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors \cite[]{visscher2008heritability}.
@@ -201,9 +219,6 @@ Therefore, as results from multiple GWAS are combined, a larger fraction of the 
 \subsubsection{Methods for genomic prediction}
 
 
-[TODO: REFAIRE]
-
-On the contrary, the second approach does not use univariate summary statistics but instead train a multivariate model on all the SNPs and covariates \textit{at once}, optimally accounting for correlation between predictors \cite[]{Abraham2012}. The currently available models are very fast sparse linear and logistic regressions. These models include lasso and elastic-net regularizations, which reduce the number of  predictors (SNPs) included in the predictive models \cite[]{Friedman2010,Tibshirani1996,Zou2005}. Package bigstatsr provides a fast implementation of these models by using efficient rules to discard most of the predictors \cite[]{Tibshirani2012}. The implementation of these algorithms is based on modified versions of functions available in the R package biglasso \cite[]{Zeng2017}. These modifications allow to include covariates in the models, to use these algorithms on the special type of FBM called ``FBM.code256'' used in bigsnpr and to remove the need of choosing the regularization parameter.
 
 \subsubsection{Objective and main difficulties of the thesis}
 
