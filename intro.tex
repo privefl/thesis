@@ -117,7 +117,7 @@ For example, consider a dataset where you have 900 Finnish people and only 100 I
 \caption{First two Principal Components of individuals from four European populations. PC1 correlates with latitude while PC2 correlates longitude.}\label{fig:pca}
 \end{figure}
 
-These simple tests can be used only if individuals are not related to one another. If they do, a common practice is to remove one individual from each pairs of related individuals. Another strategy is to use Linear Mixel Models (LMM) to take into account both relatedness and population structure; these mixed models have also the potential to increase discovery power \cite[]{yang2014advantages}.
+These simple tests can be used only if individuals are not related to one another. If they do, a common practice is to remove one individual from each pairs of related individuals. Another strategy is to use Linear Mixed Models (LMM) to take into account both relatedness and population structure; these mixed models have also the potential to increase discovery power \cite[]{yang2014advantages}.
 
 To date, more than 10,000 strong associations have been reported between genetic variants and one or more complex traits \cite[]{welter2013nhgri}, where ``strong'' is defined as statistically significant at the genome-wide p-value threshold of $5 \cdot 10^{-8}$, which corresponds to a type-I error of 5\%, Bonferroni-corrected for one million independent tests \cite[]{pe2008estimation}. Results of a GWAS are usually reported in a Manhattan plot (Figure \ref{fig:gwas}). This type of plot shows some association peaks (similar to skyscrapers in Manhattan) due to some local correlation between SNPs (Linkage Disequilibrium), with squared correlation roughly inversely proportional to distance between SNPs \cite[]{hudson2001two}.
 
@@ -140,7 +140,7 @@ Imputation now allows to have datasets such as the UK Biobank: 90M SNPs for each
 Finally, NGS (also called Whole Genome Sequencing (WGS)) refers to fully sequenced data over more than 3M variants, including some rare variants. Yet, this technology is still very expensive, with a cost of around \$1000 per genome.
 GWAS to date have been based on SNP arrays designed to tag common variants in the genome. These arrays do not cover all genetic variants in the population, and it seems natural that future GWAS will be based on WGS. However, the price differential between SNP arrays and WGS is still substantial, and array technology remains more robust than sequencing \cite[]{visscher201710}. An in-between solution could be to use extremely low-coverage sequencing \cite[]{pasaniuc2012extremely}.
 
-Recently, some national biobanks projects have emerged. For example, the UK Biobank has released both genome-wide genotypes and rich phenotypic data on 500K individuals to the international research community \cite[]{bycroft2017genome}.
+Recently, some national biobank projects have emerged. For example, the UK Biobank has released both genome-wide genotypes and rich phenotypic data on 500K individuals to the international research community \cite[]{bycroft2017genome}.
 Yet, most of the time, only summary statistics for a GWAS dataset (estimated effect sizes and p-values of SNPs) are available (not the individual-level genotype data). Because of the availability of such data en masse, specific methods using those summary data have been developed \cite[]{pasaniuc2014fast,vilhjalmsson2015modeling,bulik2015ld,pasaniuc2017dissecting,speed2018sumher}. The craze for such data can be explained by the fact that GWAS individual-level data, sometimes consisting of a meta-analysis of many small datasets, cannot be easily shared publicly, as opposed to summary data. Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers.
 
 In this thesis, we used genotyped SNPs, imputed SNPs and summary statistics.
@@ -159,7 +159,7 @@ Under the C+T model, a coefficient of regression is learned independently for ea
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.95\textwidth]{GWAS2PRS3.png}}
-\caption{Illustration of C+T looking at a Manhattan plot of GWAS of height based on 20,000 unrelated individuals. \textbf{\color{clumping}Clumping:} due to Linkage Disequilibrium, indirect associations provides only redundant information (see Figure \ref{fig:gwasLD}). \textbf{\color{thresholding}Thresholding:} SNPs are included in the polygenic score if they are significant enough in order to reduce noice in the score. [TODO: refaire]}\label{fig:gwas2}
+\caption{Illustration of C+T looking at a Manhattan plot of GWAS of height based on 20,000 unrelated individuals. \textbf{\color{clumping}Clumping:} due to Linkage Disequilibrium, indirect associations provides only redundant information (see Figure \ref{fig:gwasLD}). \textbf{\color{thresholding}Thresholding:} SNPs are included in the polygenic score if they are significant enough in order to reduce noise in the score. [TODO: refaire]}\label{fig:gwas2}
 \end{figure}
 
 \begin{figure}[htb]
@@ -169,7 +169,7 @@ Under the C+T model, a coefficient of regression is learned independently for ea
 
 \subsubsection{PRS for epidemiology}
 
-Polygenic Risk Scores (PRS) have been used for epidemiology before being used for prediction. The steps for a PRS analysis are illustrated in figure \ref{fig:steps-PRS} and have two goals. First, PRS can be used when there is no SNP detected in a GWAS in order to show that there is still a significant polygenic contribution to the phenotype of intereset. 
+Polygenic Risk Scores (PRS) have been used for epidemiology before being used for prediction. The steps for a PRS analysis are illustrated in figure \ref{fig:steps-PRS} and have two goals. First, PRS can be used when there is no SNP detected in a GWAS in order to show that there is still a significant polygenic contribution to the phenotype of interest. 
 For example, in 2009, a GWAS for Schizophrenia by \cite{purcell2009common} found only a single significantly associated SNP, although this disease is highly heritable. Yet, by constructing a PRS and testing it for association with Schizophrenia in another independent dataset, they proved that there is a polygenic contribution to Schizophrenia (Figure \ref{fig:epi-PRS}). 
 Thus, polygenic analysis methods were central in demonstrating that the first phase of GWAS were underpowered, which propelled the drive for larger sample sizes that is now starting to pay off \cite[]{wray2014research}.
 
@@ -211,7 +211,8 @@ Note that the heritability of height is estimated to be around 80\% \cite[]{silv
 So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
 The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of genomic prediction and my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
 
-First GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for protaste cancer, explaining a small part of heritability of these diseases \cite[]{jakobsdottir2009interpretation}. Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of heritability \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of heritability \cite[]{wood2014defining}.
+First GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for prostate cancer, explaining a small part of heritability of these diseases \cite[]{jakobsdottir2009interpretation}. 
+Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of heritability \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of heritability \cite[]{wood2014defining}.
 Since most of the identified associated SNPs have effect size close to the limit dictated by the power of the studies, a likely explanation, at least in part, is that there are many common polymorphisms with effects that were too small to pass the stringent significance thresholds \cite[]{wray2008prediction}.
 Therefore, as results from multiple GWAS are combined, a larger fraction of the genetic variance is likely to be explained and accurate prediction of genetic risk to disease will become possible even though the risks conveyed by individual variants are small \cite[]{wray2008prediction}.
 %Therefore, sample size is not large enough to detect and estimate SNP effects precisely enough, but we can hope that with increasing sample sizes, more variants will be detected and more heritability could be explained by genetic variants.
@@ -230,8 +231,23 @@ Linear Mixed-Models (LMMs) are another widely-used method in fields such as plan
 However, these methods and their derivatives are often computationally very demanding, both in terms of memory and time required \cite[]{zhou2013polygenic,golan2014effective,speed2014multiblup,maier2015joint}.
 Recently, two methods primarily designed for association testing, BOLT-LMM and SAIGE, have been developed to handle very large datasets \cite[]{loh2018mixed,zhou2018efficiently}.
 
-\subsubsection{Objective and main difficulties of the thesis}
+\subsubsection{Objective and main difficulty of the thesis}
 
+The main objective of this thesis has been to improve current disease predictions from Polygenic Risk Scores (PRS), by using methods from the statistical learning community.
+The main difficulty is that those methods do not necessarily scale well with the large-scale data we now have in the field.
+For example, the UK Biobank is composed of 500K individuals from which 90M variants are available \cite{bycroft2017genome}.
+
+When analyzing this large-scale datasets, only a few methods are usable.
+Most of them are being developed in a separate piece of software to do a specific analysis.
+Yet, if you want to do some exploratory analyses and test new ideas, it becomes increasing difficult to do so.
+Thus, the first part of our work has been dedicated to developing R packages that would handle very large datasets, while being simple and flexible to use for exploratory and standard analyses. 
+
+Our second paper has been dedicated to developing penalized regressions as a replacement to more simple, less optimal methods, and that could be used for large-scale datasets as well.
+%As a surprise, we found out that statistical learning methods were useful when sample size was large enough or for autoimmune di
+
+Finally, because lots of summary statistics data is available while individual-level data is still scarce, we worked on making the most out of the Clumping and Thresholding (C+T) method since it proved to be a simple and effective method.
+
+[COMPLETER]
 
 \newpage
 
