@@ -110,7 +110,8 @@ $K$ is the number of covariates, including principal components and other covari
 \end{equation}
 $\hat{p} = \mathbb{P}(Y = 1)$ and $Y$ denotes the binary phenotype.
 It is well established that principal components of genotype data should be included as covariates in GWAS \cite[]{price2006principal}. Indeed, principal components of genotype data capture well population structure (as shown in figure \ref{fig:pca}). 
-For example, consider a dataset where you have 900 Finnish people and only 100 Italian people. Because Finnish people are taller than Italian people, any SNP with a large difference in allele frequency between these two populations would be flagged as being associated with height, leading to many false positive associations. Adding principal components as covariates aims at preventing those SNPs from being false positive reports [PARLER DE QQ-PLOT ET DE LAMBDAGC??].
+For example, consider a dataset where you have 900 Finnish people and only 100 Italian people. Because Finnish people are taller than Italian people, any SNP with a large difference in allele frequency between these two populations would be flagged as being associated with height, leading to many false positive associations. Thus, adding principal components as covariates aims at preventing those SNPs from being false positive reports.
+[PARLER DE QQ-PLOT ET DE LAMBDAGC??]
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.6\textwidth]{celiac-pca.png}}
@@ -206,17 +207,18 @@ Finally, it should be noted that population stratification, usually considered a
 The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only.
 For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors \cite[]{visscher2008heritability}.
 Methods now enable the estimation of chip-heritability (also called SNP-heritability: $h^2_{SNP}$) using linear mixed models and residual maximum likelihood. For example, for a chip of 300K SNPs, it was shown that those SNPs could account for 45\% of the variance of height \cite[]{yang2010common}.
-Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants,visscher2006assumption}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability.
+Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants,visscher2006assumption}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability \cite[]{visscher2008heritability}.
 
 So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
 The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of genomic prediction and my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
 
 First GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for prostate cancer, explaining a small part of heritability of these diseases \cite[]{jakobsdottir2009interpretation}. 
 Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of heritability \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of heritability \cite[]{wood2014defining}.
-Since most of the identified associated SNPs have effect size close to the limit dictated by the power of the studies, a likely explanation, at least in part, is that there are many common polymorphisms with effects that were too small to pass the stringent significance thresholds \cite[]{wray2008prediction}.
+Since most of the identified associated SNPs have effect size close to the limit dictated by the power of the studies, a likely explanation, at least in part, is that there are many common polymorphisms with effects that were too small to pass the stringent significance threshold of GWAS \cite[]{wray2008prediction}.
 Therefore, as results from multiple GWAS are combined, a larger fraction of the genetic variance is likely to be explained and accurate prediction of genetic risk to disease will become possible even though the risks conveyed by individual variants are small \cite[]{wray2008prediction}.
 %Therefore, sample size is not large enough to detect and estimate SNP effects precisely enough, but we can hope that with increasing sample sizes, more variants will be detected and more heritability could be explained by genetic variants.
 
+[INCLUDE NOT ONLY SIGNIFICANT SNPS]
 
 \subsubsection{Methods for genomic prediction}
 
