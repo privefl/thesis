@@ -65,7 +65,11 @@
 
 \section{Introduction}
 
-In my thesis work, we have been focusing on assessing someone's risk of disease based on DNA mutations data. DNA mutations do not really change over lifetime so that we could, in theory, assess someone's genetic risk of disease at birth. Thus, this could have potentially large implications in disease prevention. As an example, about 12\% of women in the general population will develop breast cancer sometime during their lives \cite[]{desantis2016breast}. By contrast, a recent large study estimated that about 72\% (95\% CI: 65\%-79\%) of women who inherit a harmful BRCA1 mutation and about 69\% (95\% CI: 61\%-77\%) of women who inherit a harmful BRCA2 mutation will develop breast cancer by the age of 80 \cite[]{kuchenbaecker2017risks}. In 2013, Angelina Jolie announced that she had undergone a preventative double mastectomy, because she had a family history of breast cancer and was carrying a harmful BRCA1 mutation.
+In my thesis work, we have been focusing on assessing someone's risk of disease based on DNA data. Except for somatic mutations, DNA data do not change over lifetime so that we could, in theory, assess someone's genetic risk of disease at birth. Thus, this could have potentially large implications in disease prevention \cite[]{mavaddat2015prediction}. 
+[EN PARLER EN CONCLU + OTHERS CITATIONS]
+As an example, about 12\% of women in the general population will develop breast cancer sometime during their lives \cite[]{desantis2016breast}. By contrast, a recent large study estimated that about 72\% (95\% CI: 65\%-79\%) of women who inherit a harmful BRCA1 mutation and about 69\% (95\% CI: 61\%-77\%) of women who inherit a harmful BRCA2 mutation will develop breast cancer by the age of 80 \cite[]{kuchenbaecker2017risks}. 
+In 2013, Angelina Jolie announced that she had undergone a preventative double mastectomy, because she had a family history of breast cancer and was carrying a harmful BRCA1 mutation.
+Thereby, DNA data can help identify individuals who are at high-risk for some diseases in order to target preventive actions.
 
 In this introduction, [TODO]
 
@@ -77,10 +81,9 @@ diseases \cite[]{torkamani2018personal}.
 
 \subsubsection{Different types of disease and mutations}
 
-Different types of mutations exist (Figure \ref{fig:rare-common}).
-[PARLER DE DISEASE ARCHITECTURE??]
-Along with harmful BRCA mutations, many other highly penetrant mutations\footnote{most people carrying the mutation will develop the disease} are associated with diseases, and are referenced in an online database \cite[]{hamosh2005online}. 
-Those mutations are often very rare and are either associated with some very rare disease or are explaining only a small proportion of common disease incidence.
+How mutations affect diseases depends on their effect sizes and on their allele frequencies (Figure \ref{fig:rare-common}).
+For example, harmful BRCA mutations are highly penetrant mutations, i.e.\ that most women carrying these mutations will develop breast cancer. Many mutations with large effect sizes have been identified and are referenced in an online database \cite[]{hamosh2005online}. 
+Those mutations are often very rare; either they are associated with some very rare disease or they are explaining only a small proportion of common diseases incidence \cite[]{anglian2000prevalence}.
 In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease--common variant hypothesis \cite[]{pritchard2002allelic}. This hypothesis further suggests that such diseases are likely caused by a large number of common variants, each contributing only a small risk and thereby evading negative evolutionary selection \cite[]{salari2012personalized}.
 Indeed, selection might be responsible for keeping genetic effect sizes low, since variants of larger effect may be selected against and eventually disappear \cite[]{pritchard2002allelic}.
 One common form of variation across human genomes is called a single nucleotide polymorphism (SNP). As indicated by the name, SNPs are single base changes in the DNA.
@@ -100,16 +103,15 @@ lines. Source: \cite{manolio2009finding}.}
 The method behind GWAS is simple: test each variant one by one for association with a phenotype of interest.
 For a continuous phenotype (e.g.\ height), linear regression is used and a t-test is performed on $\beta^{(j)}$ for each SNP $j$ where
 \begin{equation}
-\hat{y} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K + \epsilon~,\label{eq:gwas1}
+y = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K + \epsilon~,\label{eq:gwas1}
 \end{equation}
-$K$ is the number of covariates, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed on $\beta^{(j)}$ for each SNP $j$ where
+$COV_1$, ..., $COV_K$ are $K$ covariates, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed on $\beta^{(j)}$ for each SNP $j$ where
 \begin{equation}
-\log{\left(\frac{\hat{p}}{1-\hat{p}}\right)} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K + \epsilon~,\label{eq:gwas2}
+\log{\left(\frac{p}{1-p}\right)} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,\label{eq:gwas2}
 \end{equation}
-$\hat{p} = \mathbb{P}(Y = 1)$ and $Y$ denotes the binary phenotype.
-It is well established that principal components of genotype data should be included as covariates in GWAS \cite[]{price2006principal}. Indeed, principal components of genotype data capture well population structure (as shown in figure \ref{fig:pca}). 
-For example, consider a dataset where there are 900 Finnish people and 100 Italian people. Because Finnish people are taller than Italian people, any SNP with a large difference in allele frequency between these two populations would be flagged as being associated with height, leading to many false positive associations. Thus, adding principal components as covariates aims at preventing those SNPs from being false positive reports.
-[PARLER DE QQ-PLOT ET DE LAMBDAGC??]
+$p = \mathbb{P}(Y = 1)$ and $Y$ denotes the binary phenotype.
+It is well established that principal components of genotype data should be included as covariates in GWAS to account for the confounding effect of population structure \cite[]{price2006principal}. Indeed, principal components of genotype data capture well population structure (as shown in figure \ref{fig:pca}). 
+To illustrate the importance of accounting for population structure, consider a dataset where there are 900 Finnish people and 100 Italian people. Because Finnish people are taller than Italian people, any SNP with a large difference in allele frequency between these two populations would be flagged as being associated with height, leading to many false positive associations. Thus, adding principal components as covariates aims at preventing those SNPs from being false positive reports.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.6\textwidth]{celiac-pca.png}}
@@ -134,16 +136,40 @@ Genotyping chips enables a quick and cheap genotyping of 200K to 2M SNPs, mostly
 Imputation has a different meaning in genetics than in other Data Science fields; it does not refer to filling those 5\% missing values, but instead refers to adding completely new variants that were not genotyped with the chip used. 
 Imputation is enabled by the fact that the genotypes of unobserved genetic variants can be predicted by the haplotypes inferred from multiple observed SNPs (the ones that were genotyped) and the haplotypes observed from a fully sequenced reference
 panel \cite[]{marchini2010genotype,mccarthy2016reference}.
-Imputation now allows to have datasets such as the UK Biobank: 90M SNPs for each of 500K individuals \cite[]{bycroft2017genome}.
+Imputation now allows to have large genomic datasets such as the UK Biobank: 90M SNPs for each of 500K genotyped individuals \cite[]{bycroft2017genome}.
 
 Finally, NGS (also called Whole Genome Sequencing (WGS)) refers to fully sequenced data over more than 3M variants, including some rare variants. Yet, this technology is still very expensive, with a cost of around \$1000 per genome.
 GWAS to date have been based on SNP arrays designed to tag common variants in the genome. These arrays do not cover all genetic variants in the population, and it seems natural that future GWAS will be based on WGS. However, the price differential between SNP arrays and WGS is still substantial, and array technology remains more robust than sequencing \cite[]{visscher201710}. An in-between solution could be to use extremely low-coverage sequencing \cite[]{pasaniuc2012extremely}.
 
 Recently, some national biobank projects have emerged. For example, the UK Biobank has released both genome-wide genotypes and rich phenotypic data on 500K individuals to the international research community \cite[]{bycroft2017genome}.
 Yet, it is rare to have access to large individual-level genotype data. 
-Most of the time, only summary statistics for a GWAS dataset are available, i.e.\ the estimated effect sizes and p-values for each variant of the dataset. Because of the availability of such data en masse, specific methods using those summary data have been developed \cite[]{pasaniuc2014fast,vilhjalmsson2015modeling,bulik2015ld,pasaniuc2017dissecting,speed2018sumher}. The craze for such data can be explained by the fact that GWAS individual-level data, sometimes consisting of a meta-analysis of many small datasets, cannot be easily shared publicly, as opposed to summary data. Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers.
+Most of the time, only summary statistics for a GWAS dataset are available, i.e.\ the estimated effect sizes and p-values for each variant of the dataset (Table \ref{tab:sumstats}). Because of the availability of such data en masse, specific methods using those summary data have been developed \cite[]{pasaniuc2014fast,vilhjalmsson2015modeling,bulik2015ld,pasaniuc2017dissecting,speed2018sumher}. The craze for such data can be explained by the fact that GWAS individual-level data, sometimes consisting of a meta-analysis of many small datasets, cannot be easily shared publicly, as opposed to summary data \cite[]{lin2010meta}. Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers.
 
-In this thesis, we used genotyped SNPs, imputed SNPs and summary statistics.
+In this thesis, we have not used NGS data, but we have used genotyped SNPs, imputed SNPs and summary statistics to construct predictive models of disease risk, for many common diseases.
+
+% latex table generated in R 3.5.2 by xtable 1.8-2 package
+% Wed Apr  3 17:55:25 2019
+\begin{table}[ht]
+\caption{An example of summary statistics for type 2 diabetes \cite[]{scott2017expanded}. Generally, effects and p-values are available for all SNPs in the GWAS, where there can be many millions of them \cite[]{asking4more}.}\label{tab:sumstats}
+\vspace{0.5em}
+\centering
+\begin{tabular}{rrccrrrr}
+  \hline
+Chr & Position & Allele1 & Allele2 & Effect & StdErr & P-value & TotalSampleSize \\ 
+  \hline
+   5 & 29439275 & T & C & -0.000 & 0.015 & 0.990 & 111309 \\ 
+     5 & 85928892 & T & C & -0.008 & 0.031 & 0.790 & 111309 \\ 
+    11 & 107819621 & A & C & -0.110 & 0.200 & 0.590 & 87234 \\ 
+    10 & 128341232 & T & C & 0.024 & 0.015 & 0.110 & 111309 \\ 
+     8 & 66791719 & A & G & 0.069 & 0.120 & 0.560 & 99092 \\ 
+    23 & 145616900 & A & G & -0.011 & 0.060 & 0.860 & 19870 \\ 
+     3 & 62707519 & T & C & 0.006 & 0.034 & 0.860 & 111308 \\ 
+     2 & 80464120 & T & G & 0.110 & 0.057 & 0.062 & 108514 \\ 
+    18 & 51112281 & T & C & -0.011 & 0.016 & 0.490 & 111307 \\ 
+     1 & 209652100 & T & C & 0.260 & 0.170 & 0.120 & 84836 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,12 +220,16 @@ Association testing (GWAS) and prediction have very different goals.
 First, GWAS aims at identifying highly replicable disease-associated variants by using a highly stringent p-value threshold to prevent false discoveries. However, using only hits from GWAS results in PRS of low predictive value (see section \ref{sec:missing}). 
 A common mistake is to report highly significant findings with large odds ratios as useful predictors of disease. 
 Thus, many people have reminded researchers over the years that GWAS findings are not predictive on their own, and that we would need scores that combine many SNPs in order to have a decent predictor of disease, i.e. polygenic scores \cite[]{pepe2004limitations,janssens2006predictive,jakobsdottir2009interpretation,wald2019illusion}.
+
 Finally, it should be noted that population stratification, usually considered an unwelcome confounder in GWAS, may be useful in risk prediction and may be leveraged to produce better models \cite{golan2014effective,abraham2015genomic}.
+Indeed, for predictive purposes, the objective is to provide the best possible prediction and confounding is not an issue. However, it might become an issue when polygenic risk scores (PRS) capture population structure in addition to trait variation. For instance, correlation between a PRS and an outcome might be due to residual population structure instead of real genetic contribution to the outcome.
+[PAS SUPER CLAIR POUR MOI]
+[CITER LE NOUVEAU PAPIER ELIFE?]
 
 %[AJOUTER DES CHOSES DE ABRAHAM 2015??]
 
 
-\subsection{Genomic prediction}
+\subsection{Polygenic prediction}
 
 \subsubsection{Heritability and missing heritability} \label{sec:missing}
 
@@ -211,7 +241,8 @@ Note that the heritability of height is estimated to be around 80\% \cite[]{silv
 So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
 The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of genomic prediction and my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
 
-First GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for prostate cancer, explaining a very small part of heritability of these diseases \cite[]{jakobsdottir2009interpretation}. 
+The gap between predictions and heritabilities was really huge in the first years of GWAS.
+For example, first GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for prostate cancer, explaining a very small part of heritability of these diseases \cite[]{jakobsdottir2009interpretation}. 
 Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of heritability \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of heritability \cite[]{wood2014defining}.
 Since most of the identified associated SNPs have effect size close to the limit dictated by the power of the studies, a likely explanation, at least in part, is that there are many common polymorphisms with effects that were too small to pass the stringent significance threshold of GWAS \cite[]{wray2008prediction}.
 Therefore, as results from multiple GWAS are combined, a larger fraction of the genetic variance is likely to be explained and accurate prediction of genetic risk to disease will become possible even though the risks conveyed by individual variants are small \cite[]{wray2008prediction,wray2018common}.
@@ -223,16 +254,19 @@ Therefore, as results from multiple GWAS are combined, a larger fraction of the 
 
 Several methods have been developed to predict disease status based on SNP information.
 We can divide these methods in two categories: the ones that use summary statistics and the ones that use individual-level data only.
-The most widely used method called ``Clumping + Thresholding'' (C+T) has been described in section \ref{sec:C+T}.
+
+When summary statistics are available, the most widely used method is called ``Clumping + Thresholding'' (C+T), and has been described in section \ref{sec:C+T}.
 More recently, researchers have focused on using correlation structure of a reference panel to account for LD, instead of discarding SNPs in LD through clumping \cite{vilhjalmsson2015modeling,mak2017polygenic}. 
-[ADD OTHER BIORXIV PAPERS?? NPS/PRS-CS?]
+[ADD OTHER BIORXIV PAPERS?? NPS/PRS-CS?] [DEVELOPPER]
 
 When using individual-level data only, the problem boils down to a statistical learning classification problem. Thus, some statistical learning methods have been used to derive PRS for complex human diseases by jointly estimating SNP effects. Such methods include joint logistic regression, Support Vector Machine (SVM) and random forests \cite[]{wei2009disease,abraham2012sparsnp,abraham2014accurate,botta2014exploiting,okser2014regularized}.
 Linear Mixed-Models (LMMs) are another widely-used method in fields such as plant and animal breeding or for predicting highly heritable quantitative human phenotypes such as height \cite[]{yang2010common}. 
 However, these methods and their derivatives are often computationally very demanding, both in terms of memory and time required \cite[]{zhou2013polygenic,golan2014effective,speed2014multiblup,maier2015joint}.
-Recently, two methods primarily designed for association testing, BOLT-LMM and SAIGE, have been developed to handle very large datasets \cite[]{loh2018mixed,zhou2018efficiently}.
+Recently, two methods named BOLT-LMM and SAIGE have been developed to handle very large datasets \cite[]{loh2018mixed,zhou2018efficiently}. BOLT-LMM and SAIGE were primarily designed for association testing but could also be used for prediction purposes based on individual-level data.
 
 \subsubsection{Objective and main difficulty of the thesis}
+
+[RAPPELER LES STATISTICAL CHALLENGES]
 
 The main objective of this thesis has been to improve current disease predictions from Polygenic Risk Scores (PRS), by using methods from the statistical learning community.
 The main difficulty is that those methods do not necessarily scale well with the large-scale data we now have in the field.
@@ -242,8 +276,7 @@ Most of them are being developed in a separate piece of software to do a specifi
 Yet, if you want to do some exploratory analyses and test new ideas, it becomes increasing difficult to do so.
 
 Thus, the first part of our work has been dedicated to developing R packages that could handle very large datasets, while being simple and flexible to use for exploratory and standard analyses. 
-Our second paper has been dedicated to developing penalized regressions as a replacement to more simple, less optimal methods, and that could be used for large-scale datasets as well.
-%As a surprise, we found out that statistical learning methods were useful when sample size was large enough or for autoimmune di
+Our second paper has been dedicated to developing penalized regressions as a replacement to more simple, less optimal methods, and that could be used for very large individual-level datasets.
 Finally, because lots of summary statistics data are available while individual-level data are still scarce, we worked on making the most out of the Clumping and Thresholding (C+T) method since it proved to be a simple and effective method.
 
 %[COMPLETER]
