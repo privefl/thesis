@@ -1,6 +1,6 @@
 %% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[english, 12pt]{article}
+\documentclass[english, 12pt]{report}
 \usepackage{times}
 %\usepackage{algorithm2e}
 \usepackage{url}
@@ -74,7 +74,7 @@ In this introduction, we first introduce the context of our research and the typ
 
 \subsection{Context}
 
-Today, clinical risk prediction for common adult-onset diseases often relies on basic demographic characteristics, such as age, gender and ethnicity; basic health parameters and lifestyle factors, such as body mass index, smoking status, alcohol consumption and physical exercise habits; measurement of clinical risk factors proximal to overt disease onset, such as blood pressure levels, blood chemistries or biomarkers indicative of ongoing disease processes; ascertainment of environmental exposures, such as air pollution, heavy metals and other environmental toxins; and family history \cite[]{torkamani2018personal}.
+Today, clinical risk prediction for common adult-onset diseases often relies on basic demographic characteristics, such as age, gender and ethnicity; basic health parameters and lifestyle factors, such as body mass index, smoking status, alcohol consumption and physical exercise habits; measurement of clinical risk factors linked to disease onset, such as blood pressure levels, blood chemistries or biomarkers indicative of ongoing disease processes; ascertainment of environmental exposures, such as air pollution, heavy metals and other environmental toxins; and family history \cite[]{torkamani2018personal}.
 Routine genetic profiling is absent from this list, often relegated to use only when testing clarifies individual-level risks in the context of a known family history for some common adult-onset
 diseases \cite[]{torkamani2018personal}.
 
@@ -86,7 +86,7 @@ Those mutations are often very rare; either they are associated with some very r
 In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease--common variant hypothesis \cite[]{pritchard2002allelic}. This hypothesis further suggests that such diseases are likely caused by a large number of common variants, each contributing only a small risk and thereby evading negative evolutionary selection \cite[]{salari2012personalized}.
 Indeed, selection might be responsible for keeping genetic effect sizes low, since variants of larger effect may be selected against and eventually disappear \cite[]{pritchard2002allelic}.
 One common form of variation across human genomes is called a single nucleotide polymorphism (SNP). As indicated by the name, SNPs are single base changes in the DNA.
-Sequencing technologies now exists to genotype hundreds of thousands of SNPs at once for around \$50 only. Starting with the \cite{wellcome2007genome}, these new sequencing technologies had led to many genome-wide association studies.%, which we talk about in the next section. From these studies, it was found that effects of common variants that are associated with some disease are typically very small.
+Genotyping technologies now exists to genotype hundreds of thousands of SNPs at once for around \$50 only. Starting with the \cite{wellcome2007genome}, these new sequencing technologies had led to many genome-wide association studies.%, which we talk about in the next section. From these studies, it was found that effects of common variants that are associated with some disease are typically very small.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.7\textwidth]{rare-common.jpg}}
@@ -100,30 +100,32 @@ lines. Source: \cite{manolio2009finding}.}
 
 \cite{visscher201710} provide a thorough review of the aims and outcomes of GWAS.
 The method behind GWAS is simple: test each variant one by one for association with a phenotype of interest.
-For a continuous phenotype (e.g.\ height), linear regression is used and a t-test is performed on $\beta^{(j)}$ for each SNP $j$ where
+For a continuous phenotype (e.g.\ height), linear regression is used and, for each SNP $j$, a t-test is performed to look for an association between this SNP and the phenotype of interest ($\beta^{(j)} = 0$ vs $\beta^{(j)} \neq 0$), where
 \begin{equation}
-y = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K + \epsilon~,\label{eq:gwas1}
+y = \alpha_j + \beta_j G_{j} + \gamma_j^{(1)} COV^{(1)} + \cdots + \gamma_j^{(K)} COV^{(K)} + \epsilon~,\label{eq:gwas1}
 \end{equation}
-$COV_1$, ..., $COV_K$ are $K$ covariates, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed on $\beta^{(j)}$ for each SNP $j$ where
+$y$ is the continuous phenotype, $\alpha_j$ is the intercept, $G_{j}$ is SNP $j$ with effect $\beta_j$, $COV^{(1)}$, ..., $COV^{(K)}$ are $K$ covariates with effects $\gamma_j^{(1)}$, ..., $\gamma_j^{(K)}$, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed on $\beta^{(j)}$ for each SNP $j$ where
 \begin{equation}
-\log{\left(\frac{p}{1-p}\right)} = \alpha^{(j)} + \beta^{(j)} SNP^{(j)} + \gamma_1^{(j)} COV_1 + \cdots + \gamma_K^{(j)} COV_K~,\label{eq:gwas2}
+\log{\left(\frac{p}{1-p}\right)} = \alpha_j + \beta_j G_{j} + \gamma_j^{(1)} COV^{(1)} + \cdots + \gamma_j^{(K)} COV^{(K)}~,\label{eq:gwas2}
 \end{equation}
 $p = \mathbb{P}(Y = 1)$ and $Y$ denotes the binary phenotype.
+
 It is well established that principal components of genotype data should be included as covariates in GWAS to account for the confounding effect of population structure \cite[]{price2006principal}. Indeed, principal components of genotype data capture well population structure (as shown in figure \ref{fig:pca}). 
-To illustrate the importance of accounting for population structure, consider a dataset where there are 900 Finnish people and 100 Italian people. Because Finnish people are taller than Italian people, any SNP with a large difference in allele frequency between these two populations would be flagged as being associated with height, leading to many false positive associations. Thus, adding principal components as covariates aims at preventing those SNPs from being false positive reports.
+To illustrate the importance of accounting for population structure, consider a dataset where there are 900 Finnish people and 100 Italian people. Because Finnish people are on average taller than Italian people, any SNP with a large difference in allele frequency between these two populations would be flagged as being associated with height, leading to many false positive associations. Thus, adding principal components as covariates aims at preventing those SNPs from being false positive reports.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.6\textwidth]{celiac-pca.png}}
-\caption{First two Principal Components of individuals from four European populations. PC1 correlates with latitude while PC2 correlates longitude.}\label{fig:pca}
+\caption{First two Principal Components of individuals from four European populations. PC1 correlates with latitude while PC2 correlates longitude. Data come from a case-control study for celiac disease \cite[]{dubois2010multiple}.}\label{fig:pca}
 \end{figure}
 
 These simple tests can be used only if individuals are not related to one another. If they do, a common practice is to remove one individual from each pair of related individuals. Another strategy is to use Linear Mixed Models (LMM) to take into account both relatedness and population structure; these mixed models have also the potential to increase discovery power in association testing \cite[]{yang2014advantages}.
 
-To date, more than 10,000 strong associations have been reported between genetic variants and one or more complex traits \cite[]{welter2013nhgri}, where ``strong'' is defined as statistically significant at the genome-wide p-value threshold of $5 \cdot 10^{-8}$. This threshold corresponds to a type-I error of 5\%, Bonferroni-corrected for one million independent tests \cite[]{pe2008estimation}. Results of a GWAS are usually reported in a Manhattan plot (Figure \ref{fig:gwas}). This type of plot shows some association peaks (similar to skyscrapers in Manhattan) due to some local correlation between SNPs (Linkage Disequilibrium), with squared correlation roughly inversely proportional to distance between SNPs \cite[]{hudson2001two}.
+To date, more than 10,000 strong associations have been reported between genetic variants and one or more complex traits \cite[]{welter2013nhgri}, where ``strong'' is defined as statistically significant at the genome-wide p-value threshold of $5 \cdot 10^{-8}$. This threshold corresponds to a type-I error of 5\%, Bonferroni-corrected for one million independent tests \cite[]{pe2008estimation}. Results of a GWAS are usually reported in a Manhattan plot (Figure \ref{fig:gwas}). 
+Manhattan plots show some association peaks (similar to skyscrapers in Manhattan) due to some local correlation between SNPs (Linkage Disequilibrium), with squared correlation roughly inversely proportional to distance between SNPs \cite[]{hudson2001two}.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.95\textwidth]{gwas-height-20K.png}}
-\caption{Manhattan plot from a GWAS of height based on 20,000 unrelated individuals.}\label{fig:gwas}
+\caption{Manhattan plot from a GWAS of height based on 20,000 unrelated individuals from the UK Biobank dataset \cite[]{bycroft2017genome}.}\label{fig:gwas}
 \end{figure}
 
 
@@ -196,7 +198,7 @@ A polygenic risk score is finally defined as the sum of allele counts of the rem
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.95\textwidth]{GWAS2PRS3.png}}
-\caption{Illustration of C+T looking at a Manhattan plot from a GWAS of height based on 20,000 unrelated individuals. \textbf{\color{clumping}Clumping} removes nearby SNPs that are too correlated with one another because, due to Linkage Disequilibrium, indirect associations provides only redundant information (see figure \ref{fig:gwasLD}). \textbf{\color{thresholding}Thresholding} includes SNPs if they are significant enough in order to reduce noise in the polygenic score.}\label{fig:gwas2}
+\caption{Illustration of C+T looking at a Manhattan plot from a GWAS of height based on 20,000 unrelated individuals from the UK Biobank dataset \cite[]{bycroft2017genome}. \textbf{\color{clumping}Clumping} removes nearby SNPs that are too correlated with one another because indirect associations due to Linkage Disequilibrium provide only redundant information (see figure \ref{fig:gwasLD}). \textbf{\color{thresholding}Thresholding} includes SNPs if they are significant enough ($p_j < p_T$) in order to reduce noise in the polygenic score.}\label{fig:gwas2}
 \end{figure}
 
 \begin{figure}[htb]
@@ -233,12 +235,8 @@ First, GWAS aims at identifying highly replicable disease-associated variants by
 A common mistake is to report highly significant findings with large odds ratios as useful predictors of disease. 
 Thus, people have been reminded over the years that GWAS findings are often not predictive on their own even if they are highly associated with the disease of interest, and that we would need scores that combine many SNPs in order to have a decent predictor of disease, i.e.\ polygenic scores \cite[]{pepe2004limitations,janssens2006predictive,jakobsdottir2009interpretation,wald2019illusion}.
 
-Finally, it should be noted that population stratification, usually considered an unwelcome confounder in GWAS, may be useful in risk prediction and may be leveraged to produce better models \cite{golan2014effective,abraham2015genomic}.
-Indeed, for predictive purposes, the objective is to provide the best possible prediction and confounding is not an issue. However, it might become an issue when polygenic risk scores (PRS) capture population structure in addition to trait variation. For instance, correlation between a PRS and an outcome might be due to residual population structure instead of real genetic contribution to the outcome.
-[PAS TOTALEMENT CLAIR POUR MOI]
-[CITER LE NOUVEAU PAPIER ELIFE?]
-
-%[AJOUTER DES CHOSES DE ABRAHAM 2015??]
+Finally, it should be noted that population stratification, usually considered an unwelcome confounder in GWAS, may be useful in risk prediction and may be leveraged to produce better models \cite[]{golan2014effective,abraham2015genomic}.
+Indeed, for predictive purposes, the objective is to provide the best possible prediction and confounding is not an issue. However, it might become an issue when polygenic risk scores (PRS) capture population structure in addition to trait variation. For instance, correlation between a PRS and an outcome might be due to residual population structure instead of real genetic contribution to the outcome \cite[]{sohail2019polygenic}.
 
 
 \subsection{Polygenic prediction}
@@ -248,14 +246,14 @@ Indeed, for predictive purposes, the objective is to provide the best possible p
 The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only.
 For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors among a population \cite[]{visscher2008heritability}.
 Methods now enable the estimation of chip-heritability (also called SNP-heritability: $h^2_{SNP}$) using linear mixed models and residual maximum likelihood. For example, for a chip of 300K SNPs, it was shown that those SNPs could account for 45\% of the variance of height \cite[]{yang2010common}.
-Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants,visscher2006assumption}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability \cite[]{visscher2008heritability}. Authors of a recent preprint claim that they can recover full heritability for height and BMI using both rare and common variants \cite{wainschtein2019recovery}.
+Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants,visscher2006assumption}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability \cite[]{visscher2008heritability}. Authors of a recent preprint claim that they can recover the full heritability for height and BMI using both rare and common variants from NGS data \cite[]{wainschtein2019recovery}.
 
 So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
 The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of genetic prediction and my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
 
 The gap between predictions and heritabilities was really huge in the first years of GWAS.
 For example, first GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for prostate cancer, explaining a very small proportion of heritability for these diseases \cite[]{jakobsdottir2009interpretation}. 
-Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of the heritability of height \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of heritability \cite[]{wood2014defining}.
+Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of the heritability of height \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of the heritability of height \cite[]{wood2014defining}.
 Since most of the identified associated SNPs have an effect size close to the limit dictated by the power of the studies, a likely explanation, at least in part, is that there are many common polymorphisms with effects that are too small to pass the stringent significance threshold of current GWAS \cite[]{wray2008prediction}.
 Therefore, as results from multiple GWAS are combined to increase sample size, a larger fraction of the genetic variance is likely to be explained and accurate prediction of genetic risk to disease will become possible even though the risks conveyed by individual variants are small \cite[]{wray2008prediction,wray2018common}.
 These findings have also led people to use not only genome-wide significant SNPs, but many other SNPs, sometimes not even marginally significant (i.e.\ with a p-value > 5\%) in order to maximize predictive power \cite[]{purcell2009common,Dudbridge2013,wray2014research}.
