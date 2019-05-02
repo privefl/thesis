@@ -1,0 +1,87 @@
+%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english, 12pt]{article}
+\usepackage{times}
+%\usepackage{algorithm2e}
+\usepackage{url}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{setspace}
+\usepackage{lineno}
+\usepackage{hyperref}
+\usepackage{bbm}
+
+%\usepackage{xcolor,framed}
+%\colorlet{shadecolor}{blue!10}
+%\begin{shaded}blabla\end{shaded}
+
+\usepackage{pdfpages}
+
+%\usepackage{xr}
+%\externaldocument{PRS-supp}
+
+%\linenumbers
+%\doublespacing
+%\usepackage[authoryear]{natbib}
+\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
+
+%Pour les rajouts
+\usepackage{xcolor}
+
+\usepackage{dsfont}
+\usepackage[warn]{textcomp}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\let\tabbeg\tabular
+\let\tabend\endtabular
+\renewenvironment{tabular}{\begin{adjustbox}{max width=0.75\textwidth}\tabbeg}{\tabend\end{adjustbox}}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Bold symbol macro for standard LaTeX users
+%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+\definecolor{clumping}{HTML}{38761D}
+\definecolor{thresholding}{HTML}{1515FF}
+%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
+
+\usepackage{babel}
+\makeatother
+
+\begin{document}
+
+\section{Summary of the article}
+
+\subsection{Introduction}
+
+GWAS data has rapidly grown due to the reduction in geneotyping costs and the imputation of many non-genotyped SNPs. Thus in 2007, there were datasets with 2000 cases and 3000 controls, genotyped over 300K. Now, we have datasets of 500K individuals, genotyped over 800K SNPs, and imputed over 90M SNPs.
+Genotype data are the first data of the omics family to have grown that large. To analyze these datasets, software have been consistently procuded or updated in order to keep up with growing sizes. I think this is one rare field we some people have made their career over developing software that are now central to the community.
+[FOIREUX?]
+An obvious example in genetics is PLINK, a command line software whose first version has been cited aroung 17K times since 2007 and second version have already been cited more than 1500 times since 2015. This software is useful for file conversions as well as many types of analyses and is used in plant, animal and human genetics alike. 
+
+\subsection{Methods}
+
+\subsection{Results}
+
+\subsection{Discussion}
+
+\section{Article}
+
+The following article is published in \textit{Bioinformatics}	\footnote{\url{https://doi.org/10.1093/bioinformatics/bty185}}. Supplementary data are available at \textit{Bioinformatics} online.
+
+\includepdf[pages=-]{paper1.pdf}
+
+\end{document}

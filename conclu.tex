@@ -1,0 +1,101 @@
+%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english,12pt,a4paper,twoside]{report}
+\usepackage{times}
+%\usepackage{algorithm2e}
+\usepackage{url}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{geometry}
+%\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{setspace}
+\usepackage{lineno}
+\usepackage{hyperref}
+\usepackage{bbm}
+
+%\usepackage{xcolor,framed}
+%\colorlet{shadecolor}{blue!10}
+%\begin{shaded}blabla\end{shaded}
+
+%\usepackage{xr}
+%\externaldocument{PRS-supp}
+
+%\linenumbers
+%\doublespacing
+\onehalfspacing
+%\usepackage[authoryear]{natbib}
+\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
+
+
+%Pour les rajouts
+\usepackage{xcolor}
+
+\usepackage{dsfont}
+\usepackage[warn]{textcomp}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\let\tabbeg\tabular
+\let\tabend\endtabular
+\renewenvironment{tabular}{\begin{adjustbox}{max width=0.75\textwidth}\tabbeg}{\tabend\end{adjustbox}}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Bold symbol macro for standard LaTeX users
+%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+\definecolor{clumping}{HTML}{38761D}
+\definecolor{thresholding}{HTML}{1515FF}
+%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
+
+\usepackage{babel}
+\makeatother
+
+
+\begin{document}
+
+\section{Conclusion}
+
+\subsection{Problem of generalization}
+
+Polygenic Risk Scores (PRS) might become a central part in precision medecine. For now, predictive performance for most complex diseases are not good enough to be used in clinical settings. 
+Another main issue with PRS is their problem of generalization / transferability in different populations. 
+
+Indeed, most GWAS have included European people only (Figure \ref{fig:GWAS-ancestry}). In 2009, 96\% of individuals included in GWAS datasets were of European ancestry \cite[]{need2009next}. In 2016, still more than 80\% of those individuals were of European descent, with an increase of the inclusion of non-European participants, mostly constitued of Asian people \cite[]{popejoy2016genomics}. People from Hispanic or African ancestry are still poorly represented \cite[]{martin2019clinical}.
+This poor heterogeneity in inclusion can be explained by the fact that the more diverse are the population in the data we analyze, the more possible confounders there are to account for in order to avoid spurious bias in the results. 
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=0.6\textwidth]{GWAS-ancestry.jpg}}
+\caption{Proportion of GWAS participants by ancestry. Most GWAS include mainly European people, some include now Asian people, but other ethnicities are still poorly represented. Source: \cite{popejoy2016genomics}.}
+\label{fig:GWAS-ancestry}
+\end{figure}
+
+This lack of heterogeneity in inclusion of diverse populations has several problems. First,
+there are some SNP ascertainment bias because SNPs that are more common are more likely to be discovered in GWAS so that discoveries in European tend to have larger frequencies than in other populations, due to the winner's curse. If effects have a frequency that is different between populations, using these effects naturally introduces some shift in PRS distributions for different populations.
+Second, rare variants are missed in GWAS if they are specific to some population that is not included in the association study \cite[]{TODO}. Thus, this limit the predictive ability of PRS in different populations as the one(s) included in the GWAS.
+Third, it is accepted that genotyped SNPs, or even imputed SNPs, that are discovered in GWAS may not be the true functional SNPs (fSNP) having an effect on disease susceptibility. Instead, GWAS are assumed to discover SNPs that tag (tagSNP), i.e.\ are correlated with one fSNP. Yet, LD can be different between populations so that a tagSNP can be have a different correlation with the corresponding fSNP, or there can be different fSNP for different populations. Thus, effects of these SNPs can be different and are often diluted toward zero for populations not included in the GWAS \cite[]{carlson2013generalization}. 
+In conclusion, for many reasons, magnitude and frequency of effects can vary considerably between populations, and these differences are larger when populations are more genetically distant such as African population with either European or Asian populations. [TODO: FIGURE]
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=0.6\textwidth]{pred-pops.jpg}}
+\caption{[TODO]. Source: \cite{martin2017human}.}
+\label{fig:dist-shift}
+\end{figure}
+
+
+\newpage
+
+\bibliographystyle{natbib}
+\bibliography{refs}
+
+\end{document}

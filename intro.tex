@@ -1,6 +1,6 @@
 %% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[english, 12pt]{report}
+\documentclass[english,12pt,a4paper,twoside]{report}
 \usepackage{times}
 %\usepackage{algorithm2e}
 \usepackage{url}
@@ -8,7 +8,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
 \usepackage{geometry}
-\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+%\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
 \usepackage{rotating}
 \usepackage{graphicx}
 \usepackage{amsmath, amsthm, amssymb}
@@ -21,14 +21,15 @@
 %\colorlet{shadecolor}{blue!10}
 %\begin{shaded}blabla\end{shaded}
 
-
 %\usepackage{xr}
 %\externaldocument{PRS-supp}
 
-\linenumbers
-\doublespacing
+%\linenumbers
+%\doublespacing
+\onehalfspacing
 %\usepackage[authoryear]{natbib}
 \usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
+
 
 %Pour les rajouts
 \usepackage{xcolor}
@@ -190,7 +191,7 @@ Under the C+T model, a coefficient of regression is learned independently for ea
 The SNPs are first clumped (C) so that there remains only SNPs that are weakly correlated with each other ($S_\text{clumping}$). Clumping looks at the most significant SNP first, computes correlation between this index SNP and nearby SNPs (within a genetic distance of e.g.\ 500kb) and remove all the nearby SNPs that are correlated with this index SNP beyond a particular threshold (e.g.\ $r^2 = 0.2$, \cite{wray2014research}). 
 The clumping step aims at removing redundancy in included effects that is simply due to linkage disequilibrium (LD) between variants (see figures \ref{fig:gwas2} and \ref{fig:gwasLD}). Yet, this procedure may as well remove independently predictive variants in nearby regions.
 
-Thresholding (T) consists in removing SNPs that are under a chosen level of significance (a p-value threshold $p_T$) in order to restrict noise in the score.
+Thresholding (T) consists in removing SNPs that are under a chosen level of significance (a p-value threshold $p_T$) in order to reduce noise in the score.
 In figure \ref{fig:gwas2}, using no threshold corresponds to ``C+T-all''; using the genome-wide threshold of $5 \cdot 10^{-8}$ corresponds to ``C+T-stringent''; generally, many values are tested to choose an ``optimal'' value for this parameter. 
 
 A polygenic risk score is finally defined as the sum of allele counts of the remaining SNPs (after clumping and thresholding) weighted by the corresponding GWAS effect sizes \cite[]{purcell2009common,Dudbridge2013,wray2014research,Euesden2015},
@@ -265,7 +266,13 @@ Several methods have been developed to predict disease status based on SNP infor
 We can divide these methods in two categories: the ones that use summary statistics and the ones that use individual-level data only.
 
 When summary statistics are available, the most widely used method is called ``Clumping + Thresholding'' (C+T), which has been described in section \ref{sec:C+T}.
-More recently, researchers have focused their efforts on implementing more elegant and optimal ways to account for LD, as a replacement of clumping that simply discards SNPs \cite[]{vilhjalmsson2015modeling,mak2017polygenic,chun2019non,ge2019polygenic}. Moreover, these methods handle weights differently than C+T that directly uses GWAS effect sizes as weights in the PRS, or weights of 0 for SNPs not passing the thresholding step. Instead, these methods usually shrink effects towards 0. 
+More recently, researchers have focused their efforts on implementing more elegant and potentially more optimal ways to account for LD, as a replacement of clumping that simply discards SNPs \cite[]{vilhjalmsson2015modeling,mak2017polygenic,chun2019non,ge2019polygenic}. 
+Take the solution of a linear regression $y = X \beta + \epsilon$, $\hat{\beta} = \left(X^T X\right)^{-1} X^T y$. This vector of effect sizes $\hat{\beta}$, estimated from all variables at once, can be decomposed in two parts: $X^T y$ that represents the marginal effects, i.e.\ the effects of each variable when learned independently; and $\left(X^T X\right)^{-1}$, some rotation of the effects that account for the correlation between variables.
+Then, the first element can be replaced by summary statistics and the second element can be replaced by an estimation of the LD structure of the SNPs, e.g.\ from a reference panel. 
+In practice, [$X^T y$ is estimated by TODO] and $\left(X^T X\right)^{-1}$ is computed by window. [TODO: parler de bayesian or lasso]
+
+
+Moreover, these methods handle weights differently than C+T that directly uses GWAS effect sizes as weights in the PRS, or weights of 0 for SNPs not passing the thresholding step. Instead, these methods usually shrink effects towards 0. 
 Apart from the method of \cite{mak2017polygenic}, the other methods do not perform variable selection at all. This means that if you use GWAS summary statistics for 10M variants as input, you would get a predictive model composed of 10M variables \cite[]{janssens2019polygenic}.
 
 When using individual-level data only, the problem boils down to a standard classification problem. Thus, some statistical learning methods have been used to derive PRS for complex human diseases by jointly estimating SNP effects. Such methods include joint logistic regression, Support Vector Machine (SVM) and random forests \cite[]{wei2009disease,abraham2012sparsnp,abraham2014accurate,botta2014exploiting,okser2014regularized}.
