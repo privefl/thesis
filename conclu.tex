@@ -69,29 +69,40 @@
 \subsection{Problem of generalization}
 
 Polygenic Risk Scores (PRS) might become a central part in precision medecine. For now, predictive performance for most complex diseases are not good enough to be used in clinical settings. 
-Another main issue with PRS is their problem of generalization / transferability in different populations. 
-
+A major concern with PRS at the moment is their problem of generalization / transferability in different populations. 
 Indeed, most GWAS have included European people only (Figure \ref{fig:GWAS-ancestry}). In 2009, 96\% of individuals included in GWAS datasets were of European ancestry \cite[]{need2009next}. In 2016, still more than 80\% of those individuals were of European descent, with an increase of the inclusion of non-European participants, mostly constitued of Asian people \cite[]{popejoy2016genomics}. People from Hispanic or African ancestry are still poorly represented \cite[]{martin2019clinical}.
-This poor heterogeneity in inclusion can be explained by the fact that the more diverse are the population in the data we analyze, the more possible confounders there are to account for in order to avoid spurious bias in the results. 
+This poor heterogeneity in inclusion can be explained by the fact that the more diverse are the population in the data we analyze, the more possible confounders there are to account for in order to avoid spurious results. 
 
-\begin{figure}[htb]
+\begin{figure}[htpb]
 \centerline{\includegraphics[width=0.6\textwidth]{GWAS-ancestry.jpg}}
-\caption{Proportion of GWAS participants by ancestry. Most GWAS include mainly European people, some include now Asian people, but other ethnicities are still poorly represented. Source: \cite{popejoy2016genomics}.}
+\caption{Proportion of GWAS participants by ancestry. Most GWAS include mainly European people, some now include Asian people, but other ethnicities are still poorly represented. Source: \cite{popejoy2016genomics}.}
 \label{fig:GWAS-ancestry}
 \end{figure}
 
 This lack of heterogeneity in inclusion of diverse populations has several problems. First,
 there are some SNP ascertainment bias because SNPs that are more common are more likely to be discovered in GWAS so that discoveries in European tend to have larger frequencies than in other populations, due to the winner's curse. If effects have a frequency that is different between populations, using these effects naturally introduces some shift in PRS distributions for different populations.
-Second, rare variants are missed in GWAS if they are specific to some population that is not included in the association study \cite[]{TODO}. Thus, this limit the predictive ability of PRS in different populations as the one(s) included in the GWAS.
-Third, it is accepted that genotyped SNPs, or even imputed SNPs, that are discovered in GWAS may not be the true functional SNPs (fSNP) having an effect on disease susceptibility. Instead, GWAS are assumed to discover SNPs that tag (tagSNP), i.e.\ are correlated with one fSNP. Yet, LD can be different between populations so that a tagSNP can be have a different correlation with the corresponding fSNP, or there can be different fSNP for different populations. Thus, effects of these SNPs can be different and are often diluted toward zero for populations not included in the GWAS \cite[]{carlson2013generalization}. 
-In conclusion, for many reasons, magnitude and frequency of effects can vary considerably between populations, and these differences are larger when populations are more genetically distant such as African population with either European or Asian populations. [TODO: FIGURE]
+Second, rare variants are missed in GWAS if they are specific to some population that is not included in the association study \cite[]{martin2019clinical}. Thus, this limit the predictive ability of PRS in different populations to the one(s) included in the GWAS.
+Third, it is accepted that genotyped SNPs, or even imputed SNPs, that are discovered in GWAS may not be the true functional SNPs (fSNPs) having an effect on disease susceptibility. Instead, GWAS are assumed to discover SNPs that tag fSNPs (tagSNPs), i.e.\ are correlated with fSNPs. Yet, LD can be different between populations so that a tagSNP can have a different correlation with the corresponding fSNP, or there can be different fSNPs for different populations. Thus, effects of these SNPs can be different and are often diluted toward zero for populations not included in the GWAS \cite[]{carlson2013generalization}. 
+In conclusion, for many reasons, magnitude and frequency of effects can vary considerably between populations, and these differences are larger when populations are more genetically distant such as African population with either European or Asian populations.
+These differences in prediction between populations are two-fold (Figures \ref{fig:dist-shift} and \ref{fig:pop-pred}): distributions of PRS are shifted and prediction within each distribution is also reduced \cite[]{vilhjalmsson2015modeling,martin2019clinical}.
 
-\begin{figure}[htb]
+\begin{figure}[htpb]
 \centerline{\includegraphics[width=0.6\textwidth]{pred-pops.jpg}}
-\caption{[TODO]. Source: \cite{martin2017human}.}
+\caption{Distributions of Polygenic Risk Scores (PRS) for many populations and phenotypes (T2D: Type 2 Diabetes). Source: \cite{martin2017human}.}
 \label{fig:dist-shift}
 \end{figure}
 
+\begin{figure}[htpb]
+\centerline{\includegraphics[width=0.7\textwidth]{pop-pred-reduced.png}}
+\caption{Prediction accuracy relative to European-ancestry individuals across 17 quantitative traits and 5 continental populations in the UK Biobank data \cite[]{bycroft2017genome}. Source: \cite{martin2019clinical}.}
+\label{fig:pop-pred}
+\end{figure}
+
+
+Several solutions have been proposed to partially correct for the differences of prediction between populations. First, \cite{martin2017human} proposed to mean-center PRS for each population, yet this would require an accurate way to define appartenance of population and would not work for admixed people, e.g.\ one person with an African father and an European mother \cite[]{reisberg2017comparing}.
+Second, it has been suggested to include more diverse population in GWAS \cite[]{pulit2010multiethnic}. Indeed, new associations can be found if the frequency is higher in an under-represented population. 
+It would be also possible to fine-map fSNPs in common for multiple populations so that their effects generalize better to any population, irrespective of LD \cite[]{carlson2013generalization,wojcik2018page}.
+Finally, statistical methods are starting to emerge in order to use large European GWAS in conjunction with smaller data from another population in order to leverage both the discoveries from the large dataset and the specificities of the smaller dataset \cite[]{marquez2017multiethnic,coram2017leveraging}.
 
 \newpage
 
