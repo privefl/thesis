@@ -26,8 +26,8 @@
 %\usepackage{xr}
 %\externaldocument{PRS-supp}
 
-%\linenumbers
-%\doublespacing
+\linenumbers
+\onehalfspacing
 %\usepackage[authoryear]{natbib}
 \usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
 
@@ -67,12 +67,27 @@
 
 \subsection{Introduction}
 
-GWAS data has rapidly grown due to the reduction in geneotyping costs and the imputation of many non-genotyped SNPs. Thus in 2007, there were datasets with 2000 cases and 3000 controls, genotyped over 300K. Now, we have datasets of 500K individuals, genotyped over 800K SNPs, and imputed over 90M SNPs.
-Genotype data are the first data of the omics family to have grown that large. To analyze these datasets, software have been consistently procuded or updated in order to keep up with growing sizes. I think this is one rare field we some people have made their career over developing software that are now central to the community.
-[FOIREUX?]
-An obvious example in genetics is PLINK, a command line software whose first version has been cited aroung 17K times since 2007 and second version have already been cited more than 1500 times since 2015. This software is useful for file conversions as well as many types of analyses and is used in plant, animal and human genetics alike. 
+GWAS data has rapidly grown due to the reduction in genotyping costs and the imputation of many non-genotyped SNPs. Thus in 2007, there were datasets with 2000 cases and 3000 controls, genotyped over 300K. Now, we have datasets of 500K individuals, genotyped over 800K SNPs, and imputed over 90M SNPs.
+Genotype data are the first data of the omics family to have grown to such large data. To analyze these datasets, software have been consistently procuded or updated over the years in order to keep up with growing sizes. 
+I think this is one rare field where producing software is really recognized as an important part of research to help advance the field.
+An obvious example in genetics is PLINK, a command line software whose first version has been cited more than 17K times since 2007 and second version have already been cited more than 1500 times since 2015 \cite[]{purcell2007plink,chang2015second}. This software is useful for file conversions as well as many types of analyses and is used in plant, animal and human genetics alike.
+I wanted to use R to analyze data from this field as it provides excellent tools for exploratory analyses. Yet, most of the R packages that have been developed in Human Genetics are now obsolete because they cannot scale to the size of the data we currently have in the field.
+The first problem there is to solve is to actually store the data. For example, a standard R matrix of size 500K x 800K would require 3TB of RAM just to access it in memory.
+The second problem is the computation time; if all functions provided by a package take two weeks to run, it is not really useful.
 
 \subsection{Methods}
+
+We developed two R packages called bigstatsr and bigsnpr. 
+To solve the memory issue, we use a data format stored as a binary file on disk but that can be accessed almost as if it were a standard R matrix. 
+To provide functions with a reasonable computation time, I spent thousands of hours on the performance of code. Moreover, most of the functions provided in these packages are parallelized, which is facilatited by the fact that the data is stored on disk, so accessible by each process without the need of any copying.
+The R packages makes extensive uses of some C++ code in order to fully optimized key parts of the algorithms.
+
+Specifically, package bigstatsr provides the data format and some standard statistical algorithms like Principal Component Analysis (PCA), multiple association testing, matrix products, etc. This package can be used is not specific to genetic data and can be used by other fields of Research.
+Package bigsnpr builds on top of package bigstatsr and provides algorithms specific to GWAS data.
+To save some disk space and make accesses faster, we store genotype matrices using only  
+byte per element, instead of eight bytes per element for a standard R matrix. With a special format, we are able to store both hard calls (0s, 1s, 2s and NAs) and dosages (expected values from imputation probabilities, $d = 0 \times \mathbb{P}(0) + 1 \times \mathbb{P}(1) + 2 \times \mathbb{P}(2)$).
+
+We also develop two new algorithms by building on existing R packages.
 
 \subsection{Results}
 
@@ -83,5 +98,10 @@ An obvious example in genetics is PLINK, a command line software whose first ver
 The following article is published in \textit{Bioinformatics}	\footnote{\url{https://doi.org/10.1093/bioinformatics/bty185}}. Supplementary data are available at \textit{Bioinformatics} online.
 
 \includepdf[pages=-]{paper1.pdf}
+
+\newpage
+
+\bibliographystyle{natbib}
+\bibliography{refs}
 
 \end{document}
