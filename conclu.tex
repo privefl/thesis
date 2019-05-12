@@ -105,7 +105,7 @@ It would be also possible to fine-map fSNPs in common for multiple populations s
 Finally, statistical methods are starting to emerge in order to use large European GWAS in conjunction with smaller data from another population in order to leverage both the discoveries from the large dataset and the specificities of the smaller dataset \cite[]{marquez2017multiethnic,coram2017leveraging}.
 
 
-\subsection{Looking for missing heritability}
+\subsection{Looking for missing heritability in rare variants}
 
 Missing heritability, i.e.\ the gap between heritability estimations from current GWAS studies and from family studies, could reside in rare variants.
 Indeed, for height and colorectal cancer, it has been shown that estimations of heritability from GWAS data could recover almost all heritability when a large proportion of low-frequency variants was present in the data \cite[]{yang2015genetic,huyghe2019discovery,wainschtein2019recovery}.
@@ -114,8 +114,14 @@ For example, a GWAS of height including more than 700K individuals found 83 asso
 In other large studies, one for coronary artery disease and one for type 2 diabetes, there was little evidence of low-frequency variants with large effects \cite[]{nikpay2015comprehensive,fuchsberger2016genetic}.
 
 Associations of rare variants with traits are difficult to find for two reasons. 
-First, it is very difficult to impute low-frequency variants with a good quality if using for example a small reference panel such as the 1000 genomes \cite[]{nikpay2015comprehensive}. There is now a reference panel of 32,000 individuals that is used to accurately impute variants with allele frequencies as low as 0.1\%. 
-[TODO: finish]
+First, it is very difficult to impute low-frequency variants with a good quality if using for example a small reference panel such as the 1000 genomes \cite[]{nikpay2015comprehensive}. There is now a reference panel of 32,000 individuals that is used to accurately impute variants with allele frequencies as low as 0.1\% \cite[]{mccarthy2016reference}. 
+This large reference panel is European specific, which means that imputing data from other ancestries is more difficult. This is a problem because, one way to discover and accurately estimate the effect of a rare variant is to find it in a population in which its allele frequency is larger. 
+Indeed, the power of association studies is dependent on the variance explained by a locus; for example, for a disease that affects 1\% of the population, we have the same power to detect a risk locus of 50\% frequency and odds ratio of 1.1 as we do for a risk locus of 0.1\% frequency and odds ratio of 2.9 \cite{wray2018common}.
+
+The second reason is that sequencing technologies are more expensive than genotypying and imputation. Currently, studies have mostly focused on whole exome sequencing (WES) because it is cheaper than whole genome sequencing (WGS). The exome is also where the effect sizes of variants are expected to be larger and where discoveries are likely to be more immediately actionable \cite[]{zuk2014searching}. Yet, sample sizes of sequencing studies remain small and special considerations and challenges arise when testing rare frequency variants from these studies \cite[]{auer2015rare}.
+Thus, sample size is the limiting factor in variant discovery, not genotyping technology \cite{wray2018common}. 
+It is probably the limiting factor in prediction too.
+[TODO: moreover, too much M formula]
 
 
 \newpage
