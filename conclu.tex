@@ -66,6 +66,8 @@
 
 \section{Conclusion and Discussion}
 
+\subsection{Summary of my work}
+
 \subsection{Problem of generalization}
 
 Polygenic Risk Scores (PRS) might become a central part in precision medicine. For now, predictive performance for most complex diseases are not good enough to be used in clinical settings. 
@@ -121,7 +123,25 @@ Indeed, the power of association studies is dependent on the variance explained 
 The second reason is that sequencing technologies are more expensive than genotypying and imputation. Currently, studies have mostly focused on whole exome sequencing (WES) because it is cheaper than whole genome sequencing (WGS). The exome is also where the effect sizes of variants are expected to be larger and where discoveries are likely to be more immediately actionable \cite[]{zuk2014searching}. Yet, sample sizes of sequencing studies remain small and special considerations and challenges arise when testing rare frequency variants from these studies \cite[]{auer2015rare}.
 Thus, sample size is the limiting factor in variant discovery, not genotyping technology \cite{wray2018common}. 
 It is probably the limiting factor in prediction too.
-[TODO: moreover, too much M formula]
+
+\subsection{Looking for missing heritability in non-additive effects}
+
+Knowledge about biological pathways and gene networks implies that epistasis (gene interactions) might be important to consider \cite{hill2008data}. 
+More than explaining missing heritability, genetic interactions could also create phantom heritability, i.e.\ could make current estimation of heritability upward biased \cite[]{zuk2012mystery}.
+There have been some findings of interaction between loci, but mainly for autoimmune diseases where there are strong effects around genes of chromosome 6 \cite[]{lenz2015widespread,goudey2017interactions}.
+Yet, these interaction effects explain little to phenotypic variance as compared to additive effects \cite[]{lenz2015widespread}.
+In general, data and theory point to mainly additive genetic variance \cite{hill2008data}.
+
+Moreover, interactions are challenging to find for two reasons, and dedicated methods to epistasis detection have been implemented \cite[]{niel2015survey}. First, it is analytically impractical to search for such interaction effects because it would require testing more than 100 billion pairs of variants, even for a small genotyping array. Second, because of this huge number of tests, correction for multiple testing allows the detection of highly significant interactions only.
+
+Finally, even if we find such interaction effects, they are unlikely to dramatically improve risk prediction for complex diseases, but could still provide insights into their ethiology \cite[]{aschard2012inclusion}. 
+Moreover, due to differences in effect sizes and LD between populations, epistatic effects are even more unlikely than additive effects to replicate to different populations  \cite{hill2008data}.
+
+\subsection{Other omics data}
+
+\subsection{Towards clinical utility}
+
+\subsection{Future work}
 
 
 \newpage
