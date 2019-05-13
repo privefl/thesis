@@ -26,7 +26,7 @@
 %\usepackage{xr}
 %\externaldocument{PRS-supp}
 
-\linenumbers
+%\linenumbers
 \onehalfspacing
 %\usepackage[authoryear]{natbib}
 \usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
@@ -67,7 +67,7 @@
 
 \subsection{Introduction}
 
-GWAS data has rapidly grown due to the reduction in genotyping costs and the imputation of many non-genotyped SNPs. In 2007, there were datasets with 2000 cases and 3000 controls, genotyped over 300K SNPs. Now, we have datasets of 500K individuals, genotyped over 800K SNPs, and imputed over 90M SNPs.
+Sample size of GWAS data has rapidly grown due to the reduction in genotyping costs over the years. Moreover, thanks to the imputation of many non-genotyped SNPs, the number of available SNPs for a given dataset has grown to millions. In 2007, there were datasets with 2000 cases and 3000 controls, genotyped over 300K SNPs \cite[]{wellcome2007genome}. Now, there are datasets of 500K individuals, genotyped over 800K SNPs, and imputed over 90M SNPs \cite[]{bycroft2017genome}.
 Genotype data are the first data of the omics family to have grown to such large scale. To analyze these datasets, software have been consistently produced or updated over the years in order to keep up with growing sizes. 
 I think this is one rare field where producing software is really recognized as an important part of research to help advance the field.
 An obvious example in genetics is PLINK, a command line software whose first version has been cited more than 17K times since 2007 and whose second version has already been cited more than 1500 times since 2015 \cite[]{purcell2007plink,chang2015second}. This software is useful for file conversions as well as many types of analyses and is used in plant, animal and human genetics alike.
@@ -96,7 +96,8 @@ byte per element, instead of eight bytes per element for a standard R matrix. Wi
 We also developed two new algorithms by building on existing R packages.
 One algorithm is used for the imputation of missing values inside a genotype matrix. Generally, there are less than 1\% of missing data in a genotype matrix, and current algorithms for filling these blanks relies on complex inference algorithms. 
 Notably, these algorithms rely on a first step of phasing, which consists in inferring haplotypes from genotypes. Phasing is very computationally demanding, so that we propose an algorithm based on XGBoost, an efficient algorithm for building decision trees using extreme gradient boosting, which allows for reconstructing data for one SNP based on non-linear combinations of nearby SNPs.
-Another algorithm relies on pcadapt, an algorithm that find outlier loadings in PCA \cite[]{luu2017pcadapt}. We use this algorithm to infer consecutive loadings that capture the structure of long-range LD regions instead of capturing population structure when performing PCA on SNP data.
+The other algorithm infer consecutive loadings that capture the structure of long-range LD regions instead of capturing population structure when performing PCA on SNP data.
+This new algorithm relies on pcadapt, an algorithm that find outlier loadings in PCA \cite[]{luu2017pcadapt}. 
 
 \subsection{Results}
 
@@ -116,10 +117,11 @@ the vast and diverse R packages.
 \bibliographystyle{natbib}
 \bibliography{refs}
 
-\section{Article}
+\section{Article and supplementary data}
 
-The following article is published in \textit{Bioinformatics}	\footnote{\url{https://doi.org/10.1093/bioinformatics/bty185}}. Supplementary data are available at \textit{Bioinformatics} online.
+The following article is published in \textit{Bioinformatics}	\footnote{\url{https://doi.org/10.1093/bioinformatics/bty185}}.
 
 \includepdf[pages=-]{paper1.pdf}
+\includepdf[pages=-]{paper1-supp.pdf}
 
 \end{document}
