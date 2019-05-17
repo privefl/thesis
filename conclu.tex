@@ -1,6 +1,6 @@
 %% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[english,12pt,a4paper,twoside]{report}
+\documentclass[english,12pt,a4paper,twoside]{article}
 \usepackage{times}
 %\usepackage{algorithm2e}
 \usepackage{url}
@@ -137,11 +137,35 @@ Moreover, interactions are challenging to find for two reasons, and dedicated me
 Finally, even if we find such interaction effects, they are unlikely to dramatically improve risk prediction for complex diseases, but could still provide insights into their ethiology \cite[]{aschard2012inclusion}. 
 Moreover, due to differences in effect sizes and LD between populations, epistatic effects are even more unlikely than additive effects to replicate to different populations  \cite{hill2008data}.
 
-\subsection{Other omics data}
+\subsection{Integration of multiple data sources}
 
-\subsection{Towards clinical utility}
+[TODO: FINISH/MODIFY]
+
+There are many genetic data out there. Some large individual-level data such as the UK biobank are available \cite[]{bycroft2017genome}. When GWAS data is not publicly available, summary statistics are often publicly shared instead. 
+Usually, predictive models are based on either individual-level data (e.g.\ penalized regression) or summary statistics (e.g.\ C+T).
+Building models that combine both individual-level data and summary statistics, possibly including different populations, is necessary to increase predictive power.
+We started to do this by implementing the SCT method in our latest paper, where we combine several summary statistics based predictors using large individual-level data.
+Alike with the adaptive lasso \cite[]{zou2006adaptive}, one could also think of penalizing SNPs differently in individual-level data methods, applying a penalization factor to each SNP based on their significance in external summary statistics.
+
+Human diseases are inherently complex and governed by the complicated interplay of several underlying factors \cite[]{dey2013integration}.
+For a trait or a disease, prediction based on genetic data only is ultimately capped by heritability.
+Therefore, prediction must integrate other types of data if we want to predict beyond the limit of heritability (Figure \ref{fig:data-layers}).
+Yet, integrating variables with different formats, types, structure, dimensionality and missing values is a challenging problem \cite[]{dey2013integration}.
+One could integration genetic data with clinical data. For example, \cite{inouye2018genomic} designed a polygenic risk score (PRS) with higher discrimitative ability for coronary artery disease than any of 6 conventional risk factors (smoking, diabetes, hypertension, body mass index, high cholesterol and family history).
+Using this PRS with all 6 conventional risk factors increases discriminative ability as compared to using the PRS only or the 6 factors only.
+Electronic health records (EHR) make possible to integrate large biobank datasets with large clinical, environmental and phenotypic information \cite[]{roden2016integrating}.
+%Three different approaches for data integration are presented in figure \ref{fig:int-data} \cite[]{dey2013integration,zitnik2019machine}.
+
+\begin{figure}[htpb]
+\centerline{\includegraphics[width=0.7\textwidth]{data-layers}}
+\caption{Geographic information system of a human being. The different layers of data available for an individual. Source: \cite{topol2014individualized}.}
+\label{fig:data-layers}
+\end{figure}
+
 
 \subsection{Future work}
+
+I will probably continue to work in the field of Predictive Human Genetics. I am currently visiting the National Center for Register-based Research (NCRR) in Aarhus, Denmark. Researchers there are mostly epidemiologists using some national registers where they have information on all Danes over decades. Most of their work is funded to look at psychiatric disorders and they are now interested in how genetics influence psychiatric conditions. It is a good opportunity to work on a large national biobank dataset with Bjarni Vilhj\'almsson.
 
 
 \newpage
