@@ -68,6 +68,35 @@
 
 \subsection{Summary of my work}
 
+The first part of my work has consisted in developing tools to easily analize genotype matrices.
+I was frustrated that there were different software using different input formats so that they were difficult to use in concordance in the same analysis.
+I mean, these software are of tremendous utility for the research community because they efficiently implement some of the validated analyses that are done in Genetics.
+Yet, if you want to some exploratory analysis, looking at new ideas, modifying the code a little, it is practically impossible to do so.
+I understood that I would need some kind of standard matrix format if I wanted to use simple code for explanatory analyses and to develop new ideas.
+So, I started to develop R package bigsnpr. There is no better way for understanding methods than to implement them. At some point, I realized that lots of methods I was using and reimplementing for the on-disk matrix format was just some standard statistical tools that would be useful for other fields. So, I put all these functions (PCA, multiple association tests, numerical summaries, matrix products, etc.) in another R package called bigstatsr that can be used by other people outside the field of Genetics. Hopefully, this package will become useful for many people as data are getting larger in other fields too. 
+I have spent a lot of time documenting, testing and optimizing the code in these two R packages. 
+For example, you can now do an association analysis for a continuous outcome in no time thanks to the use of some linear algebra tricks (see the Appendix).
+I have also spent some time exploring some data and found for example that standard software for computing PCA sometimes are not accurate enough. Moreover, I have found that one should be extra careful about the SNPs that are used in PCA if they do not want to get something else than population structure, such as LD structure\footnote{\url{https://privefl.github.io/bigsnpr/articles/how-to-PCA.html}}; I developed the ``autoSVD'' to detect those SNPs automatically and remove them.
+
+In a second time, I developed some efficient implementation of penalized (linear and logistic) regressions. 
+Two efficient implementations were already available for these models, but those implementations did not scale well with the very large datasets we have in the field. For example, they could not be used to analyze the UK Biobank genotyped data of 500K individuals and 800K SNPs. 
+It is now possible to do so with the implementation we provide in package bigstatsr. 
+The difference in computation time reside mainly in the use of some early stopping criterion in our implementation. We also provide a way to choose the two hyper-parameters of the elastic net regularization so that the user does not have to choose them arbitrarily or by implementing a cross-validation framework themself.
+We extensively compare the predictive performance of our implementation of penalized regressions with standard methods such as C+T, where SNP effects are learned independently before being combined using heuristics.
+We show that for large sample sizes, penalized regressions are able to capture very small effects and that prediction is improved as compared to C+T.
+For example, we are able to predict 43\% of the variance in height, which represents almost all heritability of height that can be captured by standard genotyping chips.  
+
+In a third time, we focused on developing a predictive method that uses summary statistics. We first derived the widely used C+T method for many hyper-parameters, using an efficient implementation. 
+We showed that choosing over a wider range of hyper-parameter values could substantially improve predictive performance of C+T.
+We then proposed to stack all those C+T predictors instead of choosing the best one. Stacking corresponds to finding an optimal combination of different predictors in order to get higher predictive performance than any single of these predictors. 
+We called this method SCT, which stands for Stacked Clumping and Thresholding.
+We showed that when using external summary statistics and the UK Biobank data, we could substantially improve prediction over any C+T model.
+
+Thus, overall we developed tools to analyze large matrices, especially genotype matrices, possibly in dosage format.
+We then proposed two methods for building polygenic predictive models, one based on individual-level data (that could use summary statistics to prioritize SNPs in the model), and one based on large summary statistics and individual-level data.
+Those methods provide ones of the currently best predictive performance for many diseases and traits.   
+
+
 \subsection{Problem of generalization}
 
 Polygenic Risk Scores (PRS) might become a central part in precision medicine. For now, predictive performance for most complex diseases are not good enough to be used in clinical settings. 
@@ -139,8 +168,6 @@ Moreover, due to differences in effect sizes and LD between populations, epistat
 
 \subsection{Integration of multiple data sources}
 
-[TODO: FINISH/MODIFY]
-
 There are many genetic data out there. Some large individual-level data such as the UK biobank are available \cite[]{bycroft2017genome}. When GWAS data is not publicly available, summary statistics are often publicly shared instead. 
 Usually, predictive models are based on either individual-level data (e.g.\ penalized regression) or summary statistics (e.g.\ C+T).
 Building models that combine both individual-level data and summary statistics, possibly including different populations, is necessary to increase predictive power.
@@ -150,6 +177,7 @@ Alike with the adaptive lasso \cite[]{zou2006adaptive}, one could also think of 
 Human diseases are inherently complex and governed by the complicated interplay of several underlying factors \cite[]{dey2013integration}.
 For a trait or a disease, prediction based on genetic data only is ultimately capped by heritability.
 Therefore, prediction must integrate other types of data if we want to predict beyond the limit of heritability (Figure \ref{fig:data-layers}).
+For example, DNA methylation data can accurately predict age of any tissue across the entire life course \cite[]{horvath2013dna,horvath2018dna}, gene expression profiles enable to gain a broad picture of the genomic response to environmental perturbation \cite[]{gibson2008environmental} and microbiota can also be an important ``environmental'' factor to take into account \cite[]{backhed2004gut}. 
 Yet, integrating variables with different formats, types, structure, dimensionality and missing values is a challenging problem \cite[]{dey2013integration}.
 One could integration genetic data with clinical data. For example, \cite{inouye2018genomic} designed a polygenic risk score (PRS) with higher discrimitative ability for coronary artery disease than any of 6 conventional risk factors (smoking, diabetes, hypertension, body mass index, high cholesterol and family history).
 Using this PRS with all 6 conventional risk factors increases discriminative ability as compared to using the PRS only or the 6 factors only.
@@ -167,6 +195,10 @@ Electronic health records (EHR) make possible to integrate large biobank dataset
 
 I will probably continue to work in the field of Predictive Human Genetics. I am currently visiting the National Center for Register-based Research (NCRR) in Aarhus, Denmark. Researchers there are mostly epidemiologists using some national registers where they have information on all Danes over decades. Most of their work is funded to look at psychiatric disorders and they are now interested in how genetics influence psychiatric conditions. It is a good opportunity to work on a large national biobank dataset with Bjarni Vilhj\'almsson.
 
+I would be interested in looking at many things. First, I think investigating which methods works best in which scenario is of great interest for the field. 
+Many scenario could involve different sample sizes of summary statistics and individual-level data, but also training and prediction in different populations.
+Such work could be useful to make some guidelines on which method to use in which situation. For example, individual-level data methods work best when large individual-level data are available, but what about predicting in a different population where only smaller datasets are available?
+It would be great also to investigate how we can integrate many sources of information, such as functional annotations.
 
 \newpage
 
