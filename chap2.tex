@@ -1,0 +1,103 @@
+%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english, 12pt]{article}
+\usepackage{times}
+%\usepackage{algorithm2e}
+\usepackage{url}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{setspace}
+\usepackage{lineno}
+\usepackage{hyperref}
+\usepackage{bbm}
+
+%\usepackage{xcolor,framed}
+%\colorlet{shadecolor}{blue!10}
+%\begin{shaded}blabla\end{shaded}
+
+\usepackage{pdfpages}
+
+%\usepackage{xr}
+%\externaldocument{PRS-supp}
+
+%\linenumbers
+\onehalfspacing
+%\usepackage[authoryear]{natbib}
+\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
+
+%Pour les rajouts
+\usepackage{xcolor}
+
+\usepackage{dsfont}
+\usepackage[warn]{textcomp}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\let\tabbeg\tabular
+\let\tabend\endtabular
+\renewenvironment{tabular}{\begin{adjustbox}{max width=0.75\textwidth}\tabbeg}{\tabend\end{adjustbox}}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Bold symbol macro for standard LaTeX users
+%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+\definecolor{clumping}{HTML}{38761D}
+\definecolor{thresholding}{HTML}{1515FF}
+%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
+
+\usepackage{babel}
+\makeatother
+
+\begin{document}
+
+\section{Summary of the article}
+
+\subsection{Introduction}
+
+``Clumping+Thresholding'' (C+T) is the most common method to derive Polygenic Risk Scores (PRS). C+T uses only GWAS summary statistics with a (small) individual-level data reference panel to account for linkage disequilibrium (LD). 
+However, previous work showed that jointly estimating SNP effects has the potential to substantially improve the predictive performance of PRS as compared to C+T.
+Moreover, now that large individual-level datasets such as the UK Biobank are available, it would be a waste to not use them to their full potential \cite[]{bycroft2017genome}.
+Indeed, in order for PRS to be useful in clinical settings, it should be as predictive as possible.
+
+\subsection{Methods}
+
+We include some efficient implementation of penalized (linear and logistic) regressions in R package bigstatsr. We recall that bigstatsr uses some matrix format stored on disk instead of memory, so that functions of this package can be very memory efficient.
+To make the algorithm very efficient, we based our implementation on previous implementations and the use of rules that enable to quickly discard many variables as they will not enter the final model.
+To facilitate the choice of the two hyper-parameters of the elastic net regularization, we develop a procedure that we call Cross-Model Selection and Averaging (CMSA).
+It is somehow similar to cross-validation but finds it less cumbersome and allows to derive an early stopping criterion that further increase the efficiency of the implementation.
+
+We then compare the penalized regressions with C+T and some other method based on decision trees. We uses extensive simulations comparing different disease architecture, sample sizes and number of variables. We also compare methods in models with non-additive affects and extend the penalized regressions to account for recessive and dominant effects on top of additive effects. Finally, we compare performance of methods using the UK Biobank, training models on 350K individuals over 656K genotyped SNPs.
+
+\subsection{Results}
+
+We show that penalized regressions can provide large improvements in predictive performance as compared to C+T. When SNP effect sizes are small and sample size is small compared to the number of SNPs, PLR performs worse that C+T, but all provide rather poor predictive performance (AUC lower than 0.6).
+
+
+\subsection{Discussion}
+
+
+
+\bibliographystyle{natbib}
+\bibliography{refs}
+
+\section{Article and supplementary materials}
+
+The following article is published in \textit{Genetics}	\footnote{\url{https://doi.org/10.1534/genetics.119.302019}}.
+
+\includepdf[pages=-]{paper2.pdf}
+\includepdf[pages=-]{paper2-supp.pdf}
+
+\end{document}
