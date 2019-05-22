@@ -74,20 +74,26 @@ Indeed, in order for PRS to be useful in clinical settings, it should be as pred
 
 \subsection{Methods}
 
-We include some efficient implementation of penalized (linear and logistic) regressions in R package bigstatsr. We recall that bigstatsr uses some matrix format stored on disk instead of memory, so that functions of this package can be very memory efficient.
-To make the algorithm very efficient, we based our implementation on previous implementations and the use of rules that enable to quickly discard many variables as they will not enter the final model.
+We include some efficient implementation of penalized (linear and logistic) regressions in R package bigstatsr. 
+This implementation is not specific to genotype data at all, but we focus this paper on its application to predicting disease status based on genotype data.
+We recall that bigstatsr uses some matrix format stored on disk instead of memory, so that functions of this package can be very memory efficient.
+To make the algorithm very efficient, we based our implementation on existing implementations that use some rules that enable to quickly discard many variables as they will not enter the final model.
 To facilitate the choice of the two hyper-parameters of the elastic net regularization, we develop a procedure that we call Cross-Model Selection and Averaging (CMSA).
-It is somehow similar to cross-validation but finds it less cumbersome and allows to derive an early stopping criterion that further increase the efficiency of the implementation.
+CMSA is somehow similar to cross-validation but we find it less cumbersome and allows to derive an early stopping criterion that further increase the efficiency of the implementation.
 
-We then compare the penalized regressions with C+T and some other method based on decision trees. We uses extensive simulations comparing different disease architecture, sample sizes and number of variables. We also compare methods in models with non-additive affects and extend the penalized regressions to account for recessive and dominant effects on top of additive effects. Finally, we compare performance of methods using the UK Biobank, training models on 350K individuals over 656K genotyped SNPs.
+We compare the penalized regressions with C+T and another method based on decision trees. We use extensive simulations to compare methods for different disease architectures, sample sizes and number of variables. We also compare methods in models with non-additive effects and show how to extend the penalized regressions to account for recessive and dominant effects on top of additive effects. Finally, we compare performance of methods using the UK Biobank, training models on 350K individuals over 656K genotyped SNPs.
 
 \subsection{Results}
 
-We show that penalized regressions can provide large improvements in predictive performance as compared to C+T. When SNP effect sizes are small and sample size is small compared to the number of SNPs, PLR performs worse that C+T, but all provide rather poor predictive performance (AUC lower than 0.6).
-
+We show that penalized regressions can provide large improvements in predictive performance as compared to C+T. When SNP effect sizes are small and sample size is small compared to the number of SNPs, PLR performs worse than C+T, but all methods provide poor predictive performance (AUC lower than 0.6) in this context.
+In contrast, when sample size is large enough, or when there are some moderately large effects, or one there are some correlation between causal variants, using PLR substantially improves predictive performance as compared to C+T.
+By using some feature engineering technique, we are able to capture not only additive effects, but also recessive and dominant effects in penalized regressions.
+Finally, we show that our implementation of penalized regressions is scalable to datasets such as the UK Biobank, inclusing hundreds of thousands of both observations and variables.
 
 \subsection{Discussion}
 
+In this paper, we demonstrate the feasibility and relevance of using penalized regressions for PRS computation when large individual-level datasets are available. Indeed, first, we show that the larger is the data, the larger is the gain in predictive performance of PLR over C+T. Second, we show that our implementation of PLR is scalable to very large datasets such as the UK Biobank.
+We discuss what makes our implementation scalable to very large datasets by explaining the algorithm, its memory requirements and the computation time it takes given the size of the data and the number of variables with a predictive effect.
 
 
 \bibliographystyle{natbib}
