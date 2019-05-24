@@ -11,6 +11,7 @@ BRCA
 celiac
 chemistries
 Chr
+CMSA
 colorectal
 confounder
 deno
@@ -21,6 +22,7 @@ epistatic
 ethiology
 ethnicities
 exome
+FastPCA
 fSNP
 GWAS
 heritability
@@ -42,6 +44,7 @@ pcadapt
 penetrant
 phenotype
 PLINK
+PLR
 polygenic
 polymorphism
 preprint
@@ -49,10 +52,12 @@ PRS
 reimplementing
 replicable
 SAIGE
+scalable
 SCT
 specificities
 StdErr
 tagSNP
+TOPMed
 TotalSampleSize
 transferability
 underpowered
