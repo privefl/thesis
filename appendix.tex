@@ -1,6 +1,6 @@
-\section{Lightning fast multiple association testing}.
+\section*{Lightning fast multiple association testing}.
 
-In this section, I describe how to quickly test many variables for an association with a continuous outcome of interest. For example, let us make a Genome-Wide Association Study (GWAS) of height, i.e. we want to determine which genome variants are associated with height.
+In this section, I describe how to quickly test many variables for an association with a continuous outcome of interest. For example, let us make a Genome-Wide Association Study (GWAS) of height, i.e.\ we want to determine which genome variants are associated with height.
 
 The model we want to test is $$y = \beta s + X \gamma + \epsilon~,$$ where $s$ is one variant (we want to do this for each variant, separately), $X$ are some covariates to adjust for some possible confounding factors (a matrix of $N$ samples over $K$ columns, including a column of $1$s to account for an intercept in the model). 
 We are only interested in estimating $\hat{\beta}$ and computing a p-value corresponding to the significance of the alternative hypothesis that $\beta \neq 0$.
@@ -24,7 +24,4 @@ z &= U^T s \\
 \hat{\beta} &= \hat{\beta}_{\text{num}} / \hat{\beta}_{\text{deno}} \\
 \widehat{\text{var}}(\hat{\beta}) &= \dfrac{y^{*T} y^* - \hat{\beta} ~ \hat{\beta}_{\text{num}}}{(N - K - 1) ~ \hat{\beta}_{\text{deno}}}~.
 \end{align*}
-Since $U$ and $y^*$ are computed only once for all variants, you can apply those formulas to compute these statistics for \numprint{1000000} variants and $N$=\numprint{500000} samples and $K$=$11$ covariates in one hour only \cite[]{prive2018efficient}. This is implemented in function big\_univLinReg() of package bigstatsr.
-
-
-\bibliography{refs}
+Since $U$ and $y^*$ are computed only once for all variants, you can apply those formulas to compute these statistics for \numprint{1000000} variants and $N$=\numprint{500000} samples and $K$=$11$ covariates in one hour only \cite[]{prive2018efficient}. This is implemented in function \texttt{big\_univLinReg()} of package bigstatsr.

@@ -81,7 +81,7 @@ For example, a GWAS of height including more than 700K individuals found 83 asso
 In other large studies, one for coronary artery disease and one for type 2 diabetes, there was little evidence of low-frequency variants with large effects \cite[]{nikpay2015comprehensive,fuchsberger2016genetic}.
 
 Associations of rare variants with traits are difficult to find for two reasons. 
-First, it is very difficult to impute low-frequency variants with a good quality if using for example a small reference panel such as the 1000 genomes \cite[]{nikpay2015comprehensive}. There is now a reference panel of 32,000 individuals that is used to accurately impute variants with allele frequencies as low as 0.1\% \cite[]{mccarthy2016reference}. Ongoing large-scale projects, such as the Trans-Omics for Precision Medicine (TOPMed) programme, are expected to produce reference panels 
+First, it is very difficult to impute low-frequency variants with a good quality if using for example a small reference panel such as the 1000 genomes \cite[]{nikpay2015comprehensive}. There is now a reference panel of 32,000 individuals that is used to accurately impute variants with allele frequencies as low as 0.1\% \cite[]{mccarthy2016reference}. Ongoing large-scale projects, such as the Trans-Omics for Precision Medicine (TOPMed) program, are expected to produce reference panels 
 of more than 100,000 individuals \cite[]{taliun2019sequencing}.
 This large reference panel is European specific, which means that imputing data from other ancestries is more difficult. This is a problem because, one way to discover and accurately estimate the effect of a rare variant is to look for it in a population in which its allele frequency is larger \cite[]{moltke2014common,minster2016thrifty}. 
 Indeed, the power of association studies is dependent on the variance explained by a locus and its frequency; for example, for a disease that affects 1\% of the population, we have the same power to detect a risk locus of 50\% frequency and odds ratio of 1.1 as we do for a risk locus of 0.1\% frequency and odds ratio of 2.9 \cite[]{wray2018common}.
@@ -142,6 +142,3 @@ Second, it would be interesting to account for age in the prediction, for exampl
 Third, I would like to investigate more about imputation. At the moment, imputed data is taken for granted. How to properly account for imputation accuracy in association testing (using e.g.\ multiple imputation) and in predictive models? 
 
 Finally, other ideas could be to investigate how we can integrate many sources of information such as functional annotations, looking at many phenotypes at once, or to distinguish between two diseases with similar symptoms using polygenic risk scores (e.g.\ diabetes).
-
-
-\bibliography{refs}

@@ -6,6 +6,7 @@ bigsnpr
 biobank
 bioinformatics
 biomarkers
+bioRxiv
 Bjarni
 BRCA
 celiac
@@ -30,10 +31,12 @@ htb
 htpb
 Jolie
 kb
+lassosum
 LD
 LMM
 loadings
 masse
+maxCT
 methylation
 microbiota
 NCRR
@@ -49,12 +52,14 @@ polygenic
 polymorphism
 preprint
 PRS
+regularization
 reimplementing
 replicable
 SAIGE
 scalable
 SCT
 specificities
+stdCT
 StdErr
 tagSNP
 TOPMed

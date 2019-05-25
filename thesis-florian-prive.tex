@@ -28,9 +28,9 @@
 %\linenumbers
 %\doublespacing
 \onehalfspacing
-%\usepackage[authoryear]{natbib}
-\usepackage[sectionbib]{natbib}
-\usepackage{chapterbib}
+\usepackage[authoryear]{natbib}
+%\usepackage{natbib}
+%\usepackage{chapterbib}
 
 \usepackage{numprint}
 \npthousandsep{,}
@@ -70,30 +70,32 @@
 
 \includepdf{cover}
 
-\bibliographystyle{natbib}
-
 \chapter{Introduction}
 
-\include{intro}
+\input{intro.tex}
 
 \chapter[R packages for analyzing genome-wide data]{Efficient analysis of large-scale genome-wide data with two R packages: bigstatsr and bigsnpr}
 
-\include{chap1}
+\input{chap1.tex}
 
 \chapter[Efficient Penalized Regression for PRS]{Efficient Implementation of Penalized Regression for Genetic Risk Prediction}
 
-\include{chap2}
+\input{chap2.tex}
 
 \chapter[{Making the most of Clumping and Thresholding}]{Making the most of Clumping and Thresholding for polygenic scores}
 
-\include{chap3}
+\input{chap3.tex}
 
 \chapter{Conclusion and Discussion}
 
-\include{conclu}
+\input{conclu.tex}
 
-\chapter{Appendix}
+\bibliographystyle{natbib}
+\bibliography{refs.bib}
 
-\include{appendix}
+\chapter*{Appendix}
+
+\input{appendix.tex}
+
 
 \end{document}
