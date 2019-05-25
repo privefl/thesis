@@ -1,0 +1,99 @@
+%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english,12pt,a4paper,twoside]{book}
+\usepackage{times}
+%\usepackage{algorithm2e}
+\usepackage{url}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{geometry}
+%\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{setspace}
+\usepackage{lineno}
+\usepackage{hyperref}
+\usepackage{bbm}
+\usepackage{pdfpages}
+
+%\usepackage{xcolor,framed}
+%\colorlet{shadecolor}{blue!10}
+%\begin{shaded}blabla\end{shaded}
+
+%\usepackage{xr}
+%\externaldocument{PRS-supp}
+
+%\linenumbers
+%\doublespacing
+\onehalfspacing
+%\usepackage[authoryear]{natbib}
+\usepackage[sectionbib]{natbib}
+\usepackage{chapterbib}
+
+\usepackage{numprint}
+\npthousandsep{,}
+
+%Pour les rajouts
+\usepackage{xcolor}
+
+\usepackage{dsfont}
+\usepackage[warn]{textcomp}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\let\tabbeg\tabular
+\let\tabend\endtabular
+\renewenvironment{tabular}{\begin{adjustbox}{max width=0.75\textwidth}\tabbeg}{\tabend\end{adjustbox}}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Bold symbol macro for standard LaTeX users
+%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+\definecolor{clumping}{HTML}{38761D}
+\definecolor{thresholding}{HTML}{1515FF}
+%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
+
+\usepackage{babel}
+\makeatother
+
+
+\begin{document}
+
+\includepdf{cover}
+
+\bibliographystyle{natbib}
+
+\chapter{Introduction}
+
+\include{intro}
+
+\chapter[R packages for analyzing genome-wide data]{Efficient analysis of large-scale genome-wide data with two R packages: bigstatsr and bigsnpr}
+
+\include{chap1}
+
+\chapter[Efficient Penalized Regression for PRS]{Efficient Implementation of Penalized Regression for Genetic Risk Prediction}
+
+\include{chap2}
+
+\chapter[{Making the most of Clumping and Thresholding}]{Making the most of Clumping and Thresholding for polygenic scores}
+
+\include{chap3}
+
+\chapter{Conclusion and Discussion}
+
+\include{conclu}
+
+\chapter{Appendix}
+
+\include{appendix}
+
+\end{document}

@@ -1,72 +1,4 @@
-%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[english,12pt,a4paper,twoside]{article}
-\usepackage{times}
-%\usepackage{algorithm2e}
-\usepackage{url}
-\usepackage{bbm}
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
-\usepackage{geometry}
-%\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
-\usepackage{rotating}
-\usepackage{graphicx}
-\usepackage{amsmath, amsthm, amssymb}
-\usepackage{setspace}
-\usepackage{lineno}
-\usepackage{hyperref}
-\usepackage{bbm}
-
-%\usepackage{xcolor,framed}
-%\colorlet{shadecolor}{blue!10}
-%\begin{shaded}blabla\end{shaded}
-
-%\usepackage{xr}
-%\externaldocument{PRS-supp}
-
-%\linenumbers
-%\doublespacing
-\onehalfspacing
-%\usepackage[authoryear]{natbib}
-\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
-
-
-%Pour les rajouts
-\usepackage{xcolor}
-
-\usepackage{dsfont}
-\usepackage[warn]{textcomp}
-\usepackage{adjustbox}
-\usepackage{multirow}
-\usepackage{graphicx}
-\graphicspath{{figures/}}
-\DeclareMathOperator*{\argmin}{\arg\!\min}
-
-\let\tabbeg\tabular
-\let\tabend\endtabular
-\renewenvironment{tabular}{\begin{adjustbox}{max width=0.75\textwidth}\tabbeg}{\tabend\end{adjustbox}}
-
-\makeatletter
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Bold symbol macro for standard LaTeX users
-%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
-
-%% Because html converters don't know tabularnewline
-\providecommand{\tabularnewline}{\\}
-\definecolor{clumping}{HTML}{38761D}
-\definecolor{thresholding}{HTML}{1515FF}
-%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
-
-\usepackage{babel}
-\makeatother
-
-
-\begin{document}
-
-\section{Conclusion and Discussion}
-
-\subsection{Summary of my work}
+\section{Summary of my work}
 
 The first part of my work has consisted in developing tools to easily analyze genotype matrices.
 There are different software using different input formats so that they are sometimes difficult to use in concordance in the same analysis.
@@ -100,7 +32,7 @@ We then proposed two methods for building polygenic predictive models, one based
 Those methods provide ones of the currently best predictive performance for many diseases and traits.   
 
 
-\subsection{Problem of generalization}
+\section{Problem of generalization}
 
 Polygenic Risk Scores (PRS) might become a central part in precision medicine. For now, predictive performance for most complex diseases are not good enough to be used in clinical settings. 
 A major concern with PRS at the moment is their problem of generalization / transferability in different populations. 
@@ -140,7 +72,7 @@ It would be also possible to fine-map fSNPs in common for multiple populations s
 Finally, statistical methods are being developed to use large European GWAS in conjunction with smaller data from another population in order to leverage both the discoveries from the large dataset and the specificities of the smaller dataset \cite[]{marquez2017multiethnic,coram2017leveraging}.
 
 
-\subsection{Looking for missing heritability in rare variants}
+\section{Looking for missing heritability in rare variants}
 
 Missing heritability, i.e.\ the gap between heritability estimations from current GWAS studies and from family studies, could reside in rare variants.
 Indeed, for height and colorectal cancer, it has been shown that estimations of heritability from GWAS data could recover almost all heritability when a large proportion of low-frequency variants was present in the data \cite[]{yang2015genetic,huyghe2019discovery,wainschtein2019recovery}.
@@ -160,7 +92,7 @@ Yet, sample sizes of sequencing studies remain small and special considerations 
 Thus, sample size is the limiting factor in variant discovery, not genotyping technology \cite[]{wray2018common}. 
 It is probably the limiting factor in prediction too.
 
-\subsection{Looking for missing heritability in non-additive effects}
+\section{Looking for missing heritability in non-additive effects}
 
 Knowledge about biological pathways and gene networks implies that epistasis (gene interactions) might be important to consider \cite[]{hill2008data}. 
 Apart from explaining missing heritability, genetic interactions could also create phantom heritability, i.e.\ could make current estimation of heritability upward biased \cite[]{zuk2012mystery}.
@@ -173,7 +105,7 @@ Moreover, interactions are challenging to find for two reasons, and dedicated me
 Finally, even if we find such interaction effects, they are unlikely to dramatically improve risk prediction for complex diseases, but could still provide insights into their ethiology \cite[]{aschard2012inclusion}. 
 Moreover, due to differences in effect sizes and LD between populations, epistatic effects are even more unlikely than additive effects to replicate to different populations  \cite[]{hill2008data,visscher201710}.
 
-\subsection{Integration of multiple data sources}
+\section{Integration of multiple data sources}
 
 There are many genetic data out there. Some large individual-level data such as the UK biobank are available \cite[]{bycroft2017genome}. When GWAS data is not publicly available, summary statistics are often publicly shared instead. 
 Usually, predictive models are based on either individual-level data (e.g.\ penalized regression) or summary statistics (e.g.\ C+T).
@@ -198,7 +130,7 @@ Moreover, electronic health records (EHR) make possible to integrate large bioba
 \end{figure}
 
 
-\subsection{Future work}
+\section{Future work}
 
 I will probably continue to work in the field of Predictive Human genetics. I am currently visiting the National Center for Register-based Research (NCRR) in Aarhus, Denmark. Researchers there are mostly epidemiologists using some national registers where they have information on all Danes over decades. Most of their work is funded to look at psychiatric disorders and they are now interested in how genetics influence psychiatric conditions. It is a good opportunity to work on a large national biobank dataset with Bjarni Vilhj\'almsson.
 
@@ -211,9 +143,5 @@ Third, I would like to investigate more about imputation. At the moment, imputed
 
 Finally, other ideas could be to investigate how we can integrate many sources of information such as functional annotations, looking at many phenotypes at once, or to distinguish between two diseases with similar symptoms using polygenic risk scores (e.g.\ diabetes).
 
-\newpage
 
-\bibliographystyle{natbib}
 \bibliography{refs}
-
-\end{document}

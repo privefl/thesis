@@ -1,71 +1,3 @@
-%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[english,12pt,a4paper,twoside]{report}
-\usepackage{times}
-%\usepackage{algorithm2e}
-\usepackage{url}
-\usepackage{bbm}
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
-\usepackage{geometry}
-%\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
-\usepackage{rotating}
-\usepackage{graphicx}
-\usepackage{amsmath, amsthm, amssymb}
-\usepackage{setspace}
-\usepackage{lineno}
-\usepackage{hyperref}
-\usepackage{bbm}
-
-%\usepackage{xcolor,framed}
-%\colorlet{shadecolor}{blue!10}
-%\begin{shaded}blabla\end{shaded}
-
-%\usepackage{xr}
-%\externaldocument{PRS-supp}
-
-%\linenumbers
-%\doublespacing
-\onehalfspacing
-%\usepackage[authoryear]{natbib}
-\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
-
-
-%Pour les rajouts
-\usepackage{xcolor}
-
-\usepackage{dsfont}
-\usepackage[warn]{textcomp}
-\usepackage{adjustbox}
-\usepackage{multirow}
-\usepackage{graphicx}
-\graphicspath{{figures/}}
-\DeclareMathOperator*{\argmin}{\arg\!\min}
-
-\let\tabbeg\tabular
-\let\tabend\endtabular
-\renewenvironment{tabular}{\begin{adjustbox}{max width=0.75\textwidth}\tabbeg}{\tabend\end{adjustbox}}
-
-\makeatletter
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Bold symbol macro for standard LaTeX users
-%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
-
-%% Because html converters don't know tabularnewline
-\providecommand{\tabularnewline}{\\}
-\definecolor{clumping}{HTML}{38761D}
-\definecolor{thresholding}{HTML}{1515FF}
-%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
-
-\usepackage{babel}
-\makeatother
-
-
-\begin{document}
-
-\section{Introduction}
-
 In my thesis work, we have been focusing on assessing someone's risk of disease based on DNA data. Except for somatic mutations, DNA data do not change over lifetime so that we could, in theory, assess someone's genetic risk of disease at birth. Thus, this could have potentially large implications in disease prevention \cite[]{mavaddat2015prediction,pashayan2015implications}.
 As an example, about 12\% of women in the general population will develop breast cancer sometime during their lives \cite[]{desantis2016breast}. By contrast, a recent large study estimated that about 72\% (95\% CI: 65\%-79\%) of women who inherit a harmful BRCA1 mutation and about 69\% (95\% CI: 61\%-77\%) of women who inherit a harmful BRCA2 mutation will develop breast cancer by the age of 80 \cite[]{kuchenbaecker2017risks}. 
 In 2013, Angelina Jolie announced that she had undergone a preventative double mastectomy, because she had a family history of breast cancer and was carrying a harmful BRCA1 mutation.
@@ -73,13 +5,13 @@ Thereby, DNA data can help identify individuals who are at high-risk for some di
 
 In this introduction, we first introduce the context of our research and the type of data we work with. Then, we present the statistical methods that are widely used in our field, and how the field has moved from association testing to prediction. Finally, we present the main statistical and computational challenges that has driven our research, which has resulted in two peer-reviewed papers and another submitted paper currently available as a preprint.
 
-\subsection{Context}
+\section{Context}
 
 Today, clinical risk prediction for common adult-onset diseases often relies on basic demographic characteristics, such as age, gender and ethnicity; basic health parameters and lifestyle factors, such as body mass index, smoking status, alcohol consumption and physical exercise habits; measurement of clinical risk factors linked to disease onset, such as blood pressure levels, blood chemistries or biomarkers indicative of ongoing disease processes; ascertainment of environmental exposures, such as air pollution, heavy metals and other environmental toxins; and family history \cite[]{torkamani2018personal}.
 Routine genetic profiling is absent from this list, often relegated to use only when testing clarifies individual-level risks in the context of a known family history for some common adult-onset
 diseases \cite[]{torkamani2018personal}.
 
-\subsubsection{Different types of diseases and mutations}
+\subsection{Different types of diseases and mutations}
 
 How mutations affect diseases depends on their effect sizes and on their allele frequencies (Figure \ref{fig:rare-common}).
 For example, harmful BRCA mutations are highly penetrant mutations, i.e.\ that most women carrying these mutations will develop breast cancer. Many mutations with large effect sizes have been identified and are referenced in an online database \cite[]{hamosh2005online}. 
@@ -97,7 +29,7 @@ lines. Source: \cite{manolio2009finding}.}
 \label{fig:rare-common}
 \end{figure}
 
-\subsubsection{Genome-Wide Association Studies (GWAS)}
+\subsection{Genome-Wide Association Studies (GWAS)}
 
 \cite{visscher201710} provide a thorough review of the aims and outcomes of GWAS and \cite{tam2019benefits} talk extensively about the benefits and limitations of GWAS.
 The method behind GWAS is simple: test each variant one by one for association with a phenotype of interest.
@@ -130,7 +62,7 @@ Manhattan plots show some association peaks (similar to skyscrapers in Manhattan
 \end{figure}
 
 
-\subsubsection{GWAS data}
+\subsection{GWAS data}
 
 There are mainly three types of individual-level data: genotyped SNPs from genotyping chips, imputed SNPs from reference panels, and Next Generation Sequencing (NGS) data.
 Genotyping chips enables a quick and cheap genotyping of 200K to 2M SNPs, mostly focusing on common variants (Minor Allele Frequency (MAF) larger than 1-5\%). From this genotyping, you can get a matrix of $0$s, $1$s and $2$s, counting the number of alternative alleles for each individual (row) and each genome position (column). There are usually few missing values (less than 5\% in total) when using this technology.
@@ -179,11 +111,11 @@ Chr & Position & Allele1 & Allele2 & Effect & StdErr & P-value & TotalSampleSize
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\subsection{From GWAS to Polygenic Risk Scores (PRS)}
+\section{From GWAS to Polygenic Risk Scores (PRS)}
 
 For thorough guides on how to perform PRS analyses, please refer to \cite{wray2014research,chasioti2019progress,choi2018guide}.
 
-\subsubsection{A standard way to compute PRS}\label{sec:C+T}
+\subsection{A standard way to compute PRS}\label{sec:C+T}
 
 The main method for computing Polygenic Risk Scores (PRS) is the widely used ``Clumping + Thresholding'' (C+T, also called ``Pruning + Thresholding'' in the literature) model based on univariate GWAS summary statistics as described in equations \eqref{eq:gwas1} and \eqref{eq:gwas2}.
 Under the C+T model, a coefficient of regression is learned independently for each SNP along with a corresponding p-value (the GWAS part). 
@@ -207,7 +139,7 @@ A polygenic risk score is finally defined as the sum of allele counts of the rem
 \caption{Illustration of an indirect association with a phenotype due to Linkage Disequilibrium between SNPs. Source: \cite{astle2009population}.}\label{fig:gwasLD}
 \end{figure}
 
-\subsubsection{PRS for epidemiology}
+\subsection{PRS for epidemiology}
 
 Polygenic Risk Scores (PRS) have been used for epidemiology before being used for prediction. The steps for a PRS analysis are illustrated in figure \ref{fig:steps-PRS} and have two goals. 
 First, PRS can be used when there is no SNP detected (at $5 \cdot 10^{-8}$) in a GWAS in order to show that there is still a significant polygenic contribution to the phenotype of interest. 
@@ -229,7 +161,7 @@ This technique enables researchers to prove that there is a common genetic contr
 For example, it was shown that there is a common genetic contribution between Schizophrenia and bipolar disorder (Figure \ref{fig:epi-PRS}). 
 
 
-\subsubsection{The differing goals of association testing and risk prediction}
+\subsection{The differing goals of association testing and risk prediction}
 
 Association testing (GWAS) and prediction have very different goals.
 First, GWAS aims at identifying highly replicable disease-associated variants by using a highly stringent p-value threshold to prevent false discoveries. However, using only hits from GWAS results in PRS of low predictive value (see section \ref{sec:missing}). 
@@ -240,9 +172,9 @@ Finally, it should be noted that population stratification, usually considered a
 Indeed, for predictive purposes, the objective is to provide the best possible prediction and confounding is not an issue. However, it might become an issue when polygenic risk scores (PRS) capture population structure in addition to trait variation. For instance, correlation between a PRS and an outcome might be due to residual population structure instead of real genetic contribution to the outcome \cite[]{sohail2019polygenic}.
 
 
-\subsection{Polygenic prediction}
+\section{Polygenic prediction}
 
-\subsubsection{Heritability and missing heritability} \label{sec:missing}
+\subsection{Heritability and missing heritability} \label{sec:missing}
 
 The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only.
 For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors among a population \cite[]{visscher2008heritability}.
@@ -260,7 +192,7 @@ Therefore, as results from multiple GWAS are combined to increase sample size, a
 These findings have also led people to use not only genome-wide significant SNPs, but many other SNPs, sometimes not even marginally significant (i.e.\ with a p-value > 5\%) in order to maximize predictive power \cite[]{purcell2009common,Dudbridge2013,wray2014research}.
 
 
-\subsubsection{Methods for polygenic prediction}
+\subsection{Methods for polygenic prediction}
 
 Several methods have been developed to predict disease status based on SNP information.
 We can divide these methods in two categories: the ones that use summary statistics and the ones that use individual-level data only.
@@ -280,7 +212,7 @@ Linear Mixed-Models (LMMs) are another widely-used method in fields such as plan
 However, these methods and their derivatives are often computationally very demanding, both in terms of memory and time required \cite[]{zhou2013polygenic,golan2014effective,speed2014multiblup,maier2015joint}.
 Recently, two methods named BOLT-LMM and SAIGE have been developed to handle very large datasets \cite[]{loh2018mixed,zhou2018efficiently}. BOLT-LMM and SAIGE were primarily designed for association testing but could also be used for prediction purposes based on individual-level data.
 
-\subsubsection{Objective and main difficulties of the thesis}
+\subsection{Objective and main difficulties of the thesis}
 
 We want to use genetic data to help distinguish between cases and controls for a given disease, or at least to stratify people in the population in order to improve early detection of diseases and prevention for high-risk individuals.
 Genomic data are usually very large and highly dimensional with hundreds of thousands of variables to many millions, for thousands or hundred of thousands individuals.
@@ -298,11 +230,5 @@ Thus, the first part of our work has been dedicated to developing two R packages
 Our second paper has been dedicated to implementing penalized regressions as a replacement to more simple, less optimal methods, and that could be used for very large individual-level datasets.
 Finally, because lots of summary statistics data are available while individual-level data are still scarce, we worked on making the most out of the Clumping and Thresholding (C+T) method since it proved to be a simple and effective method for constructing PRS based on large GWAS summary statistics and smaller individual-level datasets.
 
-%[COMPLETER]
 
-\newpage
-
-\bibliographystyle{natbib}
 \bibliography{refs}
-
-\end{document}

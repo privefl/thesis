@@ -1,68 +1,4 @@
-%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[english, 12pt]{article}
-\usepackage{times}
-%\usepackage{algorithm2e}
-\usepackage{url}
-\usepackage{bbm}
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
-\usepackage{geometry}
-\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
-\usepackage{rotating}
-\usepackage{color}
-\usepackage{graphicx}
-\usepackage{amsmath, amsthm, amssymb}
-\usepackage{setspace}
-\usepackage{lineno}
-\usepackage{hyperref}
-\usepackage{bbm}
-
-%\usepackage{xcolor,framed}
-%\colorlet{shadecolor}{blue!10}
-%\begin{shaded}blabla\end{shaded}
-
-\linenumbers
-\doublespacing
-%\usepackage[authoryear]{natbib}
-\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
-
-%Pour les rajouts
-\usepackage{color}
-\definecolor{trustcolor}{rgb}{0,0,1}
-
-\usepackage{dsfont}
-\usepackage[warn]{textcomp}
-\usepackage{adjustbox}
-\usepackage{multirow}
-\usepackage{graphicx}
-\graphicspath{{figures/}}
-\DeclareMathOperator*{\argmin}{\arg\!\min}
-
-\let\tabbeg\tabular
-\let\tabend\endtabular
-\renewenvironment{tabular}{\begin{adjustbox}{max width=\textwidth}\tabbeg}{\tabend\end{adjustbox}}
-\usepackage{numprint}
-\npthousandsep{,}
-
-\makeatletter
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Bold symbol macro for standard LaTeX users
-%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
-
-%% Because html converters don't know tabularnewline
-\providecommand{\tabularnewline}{\\}
-
-\usepackage{babel}
-\makeatother
-
-
-\begin{document}
-
-\section{Appendix}
-
-\subsection{Lightning fast multiple association testing}.
+\section{Lightning fast multiple association testing}.
 
 In this section, I describe how to quickly test many variables for an association with a continuous outcome of interest. For example, let us make a Genome-Wide Association Study (GWAS) of height, i.e. we want to determine which genome variants are associated with height.
 
@@ -91,13 +27,4 @@ z &= U^T s \\
 Since $U$ and $y^*$ are computed only once for all variants, you can apply those formulas to compute these statistics for \numprint{1000000} variants and $N$=\numprint{500000} samples and $K$=$11$ covariates in one hour only \cite[]{prive2018efficient}. This is implemented in function big\_univLinReg() of package bigstatsr.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-\newpage
-
-\bibliographystyle{natbib}
 \bibliography{refs}
-
-\end{document}

@@ -1,68 +1,3 @@
-%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[english, 12pt]{article}
-\usepackage{times}
-%\usepackage{algorithm2e}
-\usepackage{url}
-\usepackage{bbm}
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
-\usepackage{geometry}
-\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
-\usepackage{rotating}
-\usepackage{graphicx}
-\usepackage{amsmath, amsthm, amssymb}
-\usepackage{setspace}
-\usepackage{lineno}
-\usepackage{hyperref}
-\usepackage{bbm}
-
-%\usepackage{xcolor,framed}
-%\colorlet{shadecolor}{blue!10}
-%\begin{shaded}blabla\end{shaded}
-
-\usepackage{pdfpages}
-
-%\usepackage{xr}
-%\externaldocument{PRS-supp}
-
-%\linenumbers
-\onehalfspacing
-%\usepackage[authoryear]{natbib}
-\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
-
-%Pour les rajouts
-\usepackage{xcolor}
-
-\usepackage{dsfont}
-\usepackage[warn]{textcomp}
-\usepackage{adjustbox}
-\usepackage{multirow}
-\usepackage{graphicx}
-\graphicspath{{figures/}}
-\DeclareMathOperator*{\argmin}{\arg\!\min}
-
-\let\tabbeg\tabular
-\let\tabend\endtabular
-\renewenvironment{tabular}{\begin{adjustbox}{max width=0.75\textwidth}\tabbeg}{\tabend\end{adjustbox}}
-
-\makeatletter
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Bold symbol macro for standard LaTeX users
-%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
-
-%% Because html converters don't know tabularnewline
-\providecommand{\tabularnewline}{\\}
-\definecolor{clumping}{HTML}{38761D}
-\definecolor{thresholding}{HTML}{1515FF}
-%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
-
-\usepackage{babel}
-\makeatother
-
-\begin{document}
-
 \section{Summary of the article}
 
 \subsection{Introduction}
@@ -81,7 +16,7 @@ Usually, users use some default value for these parameters, expect for the p-val
 
 \subsection{Methods}
 
-We implement an efficient way to compute many C+T scores corresponding to many different sets of hyper-parameters for C+T. This is now part of R package bigsnpr \cite[]{prive2017efficient}. 
+We implement an efficient way to compute many C+T scores corresponding to many different sets of hyper-parameters for C+T. This is now part of R package bigsnpr \cite[]{prive2018efficient}. 
 The 4 parameters we vary are the correlation threshold of clumping, the window size for looking at correlation, the p-value threshold and the imputation accuracy threshold when using imputed variants.
 In total, we investigate 5600 different sets of hyper-parameters for C+T.
 
@@ -105,13 +40,9 @@ Instead of choosing one set of hyper-parameters that maximizes predictive perfor
 This extension of C+T that we call SCT (Stacked C+T) makes C+T more flexible.
 Moreover, we implement the possibility for an user of SCT to define their own groups of variants. This opens many possibilities for SCT. For example, we could derive and stack C+T scores for two related but different GWAS summary statistics, we could use external information such as functional annotations, or we could learn to differentiate between two genetically different phenotypes with similar symptoms such as type 1 and type 2 diabetes.
 
-\bibliographystyle{natbib}
+
 \bibliography{refs}
 
 \section{Article and supplementary materials}
 
 The following article is available as a preprint in \textit{BioRxiv}	\footnote{\url{https://doi.org/}}.
-
-
-
-\end{document}
