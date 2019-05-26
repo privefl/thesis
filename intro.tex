@@ -3,23 +3,23 @@ As an example, about 12\% of women in the general population will develop breast
 In 2013, Angelina Jolie announced that she had undergone a preventative double mastectomy, because she had a family history of breast cancer and was carrying a harmful BRCA1 mutation.
 Thereby, DNA data can help identify individuals who are at high-risk for some diseases in order to target preventive actions.
 
-In this introduction, we first introduce the context of our research and the type of data we work with. Then, we present the statistical methods that are widely used in our field, and how the field has moved from association testing to prediction. Finally, we present the main statistical and computational challenges that has driven our research, which has resulted in two peer-reviewed papers and another submitted paper currently available as a preprint.
+In this introduction, we first introduce the context of our research and the type of data we work with. Then, we present the statistical methods that are widely used in our field, and how the field has moved from association testing to prediction. Finally, we present the main statistical and computational challenges that have driven our research. During this thesis, two peer-reviewed papers have been published and a third paper is currently available as a preprint.
 
 \section{Context}
 
-Today, clinical risk prediction for common adult-onset diseases often relies on basic demographic characteristics, such as age, gender and ethnicity; basic health parameters and lifestyle factors, such as body mass index, smoking status, alcohol consumption and physical exercise habits; measurement of clinical risk factors linked to disease onset, such as blood pressure levels, blood chemistries or biomarkers indicative of ongoing disease processes; ascertainment of environmental exposures, such as air pollution, heavy metals and other environmental toxins; and family history \cite[]{torkamani2018personal}.
+Today, clinical risk prediction for common adult-onset diseases often relies on basic demographic characteristics, such as age, gender and ethnicity; basic health parameters and lifestyle factors, such as body mass index, smoking status, alcohol consumption and physical activity; measurement of clinical risk factors linked to disease onset, such as blood pressure levels, blood chemistries or biomarkers indicative of ongoing disease processes; ascertainment of environmental exposures, such as air pollution, heavy metals and other environmental toxins; and family history \cite[]{torkamani2018personal}.
 Routine genetic profiling is absent from this list, often relegated to use only when testing clarifies individual-level risks in the context of a known family history for some common adult-onset
 diseases \cite[]{torkamani2018personal}.
 
 \subsection{Different types of diseases and mutations}
 
-How mutations affect diseases depends on their effect sizes and on their allele frequencies (Figure \ref{fig:rare-common}).
+How mutations affect diseases depends on the effect sizes of causal variants and on the allele frequencies of these variants (Figure \ref{fig:rare-common}).
 For example, harmful BRCA mutations are highly penetrant mutations, i.e.\ that most women carrying these mutations will develop breast cancer. Many mutations with large effect sizes have been identified and are referenced in an online database \cite[]{hamosh2005online}. 
 Those mutations are often very rare; either they are associated with some very rare disease or they explain only a small proportion of common diseases incidence \cite[]{anglian2000prevalence}.
 In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease--common variant hypothesis \cite[]{pritchard2002allelic}. This hypothesis further suggests that such diseases are likely caused by a large number of common variants, each contributing only a small risk and thereby evading negative evolutionary selection \cite[]{salari2012personalized}.
-Indeed, selection might be responsible for keeping genetic effect sizes low, since variants of larger effect may be selected against and eventually disappear \cite[]{pritchard2002allelic}.
-One common form of variation across human genomes is called a single nucleotide polymorphism (SNP). As indicated by the name, SNPs are single base changes in the DNA.
-Genotyping technologies now exists to genotype hundreds of thousands of SNPs at once for around \$50 only. Starting with the \cite{wellcome2007genome}, these new sequencing technologies had led to many genome-wide association studies.%, which we talk about in the next section. From these studies, it was found that effects of common variants that are associated with some disease are typically very small.
+Indeed, selection might be responsible for keeping genetic effects low, since variants of large effect may be selected against and eventually disappear \cite[]{pritchard2002allelic}.
+One common form of variation across human genomes is called a single nucleotide polymorphism (SNP). SNPs are single base changes in the DNA.
+Genotyping technologies now exists to genotype hundreds of thousands of SNPs at once for around \$50 only. Starting with the \cite{wellcome2007genome}, these genotyping technologies have led to many genome-wide association studies.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.7\textwidth]{rare-common.jpg}}
@@ -33,11 +33,11 @@ lines. Source: \cite{manolio2009finding}.}
 
 \cite{visscher201710} provide a thorough review of the aims and outcomes of GWAS and \cite{tam2019benefits} talk extensively about the benefits and limitations of GWAS.
 The method behind GWAS is simple: test each variant one by one for association with a phenotype of interest.
-For a continuous phenotype (e.g.\ height), linear regression is used and, for each SNP $j$, a t-test is performed to look for an association between this SNP and the phenotype of interest ($\beta^{(j)} = 0$ vs $\beta^{(j)} \neq 0$), where
+For a continuous phenotype (e.g.\ height), linear regression is used and, for each SNP $j$, a t-test is performed to look for an association between this SNP and the phenotype of interest ($\beta_j = 0$ vs $\beta_j \neq 0$), where
 \begin{equation}
 y = \alpha_j + \beta_j G_{j} + \gamma_j^{(1)} COV^{(1)} + \cdots + \gamma_j^{(K)} COV^{(K)} + \epsilon~,\label{eq:gwas1}
 \end{equation}
-$y$ is the continuous phenotype, $\alpha_j$ is the intercept, $G_{j}$ is SNP $j$ with effect $\beta_j$, $COV^{(1)}$, ..., $COV^{(K)}$ are $K$ covariates with effects $\gamma_j^{(1)}$, ..., $\gamma_j^{(K)}$, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed on $\beta^{(j)}$ for each SNP $j$ where
+$y$ is the continuous phenotype, $\alpha_j$ is the intercept, $G_{j}$ is SNP $j$ with effect $\beta_j$, $COV^{(1)}$, ..., $COV^{(K)}$ are $K$ covariates with effects $\gamma_j^{(1)}$, ..., $\gamma_j^{(K)}$, including principal components and other covariates such as age and gender. Similarly, for a binary phenotype (e.g.\ disease status), logistic regression is used and a Z-test is performed on $\beta_j$ for each SNP $j$ where
 \begin{equation}
 \log{\left(\frac{p}{1-p}\right)} = \alpha_j + \beta_j G_{j} + \gamma_j^{(1)} COV^{(1)} + \cdots + \gamma_j^{(K)} COV^{(K)}~,\label{eq:gwas2}
 \end{equation}
@@ -47,8 +47,8 @@ It is well established that principal components of genotype data should be incl
 To illustrate the importance of accounting for population structure, consider a dataset where there are 900 Finnish people and 100 Italian people. Because Finnish people are on average taller than Italian people, any SNP with a large difference in allele frequency between these two populations would be flagged as being associated with height, leading to many false positive associations. Thus, adding principal components as covariates aims at preventing those SNPs from being false positive reports.
 
 \begin{figure}[htb]
-\centerline{\includegraphics[width=0.6\textwidth]{celiac-pca.png}}
-\caption{First two Principal Components of individuals from four European populations. PC1 correlates with latitude while PC2 correlates longitude. Data come from a case-control study for celiac disease \cite[]{dubois2010multiple}.}\label{fig:pca}
+\centerline{\includegraphics[width=0.75\textwidth]{PCA-Europe.png}}
+\caption{First two Principal Components of individuals from European populations using the POPRES dataset \cite[]{nelson2008population}. PC1 correlates with latitude while PC2 correlates with longitude.}\label{fig:pca}
 \end{figure}
 
 These simple tests can be used only if individuals are not related to one another. If they do, a common practice is to remove one individual from each pair of related individuals. Another strategy is to use Linear Mixed Models (LMM) to take into account both relatedness and population structure; these mixed models have also the potential to increase discovery power in association testing \cite[]{yang2014advantages}.

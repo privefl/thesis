@@ -1,4 +1,4 @@
-\section*{Lightning fast multiple association testing}.
+\section{Lightning fast multiple association testing}.
 
 In this section, I describe how to quickly test many variables for an association with a continuous outcome of interest. For example, let us make a Genome-Wide Association Study (GWAS) of height, i.e.\ we want to determine which genome variants are associated with height.
 
@@ -25,3 +25,16 @@ z &= U^T s \\
 \widehat{\text{var}}(\hat{\beta}) &= \dfrac{y^{*T} y^* - \hat{\beta} ~ \hat{\beta}_{\text{num}}}{(N - K - 1) ~ \hat{\beta}_{\text{deno}}}~.
 \end{align*}
 Since $U$ and $y^*$ are computed only once for all variants, you can apply those formulas to compute these statistics for \numprint{1000000} variants and $N$=\numprint{500000} samples and $K$=$11$ covariates in one hour only \cite[]{prive2018efficient}. This is implemented in function \texttt{big\_univLinReg()} of package bigstatsr.
+
+
+\section{Implicit scaling of a matrix}
+
+The matrix formulation of column scaling is $\tilde{X} = C_n X S$, where $C_n = I_n - \frac{1}{n} 1_n 1_n^T$ is the centering matrix\footnote{\url{https://en.wikipedia.org/wiki/Centering_matrix}} and $S$ is a diagonal matrix with the scaling coefficients (typically, $S_{j,j} = 1 / \text{sd}_j$). 
+
+In algorithms such as Principal Component Analysis (PCA) or multiple linear regression, we must compute e.g.\ $\tilde{X} V$ and $\tilde{X}^T \tilde{X}$, where $V$ is another matrix. We can show how to compute these products without explicitly scaling the matrix $X$. This is really useful when working with on-disk matrices such as in R package bigstatsr, because you do not need to compute (and store) an intermediate scaled matrix.
+
+For example, for computing products, $\tilde{X} V = C_n X S V = C_n (X (S V))$. So, you can compute $\tilde{X} V$ without explicitly scaling $X$. 
+Another example, for computing self cross-products, $\tilde{X}^T \tilde{X} = (C_n X S)^T \cdot C_n X S = S^T X^T C_n X S$ ($C_n^2 = C_n$ is intuitive because centering an already centered matrix does not change it). Then, $\tilde{X}^T \tilde{X} = S^T X^T (I_n - \frac{1}{n} 1_n 1_n^T) X S = S^T (X^T X - X^T (\frac{1}{n} 1_n 1_n^T) X) S = S^T (X^T X - \frac{1}{n} s_X * s_X^T) S$ where $s_X$ is the vector of column sums of X.
+
+This implicit scaling can be quite useful if you manipulate very large matrices because you are not copying the matrix nor making useless computation. Yet, this can be used only if you do not have any missing value in your data. 
+This can be used to implement computing of a correlation matrix that is 20 times as fast as base R function \texttt{cor()}\footnote{\url{https://privefl.github.io/blog/(Linear-Algebra)-Do-not-scale-your-matrix/}}.

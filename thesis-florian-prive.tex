@@ -70,30 +70,54 @@
 
 \includepdf{cover}
 
+\section*{Remerciements}
+
+
+\tableofcontents
+
+
+\clearpage
+\section*{R\'esum\'e}
+
+\section*{Abstract}
+
+
+
 \chapter{Introduction}
 
 \input{intro.tex}
+
 
 \chapter[R packages for analyzing genome-wide data]{Efficient analysis of large-scale genome-wide data with two R packages: bigstatsr and bigsnpr}
 
 \input{chap1.tex}
 
-\chapter[Efficient Penalized Regression for PRS]{Efficient Implementation of Penalized Regression for Genetic Risk Prediction}
+
+\chapter[Efficient penalized regression for PRS]{Efficient Implementation of Penalized Regression for Genetic Risk Prediction}
 
 \input{chap2.tex}
+
 
 \chapter[{Making the most of Clumping and Thresholding}]{Making the most of Clumping and Thresholding for polygenic scores}
 
 \input{chap3.tex}
 
+
 \chapter{Conclusion and Discussion}
 
 \input{conclu.tex}
 
-\bibliographystyle{natbib}
-\bibliography{refs.bib}
 
-\chapter*{Appendix}
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{natbib}
+\bibliography{refs}
+
+
+\appendix
+
+\chapter{Code optimization based on linear algebra}
 
 \input{appendix.tex}
 
