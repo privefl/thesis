@@ -4,7 +4,7 @@
 
 Most of the time, only summary statistics for a GWAS dataset are available, i.e.\ the estimated effect sizes and p-values for each variant of the dataset. Because of the availability of such data en masse, specific methods using those summary data have been developed for a wide range of applications \cite[]{pasaniuc2014fast,vilhjalmsson2015modeling,bulik2015ld,pasaniuc2017dissecting,speed2018sumher}. Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers.
 One of these summary statistics based methods applicable for polygenic prediction is Clumping and Thresholding (C+T).
-When on limited sample size of individual-level data are available (as opposed to summary statistics), C+T provides a competitive method for deriving predictive polygenic risk scores \cite[]{prive2019efficient}.
+When only limited sample size of individual-level data are available (as opposed to summary statistics), C+T provides a competitive method for deriving predictive polygenic risk scores \cite[]{prive2019efficient}.
 
 C+T is the simplest and most widely-used method for constructing PRS based on summary statistics and has been used for many years now. The idea behind C+T is simple because it directly uses weights learned from GWAS; it further removes SNPs as one does when reporting hits from GWAS, i.e.\ only SNPs that pass the genome-wide threshold (p-value thresholding) and that are independent association findings (clumping) are reported.
 In GWAS, it is commonly accepted to use a p-value threshold of $5 \times 10^{-8}$ when reporting significant findings, yet for prediction purposes, including less significant SNPs can substantially improve predictive performance \cite[]{purcell2009common}.
@@ -12,7 +12,7 @@ In GWAS, it is commonly accepted to use a p-value threshold of $5 \times 10^{-8}
 Therefore, when using C+T, one has to choose a p-value threshold that balances between removing informative variants when using a stringent p-value threshold and adding too much noise in the score by including too many variants with no effect. The clumping step aims
 at removing redundancy in included effects that is simply due to linkage disequilibrium (LD) between variants. Yet, clumping may as well remove independently predictive variants in nearby regions; to balance this, C+T uses as hyper-parameter a threshold on correlation between variants included. 
 Thus, C+T users must choose hyper-parameters of C+T well if they want to maximize predictive performance of the polygenic score derived.
-Usually, users use some default value for these parameters, expect for the p-value threshold, for which they look at different values and choose the one maximizing predictive ability in some training set.
+Most of the time, people use default values for these parameters, expect for the p-value threshold, for which they look at different values and choose the one maximizing predictive ability in a training set.
 
 \subsection{Methods}
 
@@ -20,7 +20,7 @@ We implement an efficient way to compute many C+T scores corresponding to many d
 The 4 parameters we vary are the correlation threshold of clumping, the window size for looking at correlation, the p-value threshold and the imputation accuracy threshold when using imputed variants.
 In total, we investigate 5600 different sets of hyper-parameters for C+T.
 
-We also derive a C+T score for each chromosome separately, resulting in 123,200 different scores.
+We also derive C+T scores for each chromosome separately, resulting in 123,200 different scores.
 We propose to use stacking, i.e.\ we fit a penalized regression of these scores and learn an optimal linear combination of those scores instead of only choosing the best one \cite[]{breiman1996stacked}.
 We hypothesize that Stacked Clumping and Thresholding (SCT) has the potential to make C+T more flexible and to increase its predictive performance.
 Moreover, SCT results in a linear model from which we can derive an unique vector of coefficients to be used for testing in unseen individuals.

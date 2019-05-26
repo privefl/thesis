@@ -3,21 +3,21 @@
 \subsection{Introduction}
 
 ``Clumping+Thresholding'' (C+T) is the most common method to derive Polygenic Risk Scores (PRS). C+T uses only GWAS summary statistics with a (small) individual-level data reference panel to account for linkage disequilibrium (LD). 
-However, previous work showed that jointly estimating SNP effects has the potential to substantially improve the predictive performance of PRS as compared to C+T \cite[]{abraham2013performance}.
+However, previous work showed that jointly estimating SNP effects has the potential to substantially improve predictive performance of PRS as compared to C+T \cite[]{abraham2013performance}.
 Moreover, now that large individual-level datasets such as the UK Biobank are available, it would be a waste of information to not use them to their full potential \cite[]{bycroft2017genome}.
 Indeed, in order for PRS to be useful in clinical settings, it should be as predictive as possible.
 
 \subsection{Methods}
 
-We include some efficient implementation of penalized (linear and logistic) regressions in R package bigstatsr. 
+We included some efficient implementation of penalized (linear and logistic) regressions in R package bigstatsr. 
 This implementation is not specific to genotype data at all, but this paper focuses on its application to predicting disease status based on large genotype data.
 We recall that bigstatsr uses some matrix format stored on disk instead of memory, so that functions of this package can be very memory efficient.
 To make the algorithm very efficient, we based our implementation on existing implementations that use mathematical rules to quickly discard many variables as they will not enter the final model \cite[]{tibshirani2012strong}.
 These rules can be used when fitting penalized regression with either lasso or elastic net regularizations.
 To facilitate the choice of the two hyper-parameters of the elastic net regularization, we develop a procedure that we call Cross-Model Selection and Averaging (CMSA).
-CMSA is somehow similar to cross-validation but allows to derive an early stopping criterion that further increase the efficiency of the implementation.
+CMSA is somehow similar to cross-validation but allows to derive an early stopping criterion that further increases the efficiency of the implementation.
 
-We compare the penalized regressions with C+T and another method based on decision trees. We use extensive simulations to compare methods for different disease architectures, sample sizes and number of variables. We also compare methods in models with non-additive effects and show how to extend penalized regression to account for recessive and dominant effects on top of additive effects. Finally, we compare performance of methods using the UK Biobank, training models on 350K individuals using 656K genotyped SNPs.
+We compare the penalized regressions with C+T and another method based on decision trees. We use extensive simulations to compare methods for different disease architectures, sample sizes and number of variables. We also compare methods in models with non-additive effects and show how to extend penalized regression to account for recessive and dominant effects on top of additive effects. Finally, we compare performance of methods using the UK Biobank, training models on 350K individuals and using 656K genotyped SNPs.
 
 \subsection{Results}
 
@@ -29,7 +29,8 @@ Finally, we show that our implementation of penalized regressions is scalable to
 \subsection{Discussion}
 
 In this paper, we demonstrate the feasibility and relevance of using penalized regressions for PRS computation when large individual-level datasets are available. Indeed, first, we show that the larger is the data, the larger is the gain in predictive performance of PLR over C+T. Second, we show that our implementation of PLR is scalable to very large datasets such as the UK Biobank.
-We discuss what makes our implementation scalable to very large datasets by explaining the algorithm and its memory requirements.Computation time is a function of the sample size and the number of variables with a predictive effect.
+We discuss what makes our implementation scalable to very large datasets by explaining the algorithm and its memory requirements.
+Computation time is a function of the sample size and the number of variables with a predictive effect.
 
 
 \section{Article and supplementary materials}
