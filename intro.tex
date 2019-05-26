@@ -53,8 +53,8 @@ To illustrate the importance of accounting for population structure, consider a 
 
 These simple tests can be used only if individuals are not related to one another. If they do, a common practice is to remove one individual from each pair of related individuals. Another strategy is to use Linear Mixed Models (LMM) to take into account both relatedness and population structure; these mixed models have also the potential to increase discovery power in association testing \cite[]{yang2014advantages}.
 
-To date, more than 10,000 strong associations have been reported between genetic variants and one or more complex traits \cite[]{welter2013nhgri}, where ``strong'' is defined as statistically significant at the genome-wide p-value threshold of $5 \cdot 10^{-8}$. This threshold corresponds to a type-I error of 5\%, Bonferroni-corrected for one million independent tests \cite[]{pe2008estimation}. Results of a GWAS are usually reported in a Manhattan plot (Figure \ref{fig:gwas}). 
-Manhattan plots show some association peaks (similar to skyscrapers in Manhattan) due to some local correlation between SNPs (Linkage Disequilibrium), with squared correlation roughly inversely proportional to distance between SNPs \cite[]{hudson2001two}.
+In 2013, more than 10,000 strong associations had been reported between genetic variants and one or more complex traits \cite[]{welter2013nhgri}, where ``strong'' is defined as statistically significant at the genome-wide p-value threshold of $5 \times 10^{-8}$. This threshold corresponds to a type-I error of 5\%, Bonferroni-corrected for one million independent tests \cite[]{pe2008estimation}. Results of a GWAS are usually reported in a Manhattan plot (Figure \ref{fig:gwas}). 
+Manhattan plots show some association peaks (similar to skyscrapers in Manhattan) due to some local correlation between SNPs (Linkage Disequilibrium), with squared correlation roughly inversely proportional to genetic distance between SNPs \cite[]{hudson2001two}.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.95\textwidth]{gwas-height-20K.png}}
@@ -68,17 +68,16 @@ There are mainly three types of individual-level data: genotyped SNPs from genot
 Genotyping chips enables a quick and cheap genotyping of 200K to 2M SNPs, mostly focusing on common variants (Minor Allele Frequency (MAF) larger than 1-5\%). From this genotyping, you can get a matrix of $0$s, $1$s and $2$s, counting the number of alternative alleles for each individual (row) and each genome position (column). There are usually few missing values (less than 5\% in total) when using this technology.
 
 Imputation has a different meaning in genetics than in other Data Science fields; it does not refer to filling those 5\% missing values, but instead refers to adding completely new variants that were not genotyped with the chip used. 
-Imputation is enabled by the fact that genotypes of unobserved genetic variants can be predicted by haplotypes inferred from multiple observed SNPs (the ones that were genotyped) and haplotypes observed from a fully sequenced reference
-panel \cite[]{marchini2010genotype,mccarthy2016reference}.
-Imputation now allows to have large genomic datasets such as the UK Biobank: 90M imputed SNPs for each of 500K genotyped individuals who were sequenced at 800K SNPs only \cite[]{bycroft2017genome}.
+This type of imputation is possible because genotypes of unobserved genetic variants can be predicted by haplotypes inferred from multiple observed SNPs (the ones that were genotyped) and haplotypes observed from a fully sequenced reference panel \cite[]{marchini2010genotype,mccarthy2016reference}.
+Imputation now allows to have large GWAS datasets such as the UK Biobank: 90M imputed variants for each of 500K individuals who were initially genotyped at 800K SNPs only \cite[]{bycroft2017genome}.
 
-Finally, NGS (also named Whole Genome Sequencing (WGS)) refers to fully sequenced data over more than 3M variants, including some rare variants. Yet, this technology is still very expensive, with a cost of around \$1000 per genome.
+Finally, NGS (also named Whole Genome Sequencing (WGS)) refers to fully sequenced data over more than 3M variants, including some rare variants. Yet, this technology is still very expensive, with a cost of around \$1000 per genome but that could reduce to \$100 in a few years\footnote{\url{https://www.bloomberg.com/news/articles/2019-02-27/a-100-genome-within-reach-illumina-ceo-asks-if-world-is-ready}}.
 GWAS to date have been based on SNP arrays designed to tag common variants in the genome. These arrays do not cover all genetic variants in the population, and it seems natural that future GWAS will be based on WGS. However, the price differential between SNP arrays and WGS is still substantial, and array technology remains more robust than sequencing \cite[]{visscher201710}. An in-between solution could be to use extremely low-coverage sequencing \cite[]{pasaniuc2012extremely}.
 
-Recently, some national biobank projects have emerged. For example, the UK Biobank has released both genome-wide genotypes and rich phenotypic data on 500K individuals to the international research community \cite[]{bycroft2017genome}.
+Recently, some national biobank projects have emerged. For example, the UK Biobank has released to the international research community both genome-wide genotypes and rich phenotypic data on 500K individuals \cite[]{bycroft2017genome}.
 Yet, it is rare to have access to large individual-level genotype data. 
-Most of the time, only summary statistics for a GWAS dataset are available, i.e.\ the estimated effect sizes and p-values for each variant of the dataset (Table \ref{tab:sumstats}). Because of the availability of such data en masse, specific methods using those summary data have been developed for a wide range of applications such as imputation, polygenic prediction and heritability estimation \cite[]{pasaniuc2014fast,vilhjalmsson2015modeling,bulik2015ld,pasaniuc2017dissecting,speed2018sumher}. The craze for such data can be explained by the fact that GWAS individual-level data, sometimes consisting of dozens of different datasets, cannot be easily shared publicly, as opposed to summary data \cite[]{lin2010meta}.
-So, modern large GWAS are in fact meta-analyses of many smaller GWAS summary statistics.
+Usually, only summary statistics for a GWAS dataset are available, i.e.\ the estimated effect sizes and p-values for association of each variant of the dataset with a phenotype of interest (Table \ref{tab:sumstats}). Because of the availability of such data en masse, specific methods using those summary data have been developed for a wide range of applications such as imputation, polygenic prediction and heritability estimation \cite[]{pasaniuc2014fast,vilhjalmsson2015modeling,bulik2015ld,pasaniuc2017dissecting,speed2018sumher}. The craze for such data can be explained by the fact that GWAS individual-level data cannot be easily shared publicly, as opposed to summary data \cite[]{lin2010meta}.
+In fact, modern large GWAS are meta-analyses of many smaller GWAS summary statistics.
 Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers.
 
 In this thesis, we have not used NGS data, but we have used genotyped SNPs, imputed SNPs and summary statistics to construct predictive models of disease risk, for many common diseases.
@@ -124,7 +123,7 @@ The SNPs are first clumped (C) so that there remains only SNPs that are weakly c
 The clumping step aims at removing redundancy in included effects that is simply due to linkage disequilibrium (LD) between variants (see figures \ref{fig:gwas2} and \ref{fig:gwasLD}). Yet, this procedure may as well remove independently predictive variants in nearby regions.
 
 Thresholding (T) consists in removing SNPs that are under a chosen level of significance (a p-value threshold $p_T$) in order to reduce noise in the score.
-In figure \ref{fig:gwas2}, using no threshold corresponds to ``C+T-all''; using the genome-wide threshold of $5 \cdot 10^{-8}$ corresponds to ``C+T-stringent''; generally, many values are tested to choose an ``optimal'' value for this parameter. 
+In figure \ref{fig:gwas2}, using no threshold corresponds to ``C+T-all''; using the genome-wide threshold of $5 \times 10^{-8}$ corresponds to ``C+T-stringent''; generally, several p-value thresholds are tested to maximize prediction. 
 
 A polygenic risk score is finally defined as the sum of allele counts of the remaining SNPs (after clumping and thresholding) weighted by the corresponding GWAS effect sizes \cite[]{purcell2009common,Dudbridge2013,wray2014research,Euesden2015},
 \[\rm{PRS}_i = \sum_{\substack{j \in S_\text{clumping} \\ p_j~<~p_T}} \hat\beta_j \cdot G_{i,j}~,\] where $\hat\beta_j$ ($p_j$) are the effect sizes (p-values) estimated from the GWAS and $G_{i,j}$ is the allele count (genotype) for individual $i$ and SNP $j$.
@@ -142,9 +141,9 @@ A polygenic risk score is finally defined as the sum of allele counts of the rem
 \subsection{PRS for epidemiology}
 
 Polygenic Risk Scores (PRS) have been used for epidemiology before being used for prediction. The steps for a PRS analysis are illustrated in figure \ref{fig:steps-PRS} and have two goals. 
-First, PRS can be used when there is no SNP detected (at $5 \cdot 10^{-8}$) in a GWAS in order to show that there is still a significant polygenic contribution to the phenotype of interest. 
-For example, in 2009, a GWAS for Schizophrenia by \cite{purcell2009common} found only a single significantly associated SNP, although this disease is known to be highly heritable. Yet, by constructing a PRS using these GWAS results and testing this polygenic score for association with Schizophrenia in another independent dataset, \cite{purcell2009common} proved that there is a polygenic contribution to Schizophrenia (Figure \ref{fig:epi-PRS}). 
-Thus, polygenic analysis methods were central in demonstrating that the first phase of GWAS were underpowered, which propelled the drive for larger sample sizes that is now starting to pay off \cite[]{wray2014research}.
+First, PRS can be used when there is no SNP detected (at $5 \times 10^{-8}$) in a GWAS in order to show that there is still a significant polygenic contribution to the phenotype of interest. 
+For example, in 2009, a GWAS for schizophrenia by \cite{purcell2009common} found only a single significantly associated SNP, although this disease is known to be highly heritable. Yet, by constructing a PRS using these GWAS results and testing this polygenic score for association with schizophrenia in another independent dataset, \cite{purcell2009common} proved that there is a polygenic contribution to schizophrenia (Figure \ref{fig:epi-PRS}). 
+Thus, polygenic analysis methods were central in demonstrating that the first phase of GWAS was underpowered, which justified the need for larger sample sizes that is now starting to pay off \cite[]{wray2014research}.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.8\textwidth]{genomic-profile.png}}
@@ -158,7 +157,7 @@ Thus, polygenic analysis methods were central in demonstrating that the first ph
 
 Another use of PRS for epidemiology is to test the PRS for association with a phenotype that is different from the one used to compute the summary statistics.
 This technique enables researchers to prove that there is a common genetic contribution between two traits. 
-For example, it was shown that there is a common genetic contribution between Schizophrenia and bipolar disorder (Figure \ref{fig:epi-PRS}). 
+For example, it was shown that there is a common genetic contribution between schizophrenia and bipolar disorder (Figure \ref{fig:epi-PRS}). 
 
 
 \subsection{The differing goals of association testing and risk prediction}
@@ -178,54 +177,53 @@ Indeed, for predictive purposes, the objective is to provide the best possible p
 
 The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only.
 For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors among a population \cite[]{visscher2008heritability}.
-Methods now enable the estimation of chip-heritability (also called SNP-heritability: $h^2_{SNP}$) using linear mixed models and residual maximum likelihood. For example, for a chip of 300K SNPs, it was shown that those SNPs could account for 45\% of the variance of height \cite[]{yang2010common}.
+Methods now enable the estimation of chip-heritability (also called SNP-heritability: $h^2_{SNP}$) using linear mixed models (LMM) and residual maximum likelihood (ReML). For example, for a chip of 300K SNPs, it was shown that those SNPs could account for 45\% of the variance of height \cite[]{yang2010common}.
 Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants,visscher2006assumption}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability \cite[]{visscher2008heritability}. Authors of a recent preprint claim that they can recover the full heritability for height and BMI using both rare and common variants from NGS data \cite[]{wainschtein2019recovery}.
 
 So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
-The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of genetic prediction and my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
+The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
 
-The gap between predictions and heritabilities was really huge in the first years of GWAS.
+The gap between predictions and heritability estimates was very large in the first years of GWAS.
 For example, first GWAS found only 12 associated SNPs for type 2 diabetes and only 2 for prostate cancer, explaining a very small proportion of heritability for these diseases \cite[]{jakobsdottir2009interpretation}. 
-Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together these explained about 5\% of the heritability of height \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700, explaining 20\% of the heritability of height \cite[]{wood2014defining}.
-Since most of the identified associated SNPs have an effect size close to the limit dictated by the power of the studies, a likely explanation, at least in part, is that there are many common polymorphisms with effects that are too small to pass the stringent significance threshold of current GWAS \cite[]{wray2008prediction}.
+Likewise, in 2008, only 40 genome-wide-significant SNPs had been identified for height, and together they explained about 5\% of the heritability of height \cite[]{manolio2009finding}. In 2014, the number of associated SNPs had increased to around 700 for height, explaining 20\% of its heritability \cite[]{wood2014defining}.
+Since many of the identified associated SNPs have an effect size close to the limit dictated by the power of the studies, a likely explanation, at least in part, is that there are many common polymorphisms with effects that are too small to be identified at the stringent significance threshold of current GWAS \cite[]{wray2008prediction}.
 Therefore, as results from multiple GWAS are combined to increase sample size, a larger fraction of the genetic variance is likely to be explained and accurate prediction of genetic risk to disease will become possible even though the risks conveyed by individual variants are small \cite[]{wray2008prediction,wray2018common}.
 These findings have also led people to use not only genome-wide significant SNPs, but many other SNPs, sometimes not even marginally significant (i.e.\ with a p-value > 5\%) in order to maximize predictive power \cite[]{purcell2009common,Dudbridge2013,wray2014research}.
 
 
 \subsection{Methods for polygenic prediction}
 
-Several methods have been developed to predict disease status based on SNP information.
+Several methods have been developed to predict disease status based on genetic data.
 We can divide these methods in two categories: the ones that use summary statistics and the ones that use individual-level data only.
 
 When summary statistics are available, the most widely used method is called ``Clumping + Thresholding'' (C+T), which has been described in section \ref{sec:C+T}.
 More recently, researchers have focused their efforts on implementing more elegant and potentially more optimal ways to account for LD, as a replacement of clumping that simply discards SNPs \cite[]{vilhjalmsson2015modeling,mak2017polygenic,chun2019non,ge2019polygenic}. 
-Take the solution of a linear regression $y = X \beta + \epsilon$, $\hat{\beta} = \left(X^T X\right)^{-1} X^T y$. This vector of effect sizes $\hat{\beta}$, estimated from all variables at once, can be decomposed in two parts: $X^T y$ that represents the marginal effects, i.e.\ the effects of each variable when learned independently; and $\left(X^T X\right)^{-1}$, some rotation of the effects that account for the correlation between variables.
-Then, the first element can be replaced by summary statistics and the second element can be replaced by an estimation of the LD structure of the SNPs, e.g.\ from a reference panel. 
-In practice, [$X^T y$ is estimated by TODO] and $\left(X^T X\right)^{-1}$ is computed by window. [TODO: parler de bayesian or lasso]
+Take the solution of a linear regression $y = X \beta + \epsilon$, $\hat{\beta} = \left(X^T X\right)^{-1} X^T y$. This vector of effect sizes $\hat{\beta}$, estimated from all variables at once, can be decomposed in two parts: $X^T y$ that represents the marginal effects, i.e.\ the effects of each variable when learned independently (up to some scaling); and $\left(X^T X\right)^{-1}$, some rotation of the effects that account for the correlation between variables.
+Then, the first element can be replaced by summary statistics and the second element can be replaced by an estimation of LD, e.g.\ from a reference panel.
 
-
-Moreover, these methods handle weights differently than C+T that directly uses GWAS effect sizes as weights in the PRS, or weights of 0 for SNPs not passing the thresholding step. Instead, these methods usually shrink effects towards 0. 
-Apart from the method of \cite{mak2017polygenic}, the other methods do not perform variable selection at all. This means that if you use GWAS summary statistics for 10M variants as input, you would get a predictive model composed of 10M variables \cite[]{janssens2019polygenic}.
+Moreover, these methods handle weights differently than C+T that directly uses GWAS effect sizes as weights in the PRS, or weights of 0 for SNPs not passing the clumping and thresholding steps. Instead, these methods usually shrink effects towards 0. 
+Apart from ``lassosum'' of \cite{mak2017polygenic}, the other methods do not perform variable selection at all. This means that if you use GWAS summary statistics for 10M variants as input, you would get a predictive model composed of 10M variables \cite[]{janssens2019polygenic}.
 
 When using individual-level data only, the problem boils down to a standard classification problem. Thus, some statistical learning methods have been used to derive PRS for complex human diseases by jointly estimating SNP effects. Such methods include joint logistic regression, Support Vector Machine (SVM) and random forests \cite[]{wei2009disease,abraham2012sparsnp,abraham2014accurate,botta2014exploiting,okser2014regularized}.
 Linear Mixed-Models (LMMs) are another widely-used method in fields such as plant and animal breeding or for predicting highly heritable quantitative human phenotypes such as height \cite[]{yang2010common}. 
 However, these methods and their derivatives are often computationally very demanding, both in terms of memory and time required \cite[]{zhou2013polygenic,golan2014effective,speed2014multiblup,maier2015joint}.
-Recently, two methods named BOLT-LMM and SAIGE have been developed to handle very large datasets \cite[]{loh2018mixed,zhou2018efficiently}. BOLT-LMM and SAIGE were primarily designed for association testing but could also be used for prediction purposes based on individual-level data.
+Recently, two methods named BOLT-LMM and SAIGE have been developed to handle very large datasets \cite[]{loh2018mixed,zhou2018efficiently}. 
+BOLT-LMM and SAIGE were primarily designed for association testing but can also be used for prediction purposes based on individual-level data.
 
 \subsection{Objective and main difficulties of the thesis}
 
 We want to use genetic data to help distinguish between cases and controls for a given disease, or at least to stratify people in the population in order to improve early detection of diseases and prevention for high-risk individuals.
-Genomic data are usually very large and highly dimensional with hundreds of thousands of variables to many millions, for thousands or hundred of thousands individuals.
+Genomic data are usually very large and highly dimensional with hundreds of thousands of variables to many millions, for thousands or hundreds of thousands individuals.
 Thanks to large sample sizes of recent GWAS studies, many robust associations between DNA variants and many diseases have been identified. Yet, individually, these variants generally have a small effect on disease susceptibility, explaining a small fraction of the total heritability of the diseases studied. 
-In order to have predictive models useful in clinical settings, we need to combine the information from a multitude of DNA variants, coming from multiple studies, and in diverse formats (e.g.\ individual-level data and summary statistics).
+In order to have predictive models useful in clinical settings, we need to combine the information from a multitude of DNA variants (polygenic models), coming from multiple studies and in diverse formats (e.g.\ individual-level data and summary statistics).
 
 To improve current disease predictions from Polygenic Risk Scores (PRS), we have focused on using methods from the statistical learning community, which have received only moderate attention in the "predictive human genetics" field.
 The main difficulty in using these methods is that they do not necessarily scale well with the large-scale data we now have in this field.
-For example, the UK Biobank is composed of 500K individuals from which 90M variants are available \cite{bycroft2017genome}.
-When analyzing these large-scale datasets, only a few methods are usable.
+For example, the UK Biobank is composed of 500K individuals from which 90M variants are available \cite[]{bycroft2017genome}.
+When analyzing these large-scale datasets, only a few methods can be used.
 Most of them are being developed in a separate piece of software that does a specific analysis.
 Yet, if you want to do some exploratory analyses and test new ideas, it becomes increasingly difficult to do so.
 
 Thus, the first part of our work has been dedicated to developing two R packages that could handle very large datasets, while being simple and flexible to use for both standard and exploratory analyses. 
 Our second paper has been dedicated to implementing penalized regressions as a replacement to more simple, less optimal methods, and that could be used for very large individual-level datasets.
-Finally, because lots of summary statistics data are available while individual-level data are still scarce, we worked on making the most out of the Clumping and Thresholding (C+T) method since it proved to be a simple and effective method for constructing PRS based on large GWAS summary statistics and smaller individual-level datasets.
+Finally, because lots of summary statistics data are available while individual-level data are still scarce, we worked on making the most of the Clumping and Thresholding (C+T) method since it proved to be a simple and effective method for constructing PRS based on large GWAS summary statistics and smaller individual-level datasets.
