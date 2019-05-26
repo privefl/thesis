@@ -1,27 +1,27 @@
 \section{Lightning fast multiple association testing}.
 
-In this section, I describe how to quickly test many variables for an association with a continuous outcome of interest. For example, let us make a Genome-Wide Association Study (GWAS) of height, i.e.\ we want to determine which genome variants are associated with height.
+Here, I describe how to quickly test many variables for an association with a continuous outcome of interest. For example, let us make a Genome-Wide Association Study (GWAS) of height, i.e.\ we want to determine which genome variants are associated with height.
 
 The model we want to test is $$y = \beta s + X \gamma + \epsilon~,$$ where $s$ is one variant (we want to do this for each variant, separately), $X$ are some covariates to adjust for some possible confounding factors (a matrix of $N$ samples over $K$ columns, including a column of $1$s to account for an intercept in the model). 
 We are only interested in estimating $\hat{\beta}$ and computing a p-value corresponding to the significance of the alternative hypothesis that $\beta \neq 0$.
 
 \cite{sikorska2013gwas} show that we can rewrite this problem as $$y^* = \beta s^* + \epsilon~,$$ where $y^* = y - X (X^T X)^{-1} X^T y$ and $s^* = s - X (X^T X)^{-1} X^T s$. Thus, this becomes a simple linear problem which is easy and fast to solve. We have
 \begin{align*}
-\hat{\beta} &= \dfrac{s^{*T} y^*}{s^{*T} s^*} \\
-\widehat{\text{var}}(\hat{\beta}) &= \dfrac{(y^* - \hat{\beta} s^*)^T (y^* - \hat{\beta} s^*)}{(N - K - 1) ~ s^{*T} s^*} \\
-\frac{\hat{\beta}}{\sqrt{\widehat{\text{var}}(\hat{\beta})}} &\sim T(N - K - 1)
+\hat{\beta} &= \dfrac{s^{*T} y^*}{s^{*T} s^*} ~, \\
+\widehat{\text{var}}(\hat{\beta}) &= \dfrac{(y^* - \hat{\beta} s^*)^T (y^* - \hat{\beta} s^*)}{(N - K - 1) ~ s^{*T} s^*} ~, \\
+\frac{\hat{\beta}}{\sqrt{\widehat{\text{var}}(\hat{\beta})}} &\sim T(N - K - 1) ~.
 \end{align*}
 
-We go further by computing the singular value decomposition $X = U \Delta V^T$ ($N \times K$ matrix). As $N \gg K$, we have $U^T U = I_K$, $V^T V  = I_K$ and $V V^T = I_K$. Thus $X (X^T X)^{-1} X^T = U \Delta V^T (V \Delta U^T U \Delta V^T)^{-1} V \Delta U^T = U \Delta V^T (V \Delta^2 V^T)^{-1} V \Delta U^T = U \Delta V^T (V \Delta^{-2} V^T) V \Delta U^T = U U^T$.
-We can simplify $s^{*T} y^* = (s - U U^T s)^T y^* = s^T y^* - s^T \underbrace{U U^T y^*}_0 = s^T y^*$, 
+We extend this idea further by computing the singular value decomposition $X = U \Delta V^T$ ($N \times K$ matrix). As $N \gg K$, we have $U^T U = I_K$, $V^T V  = I_K$ and $V V^T = I_K$. Thus $X (X^T X)^{-1} X^T = U \Delta V^T (V \Delta U^T U \Delta V^T)^{-1} V \Delta U^T = U \Delta V^T (V \Delta^2 V^T)^{-1} V \Delta U^T = U \Delta V^T (V \Delta^{-2} V^T) V \Delta U^T = U U^T$.
+Then, we can simplify $s^{*T} y^* = (s - U U^T s)^T y^* = s^T y^* - s^T \underbrace{U U^T y^*}_0 = s^T y^*$, 
 $s^{*T} s^* = (s - U U^T s)^T (s - U U^T s) = s^T s - 2 s^T U U^T s + s^T U U^T U U^T s = s^T s - s^T U U^T s = s^T s - z^T z$, where $z = U^T s$, 
 and $(y^* - \hat{\beta} s^*)^T (y^* - \hat{\beta} s^*) = y^{*T} y^* - 2 \hat{\beta} s^{*T} y^* + \hat{\beta}^2 s^{*T} s^* = y^{*T} y^* - 2 \hat{\beta} s^{*T} y^* + \hat{\beta} s^{*T} y^* = y^{*T} y^* - \hat{\beta} s^{T} y^*$.
 So, we only need to compute
 \begin{align*}
-z &= U^T s \\
-\hat{\beta}_{\text{num}} &= s^{T} y^* \\
-\hat{\beta}_{\text{deno}} &= s^T s - z^T z \\
-\hat{\beta} &= \hat{\beta}_{\text{num}} / \hat{\beta}_{\text{deno}} \\
+z &= U^T s ~, \\
+\hat{\beta}_{\text{num}} &= s^{T} y^* ~, \\
+\hat{\beta}_{\text{deno}} &= s^T s - z^T z ~, \\
+\hat{\beta} &= \hat{\beta}_{\text{num}} / \hat{\beta}_{\text{deno}} ~, \\
 \widehat{\text{var}}(\hat{\beta}) &= \dfrac{y^{*T} y^* - \hat{\beta} ~ \hat{\beta}_{\text{num}}}{(N - K - 1) ~ \hat{\beta}_{\text{deno}}}~.
 \end{align*}
 Since $U$ and $y^*$ are computed only once for all variants, you can apply those formulas to compute these statistics for \numprint{1000000} variants and $N$=\numprint{500000} samples and $K$=$11$ covariates in one hour only \cite[]{prive2018efficient}. This is implemented in function \texttt{big\_univLinReg()} of package bigstatsr.
@@ -36,5 +36,5 @@ In algorithms such as Principal Component Analysis (PCA) or multiple linear regr
 For example, for computing products, $\tilde{X} V = C_n X S V = C_n (X (S V))$. So, you can compute $\tilde{X} V$ without explicitly scaling $X$. 
 Another example, for computing self cross-products, $\tilde{X}^T \tilde{X} = (C_n X S)^T \cdot C_n X S = S^T X^T C_n X S$ ($C_n^2 = C_n$ is intuitive because centering an already centered matrix does not change it). Then, $\tilde{X}^T \tilde{X} = S^T X^T (I_n - \frac{1}{n} 1_n 1_n^T) X S = S^T (X^T X - X^T (\frac{1}{n} 1_n 1_n^T) X) S = S^T (X^T X - \frac{1}{n} s_X * s_X^T) S$ where $s_X$ is the vector of column sums of X.
 
-This implicit scaling can be quite useful if you manipulate very large matrices because you are not copying the matrix nor making useless computation. Yet, this can be used only if you do not have any missing value in your data. 
-This can be used to implement computing of a correlation matrix that is 20 times as fast as base R function \texttt{cor()}\footnote{\url{https://privefl.github.io/blog/(Linear-Algebra)-Do-not-scale-your-matrix/}}.
+This implicit scaling can be quite useful if you manipulate very large matrices because you are not copying the matrix nor making useless computation. 
+For example, this can be used to compute a correlation matrix 20 times as fast as base R function \texttt{cor()}\footnote{\url{https://privefl.github.io/blog/(Linear-Algebra)-Do-not-scale-your-matrix/}}.
