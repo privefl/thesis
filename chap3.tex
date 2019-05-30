@@ -34,7 +34,9 @@ Moreover, SCT often provides substantial predictive performance improvement over
 
 \subsection{Discussion}
 
-We provide an efficient way to compute C+T scores for many different hyper-parameters values in R package bigsnpr. We show that fine-tuning hyper-parameters of C+T improves its predictive performance as compared to using some default values for clumping. Investigating 8 different disease phenotypes, we show that the optimal C+T hyper-parameters for those traits are very different, probably because these diseases have different architectures.
+We provide an efficient way to compute C+T scores for many different hyper-parameters values in R package bigsnpr.
+Investigating 8 different diseases, we show that the optimal C+T hyper-parameters for those traits are very different, probably because these diseases have different architectures.
+Therefore, fine-tuning hyper-parameters of C+T improves its predictive performance as compared to using default values for clumping. 
 
 Instead of choosing one set of hyper-parameters that maximizes predictive performance in a training set, we propose instead to learn a combination of many C+T scores, corresponding to different sets of hyper-parameters.
 This extension of C+T that we call SCT (Stacked C+T) makes C+T more flexible.
@@ -43,4 +45,6 @@ Moreover, we implement the possibility for an user of SCT to define their own gr
 
 \section{Article 3 and supplementary materials}
 
-The following article is available as a preprint in \textit{bioRxiv}	\footnote{\url{https://doi.org/}}.
+The following article is available as a preprint in \textit{bioRxiv}	\footnote{\url{https://doi.org/10.1101/653204}}.
+
+\includepdf{paper3.pdf}
