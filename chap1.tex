@@ -5,7 +5,7 @@
 Sample size of GWAS data has rapidly grown due to the reduction in genotyping costs over the years. Moreover, thanks to the imputation of many non-genotyped SNPs, the number of available SNPs for a given dataset has grown to millions. In 2007, there were datasets with 2000 cases and 3000 controls, genotyped over 300K SNPs \cite[]{wellcome2007genome}. Now, there are datasets of 500K individuals, genotyped over 800K SNPs, and imputed over 90M SNPs \cite[]{bycroft2017genome}.
 Genotype data are the first data of the omics family to have grown to such large scale. To analyze these datasets, software have been consistently produced or updated over the years to keep up with growing sizes. 
 I think this is one of a few fields where producing software is really recognized as an important part of research to help advance the field.
-An obvious example in genetics is PLINK, a command line piece of software whose first version has been cited more than 17K times since 2007 and whose second version has already been cited more than 1500 times since 2015 \cite[]{purcell2007plink,chang2015second}. This software is useful for file conversions as well as many types of analyses and is used in plant, animal and human genetics alike.
+An obvious example in genetics is PLINK, a command line piece of software whose first version has been cited more than 17K times since 2007 and whose second version has already been cited more than 1500 times since 2015 \cite[]{purcell2007plink,chang2015second}. This software is useful for file conversions as well as many types of SNP data analyses and is used in plant, animal and human genetics alike.
 
 I wanted to use R to analyze data from this field as it provides excellent tools for exploratory analyses. 
 R is a programming language that makes it easy to tie together existing or
@@ -13,7 +13,7 @@ new functions to be used as part of large, interactive and reproducible
 analyses \cite[]{R2018}.
 Yet, most of the R packages that have been developed in human genetics are now obsolete because they cannot scale to the size of the data we currently have in the field.
 The first problem there is to solve is to actually store the data. For example, a standard R matrix of size 500K x 800K would require 3TB of RAM just to access it in memory.
-The second problem is the computation time; if all functions provided by a package take two weeks to run, it is not really useful.
+The second problem concerns computation time; if all functions provided by a package take two weeks to run, it is not really useful.
 
 \subsection{Methods}
 

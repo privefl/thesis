@@ -52,6 +52,14 @@
 
 \makeatletter
 
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
 %% Bold symbol macro for standard LaTeX users
 %\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
@@ -68,24 +76,58 @@
 
 \begin{document}
 
+\includepdfset{offset=.15in 0in,noautoscale,scale=1,pages={-},pagecommand={}}
 \includepdf{cover}
+
+\afterpage{\blankpage}
 \includepdfset{offset=.25in 0in,noautoscale,scale=0.83,pages={-},pagecommand={}}
+
+
+\clearpage
+
+\section*{Abstract}
+
+Genotyping is becoming cheaper, making genotype data available for millions of individuals.
+Moreover, imputation enables to get genotype information at millions of loci capturing most of the genetic variation in the human genome.
+Given such large data and the fact that many traits and diseases are heritable (e.g.\ 80\% of the variation of height in the population can be explained by genetics), it is envisioned that predictive models based on genetic information will be part of a personalized medicine.
+
+In my thesis work, I focused on improving predictive ability of polygenic models.
+Because prediction modeling is part of a larger statistical analysis of datasets, I developed tools to allow flexible exploratory analyses of large datasets, which consist in two R/C++ packages described in the first part of my thesis.
+Then, I developed some efficient implementation of penalized regression to build polygenic models based on hundreds of thousands of genotyped individuals.
+Finally, I improved the ``clumping and thresholding'' method, which is the most widely used polygenic method and is based on summary statistics that are widely available as compared to individual-level data.
+
+Overall, I applied many concepts of statistical learning to genetic data. I used extreme gradient boosting for imputing genotyped variants, feature engineering to capture recessive and dominant effects in penalized regression, and parameter tuning and stacked regressions to improve polygenic prediction.
+Statistical learning is not widely used in human genetics and my thesis is an attempt to change that.
+
+
+\clearpage
+
+\section*{R\'esum\'e}
+
+Le g\'enotypage devient moins cher, rendant les donn\'ees de g\'enotypes disponibles pour des millions d'individus.
+De plus, l'imputation permet d'obtenir l'information g\'enotypique pour des millions de positions de l'ADN, capturant l'essentiel de la variation g\'en\'etique du g\'enome humain.
+Compte tenu de la richesse des donn\'ees et du fait que de nombreux traits et maladies sont h\'er\'editaires (par exemple, la g\'en\'etique peut expliquer 80\% de la variation de la taille dans la population), il est envisag\'e d'utiliser des mod\`eles pr\'edictifs bas\'es sur l'information g\'en\'etique dans le cadre d'une m\'edecine personnalis\'ee.
+
+Pour ma th\`ese, je me suis concentr\'e sur l'am\'elioration de la capacit\'e pr\'edictive des mod\`eles polyg\'eniques.
+Les mod\`eles pr\'edictifs faisant partie d'une analyse statistique plus large des jeux de donn\'ees, j'ai d\'evelopp\'e des outils permettant l'analyse exploratoire de grands jeux de donn\'ees, constitu\'es de deux packages R/C++ d\'ecrits dans la premi\`ere partie de ma th\`ese.
+Ensuite, j'ai d\'evelopp\'e une impl\'ementation efficace de la r\'egression p\'enalis\'ee pour construire des mod\`eles polyg\'eniques bas\'es sur des centaines de milliers d'individus g\'enotyp\'es.
+Enfin, j'ai am\'elior\'e la m\'ethode appel\'ee ``clumping and thresholding'', qui est la m\'ethode polyg\'enique la plus largement utilis\'ee et est bas\'ee sur des statistiques r\'esum\'ees largement disponibles par rapport aux donn\'ees au niveau individuel.
+
+Dans l'ensemble, j'ai appliqu\'e de nombreux concepts d'apprentissage statistique aux donn\'ees g\'en\'etiques. J'ai utilis\'e du ``extreme gradient boosting'' pour imputer des variants g\'enotyp\'ees, du ``feature engineering'' pour capturer des effets r\'ecessifs et dominants dans une r\'egression p\'enalis\'ee, et du ``parameter tuning'' et des ``stacked regressions'' pour am\'eliorer les mod\`eles polyg\'eniques pr\'edictifs.
+L'apprentissage statistique n'est pour l'instant pas tr\`es utilis\'e en g\'en\'etique humaine et ma th\`ese est une tentative pour changer cela.
+
+
+\clearpage
 
 \section*{Remerciements}
 
+
+\clearpage
 
 \tableofcontents
 
 
 \clearpage
-\section*{R\'esum\'e}
-
-[TODO]
-
-\section*{Abstract}
-
-[TODO]
-
 
 \chapter{Introduction}
 

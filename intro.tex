@@ -7,14 +7,14 @@ In this introduction, we first introduce the context of our research and the typ
 
 \section{Context}
 
-Today, clinical risk prediction for common adult-onset diseases often relies on basic demographic characteristics, such as age, gender and ethnicity; basic health parameters and lifestyle factors, such as body mass index, smoking status, alcohol consumption and physical activity; measurement of clinical risk factors linked to disease onset, such as blood pressure levels, blood chemistries or biomarkers indicative of ongoing disease processes; ascertainment of environmental exposures, such as air pollution, heavy metals and other environmental toxins; and family history \cite[]{torkamani2018personal}.
+Today, clinical risk prediction for common adult-onset diseases often relies on demographic characteristics, such as age, gender and ethnicity; health parameters and lifestyle factors, such as body mass index, smoking status, alcohol consumption and physical activity; measurement of clinical risk factors linked to disease onset, such as blood pressure levels, blood chemistries or biomarkers indicative of ongoing disease processes; ascertainment of environmental exposures, such as air pollution, heavy metals and other environmental toxins; and family history \cite[]{torkamani2018personal}.
 Routine genetic profiling is absent from this list, often relegated to use only when testing clarifies individual-level risks in the context of a known family history for some common adult-onset
 diseases \cite[]{torkamani2018personal}.
 
 \subsection{Different types of diseases and mutations}
 
 How mutations affect diseases depends on the effect sizes of causal variants and on the allele frequencies of these variants (Figure \ref{fig:rare-common}).
-For example, harmful BRCA mutations are highly penetrant mutations, i.e.\ that most women carrying these mutations will develop breast cancer. Many mutations with large effect sizes have been identified and are referenced in an online database \cite[]{hamosh2005online}. 
+For example, harmful BRCA mutations are highly penetrant mutations, i.e.\ that most women carrying these mutations will develop breast cancer. Many mutations with large effect sizes have been identified and are referenced in an online database called OMIM \cite[]{hamosh2005online}. 
 Those mutations are often very rare; either they are associated with some very rare disease or they explain only a small proportion of common diseases incidence \cite[]{anglian2000prevalence}.
 In this work, we focus on common diseases (e.g.\ breast cancer) and try to predict individuals' disease susceptibility based on common variants; the common disease--common variant hypothesis \cite[]{pritchard2002allelic}. This hypothesis further suggests that such diseases are likely caused by a large number of common variants, each contributing only a small risk and thereby evading negative evolutionary selection \cite[]{salari2012personalized}.
 Indeed, selection might be responsible for keeping genetic effects low, since variants of large effect may be selected against and eventually disappear \cite[]{pritchard2002allelic}.
@@ -65,7 +65,8 @@ Manhattan plots show some association peaks (similar to skyscrapers in Manhattan
 \subsection{GWAS data}
 
 There are mainly three types of individual-level data: genotyped SNPs from genotyping chips, imputed SNPs from reference panels, and Next Generation Sequencing (NGS) data.
-Genotyping chips enables a quick and cheap genotyping of 200K to 2M SNPs, mostly focusing on common variants (Minor Allele Frequency (MAF) larger than 1-5\%). From this genotyping, you can get a matrix of $0$s, $1$s and $2$s, counting the number of alternative alleles for each individual (row) and each genome position (column). There are usually few missing values (less than 5\% in total) when using this technology.
+Genotyping chips enable a quick and cheap genotyping of 200K to 2M SNPs, mostly focusing on common variants (Minor Allele Frequency (MAF) larger than 1-5\%). 
+Data resulting from genotyping can be coded as a matrix of $0$s, $1$s and $2$s, counting the number of alternative alleles for each individual (row) and each genome position (column). There are usually few missing values (less than 5\% in total) when using this technology.
 
 Imputation has a different meaning in genetics than in other Data Science fields; it does not refer to filling those 5\% missing values, but instead refers to adding completely new variants that were not genotyped with the chip used. 
 This type of imputation is possible because genotypes of unobserved genetic variants can be predicted by haplotypes inferred from multiple observed SNPs (the ones that were genotyped) and haplotypes observed from a fully sequenced reference panel \cite[]{marchini2010genotype,mccarthy2016reference}.
@@ -80,7 +81,7 @@ Usually, only summary statistics for a GWAS dataset are available, i.e.\ the est
 In fact, modern large GWAS are meta-analyses of many smaller GWAS summary statistics.
 Moreover, methods using summary statistics data are usually fast and easy to use, making them even more appealing to researchers.
 
-In this thesis, we have not used NGS data, but we have used genotyped SNPs, imputed SNPs and summary statistics to construct predictive models of disease risk, for many common diseases.
+In this thesis, we have not used NGS data, but we have used genotyped SNPs, imputed SNPs and summary statistics to construct predictive models of disease risk for many common diseases.
 
 % latex table generated in R 3.5.2 by xtable 1.8-2 package
 % Wed Apr  3 17:55:25 2019
@@ -114,7 +115,7 @@ Chr & Position & Allele1 & Allele2 & Effect & StdErr & P-value & TotalSampleSize
 
 For thorough guides on how to perform PRS analyses, please refer to \cite{wray2014research,chasioti2019progress,choi2018guide}.
 
-\subsection{A standard way to compute PRS}\label{sec:C+T}
+\subsection{The ``Clumping + Thresholding'' approach for computing PRS}\label{sec:C+T}
 
 The main method for computing Polygenic Risk Scores (PRS) is the widely used ``Clumping + Thresholding'' (C+T, also called ``Pruning + Thresholding'' in the literature) model based on univariate GWAS summary statistics as described in equations \eqref{eq:gwas1} and \eqref{eq:gwas2}.
 Under the C+T model, a coefficient of regression is learned independently for each SNP along with a corresponding p-value (the GWAS part). 
@@ -122,8 +123,8 @@ Under the C+T model, a coefficient of regression is learned independently for ea
 The SNPs are first clumped (C) so that there remains only SNPs that are weakly correlated with each other ($S_\text{clumping}$). Clumping looks at the most significant SNP first, computes correlation between this index SNP and nearby SNPs (within a genetic distance of e.g.\ 500kb) and remove all the nearby SNPs that are correlated with this index SNP beyond a particular threshold (e.g.\ $r^2 = 0.2$, \cite{wray2014research}). 
 The clumping step aims at removing redundancy in included effects that is simply due to linkage disequilibrium (LD) between variants (see figures \ref{fig:gwas2} and \ref{fig:gwasLD}). Yet, this procedure may as well remove independently predictive variants in nearby regions.
 
-Thresholding (T) consists in removing SNPs that are under a chosen level of significance (a p-value threshold $p_T$) in order to reduce noise in the score.
-In figure \ref{fig:gwas2}, using no threshold corresponds to ``C+T-all''; using the genome-wide threshold of $5 \times 10^{-8}$ corresponds to ``C+T-stringent''; generally, several p-value thresholds are tested to maximize prediction. 
+Thresholding (T) consists in removing SNPs with a p-value larger than a p-value threshold $p_T$ in order to reduce noise in the score.
+In figure \ref{fig:gwas2}, using no threshold corresponds to ``C+T-all''; using the genome-wide threshold of $5 \times 10^{-8}$ corresponds to ``C+T-stringent''. Generally, several p-value thresholds are tested to maximize prediction. 
 
 A polygenic risk score is finally defined as the sum of allele counts of the remaining SNPs (after clumping and thresholding) weighted by the corresponding GWAS effect sizes \cite[]{purcell2009common,Dudbridge2013,wray2014research,Euesden2015},
 \[\rm{PRS}_i = \sum_{\substack{j \in S_\text{clumping} \\ p_j~<~p_T}} \hat\beta_j \cdot G_{i,j}~,\] where $\hat\beta_j$ ($p_j$) are the effect sizes (p-values) estimated from the GWAS and $G_{i,j}$ is the allele count (genotype) for individual $i$ and SNP $j$.
@@ -143,7 +144,7 @@ A polygenic risk score is finally defined as the sum of allele counts of the rem
 Polygenic Risk Scores (PRS) have been used for epidemiology before being used for prediction. The steps for a PRS analysis are illustrated in figure \ref{fig:steps-PRS} and have two goals. 
 First, PRS can be used when there is no SNP detected (at $5 \times 10^{-8}$) in a GWAS in order to show that there is still a significant polygenic contribution to the phenotype of interest. 
 For example, in 2009, a GWAS for schizophrenia by \cite{purcell2009common} found only a single significantly associated SNP, although this disease is known to be highly heritable. Yet, by constructing a PRS using these GWAS results and testing this polygenic score for association with schizophrenia in another independent dataset, \cite{purcell2009common} proved that there is a polygenic contribution to schizophrenia (Figure \ref{fig:epi-PRS}). 
-Thus, polygenic analysis methods were central in demonstrating that the first phase of GWAS was underpowered, which justified the need for larger sample sizes that is now starting to pay off \cite[]{wray2014research}.
+Thus, polygenic analysis was central in demonstrating that the first phase of GWAS was underpowered, which justified the need for larger sample sizes that is now starting to pay off \cite[]{wray2014research}.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=0.8\textwidth]{genomic-profile.png}}
@@ -168,7 +169,7 @@ A common mistake is to report highly significant findings with large odds ratios
 Thus, people have been reminded over the years that GWAS findings are often not predictive on their own even if they are highly associated with the disease of interest, and that we would need scores that combine many SNPs in order to have a decent predictor of disease, i.e.\ polygenic scores \cite[]{pepe2004limitations,janssens2006predictive,jakobsdottir2009interpretation,wald2019illusion}.
 
 Finally, it should be noted that population stratification, usually considered an unwelcome confounder in GWAS, may be useful in risk prediction and may be leveraged to produce better models \cite[]{golan2014effective,abraham2015genomic}.
-Indeed, for predictive purposes, the objective is to provide the best possible prediction and confounding is not an issue. However, it might become an issue when polygenic risk scores (PRS) capture population structure in addition to trait variation. For instance, correlation between a PRS and an outcome might be due to residual population structure instead of real genetic contribution to the outcome \cite[]{sohail2019polygenic}.
+Indeed, for predictive purposes, the objective is to provide the best possible prediction and confounding is not an issue.
 
 
 \section{Polygenic prediction}
@@ -178,9 +179,9 @@ Indeed, for predictive purposes, the objective is to provide the best possible p
 The basic components of disease risk are usually broken down into genetic susceptibility, environmental exposures and lifestyle factors. Thus, all disease incidence cannot be predicted by genetic factors only.
 For a quantitative phenotype, we call heritability ($h^2$) the proportion of phenotypic variation that is attributable to genetic factors among a population \cite[]{visscher2008heritability}.
 Methods now enable the estimation of chip-heritability (also called SNP-heritability: $h^2_{SNP}$) using linear mixed models (LMM) and residual maximum likelihood (ReML). For example, for a chip of 300K SNPs, it was shown that those SNPs could account for 45\% of the variance of height \cite[]{yang2010common}.
-Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants,visscher2006assumption}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability \cite[]{visscher2008heritability}. Authors of a recent preprint claim that they can recover the full heritability for height and BMI using both rare and common variants from NGS data \cite[]{wainschtein2019recovery}.
+Note that the heritability of height is estimated to be around 80\% \cite[]{silventoinen2003determinants,visscher2006assumption}; the difference between these two values can be explained by the fact that 300K SNPs cannot capture the same variation in height as the 3 billion base pairs of DNA. This difference can also reflect an overestimation of heritability \cite[]{visscher2008heritability}. Authors of a recent preprint claim that they can recover the full heritability for height and BMI using both rare and common variants from WGS data \cite[]{wainschtein2019recovery}.
 
-So, basically, heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
+Heritability is the upper bound in terms of prediction power (when measured with $R^2$) that we can get using a model from genetic variants only.
 The difference between $R^2$ and $h^2$ has been termed ``missing heritability'' \cite[]{manolio2009finding}. So, the main goal of my thesis is to get best possible predictions based on genetic data in order to reduce this missing heritability.
 
 The gap between predictions and heritability estimates was very large in the first years of GWAS.
@@ -199,7 +200,7 @@ We can divide these methods in two categories: the ones that use summary statist
 When summary statistics are available, the most widely used method is called ``Clumping + Thresholding'' (C+T), which has been described in section \ref{sec:C+T}.
 More recently, researchers have focused their efforts on implementing more elegant and potentially more optimal ways to account for LD, as a replacement of clumping that simply discards SNPs \cite[]{vilhjalmsson2015modeling,mak2017polygenic,chun2019non,ge2019polygenic}. 
 Take the solution of a linear regression $y = X \beta + \epsilon$, $\hat{\beta} = \left(X^T X\right)^{-1} X^T y$. This vector of effect sizes $\hat{\beta}$, estimated from all variables at once, can be decomposed in two parts: $X^T y$ that represents the marginal effects, i.e.\ the effects of each variable when learned independently (up to some scaling); and $\left(X^T X\right)^{-1}$, some rotation of the effects that account for the correlation between variables.
-Then, the first element can be replaced by summary statistics and the second element can be replaced by an estimation of LD, e.g.\ from a reference panel.
+Then, the first element can be replaced by summary statistics and the second element can be replaced by an estimation of LD obtained e.g.\ from a reference panel.
 
 Moreover, these methods handle weights differently than C+T that directly uses GWAS effect sizes as weights in the PRS, or weights of 0 for SNPs not passing the clumping and thresholding steps. Instead, these methods usually shrink effects towards 0. 
 Apart from ``lassosum'' of \cite{mak2017polygenic}, the other methods do not perform variable selection at all. This means that if you use GWAS summary statistics for 10M variants as input, you would get a predictive model composed of 10M variables \cite[]{janssens2019polygenic}.
