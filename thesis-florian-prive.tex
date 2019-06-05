@@ -80,7 +80,6 @@
 \includepdf{cover}
 
 \afterpage{\blankpage}
-\includepdfset{offset=.25in 0in,noautoscale,scale=0.83,pages={-},pagecommand={}}
 
 
 \clearpage
@@ -131,6 +130,8 @@ L'apprentissage statistique n'est pour l'instant pas tr\`es utilis\'e en g\'en\'
 
 \chapter{Introduction}
 
+
+\includepdfset{offset=-.25in 0in,noautoscale,scale=0.83,pages={-},pagecommand={}}
 \input{intro.tex}
 
 
@@ -166,6 +167,8 @@ L'apprentissage statistique n'est pour l'instant pas tr\`es utilis\'e en g\'en\'
 \chapter{Code optimization based on linear algebra}
 
 \input{appendix.tex}
+
+\afterpage{\blankpage}
 
 
 \end{document}
