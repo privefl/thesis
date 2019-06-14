@@ -1,103 +1,40 @@
-%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[english, 12pt]{article}
-\usepackage{times}
-%\usepackage{algorithm2e}
-\usepackage{url}
-\usepackage{bbm}
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
-\usepackage{geometry}
-\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
-\usepackage{rotating}
-\usepackage{color}
-\usepackage{graphicx}
-\usepackage{amsmath, amsthm, amssymb}
-\usepackage{setspace}
-\usepackage{lineno}
-\usepackage{hyperref}
-\usepackage{bbm}
+\section{Lightning fast multiple association testing}.
 
-%\usepackage{xcolor,framed}
-%\colorlet{shadecolor}{blue!10}
-%\begin{shaded}blabla\end{shaded}
-
-\linenumbers
-\doublespacing
-%\usepackage[authoryear]{natbib}
-\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
-
-%Pour les rajouts
-\usepackage{color}
-\definecolor{trustcolor}{rgb}{0,0,1}
-
-\usepackage{dsfont}
-\usepackage[warn]{textcomp}
-\usepackage{adjustbox}
-\usepackage{multirow}
-\usepackage{graphicx}
-\graphicspath{{figures/}}
-\DeclareMathOperator*{\argmin}{\arg\!\min}
-
-\let\tabbeg\tabular
-\let\tabend\endtabular
-\renewenvironment{tabular}{\begin{adjustbox}{max width=\textwidth}\tabbeg}{\tabend\end{adjustbox}}
-\usepackage{numprint}
-\npthousandsep{,}
-
-\makeatletter
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Bold symbol macro for standard LaTeX users
-%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
-
-%% Because html converters don't know tabularnewline
-\providecommand{\tabularnewline}{\\}
-
-\usepackage{babel}
-\makeatother
-
-
-\begin{document}
-
-\section{Appendix}
-
-\subsection{Lightning fast multiple association testing}.
-
-In this section, I describe how to quickly test many variables for an association with a continuous outcome of interest. For example, let us make a Genome-Wide Association Study (GWAS) of height, i.e. we want to determine which genome variants are associated with height.
+Here, I describe how to quickly test many variables for an association with a continuous outcome of interest. For example, let us make a Genome-Wide Association Study (GWAS) of height, i.e.\ we want to determine which genome variants are associated with height.
 
 The model we want to test is $$y = \beta s + X \gamma + \epsilon~,$$ where $s$ is one variant (we want to do this for each variant, separately), $X$ are some covariates to adjust for some possible confounding factors (a matrix of $N$ samples over $K$ columns, including a column of $1$s to account for an intercept in the model). 
 We are only interested in estimating $\hat{\beta}$ and computing a p-value corresponding to the significance of the alternative hypothesis that $\beta \neq 0$.
 
 \cite{sikorska2013gwas} show that we can rewrite this problem as $$y^* = \beta s^* + \epsilon~,$$ where $y^* = y - X (X^T X)^{-1} X^T y$ and $s^* = s - X (X^T X)^{-1} X^T s$. Thus, this becomes a simple linear problem which is easy and fast to solve. We have
 \begin{align*}
-\hat{\beta} &= \dfrac{s^{*T} y^*}{s^{*T} s^*} \\
-\widehat{\text{var}}(\hat{\beta}) &= \dfrac{(y^* - \hat{\beta} s^*)^T (y^* - \hat{\beta} s^*)}{(N - K - 1) ~ s^{*T} s^*} \\
-\frac{\hat{\beta}}{\sqrt{\widehat{\text{var}}(\hat{\beta})}} &\sim T(N - K - 1)
+\hat{\beta} &= \dfrac{s^{*T} y^*}{s^{*T} s^*} ~, \\
+\widehat{\text{var}}(\hat{\beta}) &= \dfrac{(y^* - \hat{\beta} s^*)^T (y^* - \hat{\beta} s^*)}{(N - K - 1) ~ s^{*T} s^*} ~, \\
+\frac{\hat{\beta}}{\sqrt{\widehat{\text{var}}(\hat{\beta})}} &\sim T(N - K - 1) ~.
 \end{align*}
 
-We go further by computing the singular value decomposition $X = U \Delta V^T$ ($N \times K$ matrix). As $N \gg K$, we have $U^T U = I_K$, $V^T V  = I_K$ and $V V^T = I_K$. Thus $X (X^T X)^{-1} X^T = U \Delta V^T (V \Delta U^T U \Delta V^T)^{-1} V \Delta U^T = U \Delta V^T (V \Delta^2 V^T)^{-1} V \Delta U^T = U \Delta V^T (V \Delta^{-2} V^T) V \Delta U^T = U U^T$.
-We can simplify $s^{*T} y^* = (s - U U^T s)^T y^* = s^T y^* - s^T \underbrace{U U^T y^*}_0 = s^T y^*$, 
+We extend this idea further by computing the singular value decomposition $X = U \Delta V^T$ ($N \times K$ matrix). As $N \gg K$, we have $U^T U = I_K$, $V^T V  = I_K$ and $V V^T = I_K$. Thus $X (X^T X)^{-1} X^T = U \Delta V^T (V \Delta U^T U \Delta V^T)^{-1} V \Delta U^T = U \Delta V^T (V \Delta^2 V^T)^{-1} V \Delta U^T = U \Delta V^T (V \Delta^{-2} V^T) V \Delta U^T = U U^T$.
+Then, we can simplify $s^{*T} y^* = (s - U U^T s)^T y^* = s^T y^* - s^T \underbrace{U U^T y^*}_0 = s^T y^*$, 
 $s^{*T} s^* = (s - U U^T s)^T (s - U U^T s) = s^T s - 2 s^T U U^T s + s^T U U^T U U^T s = s^T s - s^T U U^T s = s^T s - z^T z$, where $z = U^T s$, 
 and $(y^* - \hat{\beta} s^*)^T (y^* - \hat{\beta} s^*) = y^{*T} y^* - 2 \hat{\beta} s^{*T} y^* + \hat{\beta}^2 s^{*T} s^* = y^{*T} y^* - 2 \hat{\beta} s^{*T} y^* + \hat{\beta} s^{*T} y^* = y^{*T} y^* - \hat{\beta} s^{T} y^*$.
 So, we only need to compute
 \begin{align*}
-z &= U^T s \\
-\hat{\beta}_{\text{num}} &= s^{T} y^* \\
-\hat{\beta}_{\text{deno}} &= s^T s - z^T z \\
-\hat{\beta} &= \hat{\beta}_{\text{num}} / \hat{\beta}_{\text{deno}} \\
+z &= U^T s ~, \\
+\hat{\beta}_{\text{num}} &= s^{T} y^* ~, \\
+\hat{\beta}_{\text{deno}} &= s^T s - z^T z ~, \\
+\hat{\beta} &= \hat{\beta}_{\text{num}} / \hat{\beta}_{\text{deno}} ~, \\
 \widehat{\text{var}}(\hat{\beta}) &= \dfrac{y^{*T} y^* - \hat{\beta} ~ \hat{\beta}_{\text{num}}}{(N - K - 1) ~ \hat{\beta}_{\text{deno}}}~.
 \end{align*}
-Since $U$ and $y^*$ are computed only once for all variants, you can apply those formulas to compute these statistics for \numprint{1000000} variants and $N$=\numprint{500000} samples and $K$=$11$ covariates in one hour only \cite[]{prive2018efficient}. This is implemented in function big\_univLinReg() of package bigstatsr.
+Since $U$ and $y^*$ are computed only once for all variants, you can apply those formulas to compute these statistics for \numprint{1000000} variants and $N$=\numprint{500000} samples and $K$=$11$ covariates in one hour only \cite[]{prive2018efficient}. This is implemented in function \texttt{big\_univLinReg()} of package bigstatsr.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Implicit scaling of a matrix}
 
+The matrix formulation of column scaling is $\tilde{X} = C_n X S$, where $C_n = I_n - \frac{1}{n} 1_n 1_n^T$ is the centering matrix\footnote{\url{https://en.wikipedia.org/wiki/Centering_matrix}} and $S$ is a diagonal matrix with the scaling coefficients (typically, $S_{j,j} = 1 / \text{sd}_j$). 
 
+In algorithms such as Principal Component Analysis (PCA) or multiple linear regression, we must compute e.g.\ $\tilde{X} V$ and $\tilde{X}^T \tilde{X}$, where $V$ is another matrix. We can show how to compute these products without explicitly scaling the matrix $X$. This is really useful when working with on-disk matrices such as in R package bigstatsr, because you do not need to compute (and store) an intermediate scaled matrix.
 
-\newpage
+For example, for computing products, $\tilde{X} V = C_n X S V = C_n (X (S V))$. So, you can compute $\tilde{X} V$ without explicitly scaling $X$. 
+Another example, for computing self cross-products, $\tilde{X}^T \tilde{X} = (C_n X S)^T \cdot C_n X S = S^T X^T C_n X S$ ($C_n^2 = C_n$ is intuitive because centering an already centered matrix does not change it). Then, $\tilde{X}^T \tilde{X} = S^T X^T (I_n - \frac{1}{n} 1_n 1_n^T) X S = S^T (X^T X - X^T (\frac{1}{n} 1_n 1_n^T) X) S = S^T (X^T X - \frac{1}{n} s_X * s_X^T) S$ where $s_X$ is the vector of column sums of X.
 
-\bibliographystyle{natbib}
-\bibliography{refs}
-
-\end{document}
+This implicit scaling can be quite useful if you manipulate very large matrices because you are not copying the matrix nor making useless computation. 
+For example, this can be used to compute a correlation matrix 20 times as fast as base R function \texttt{cor()}\footnote{\url{https://privefl.github.io/blog/(Linear-Algebra)-Do-not-scale-your-matrix/}}.

@@ -13,4 +13,6 @@ PCA-moi*
 *.upa
 *.upb
 *.bak
+*.toc
 *.synctex.gz
+!thesis-privefl.pdf

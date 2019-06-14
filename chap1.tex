@@ -1,127 +1,57 @@
-%% LyX 1.3 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[english, 12pt]{article}
-\usepackage{times}
-%\usepackage{algorithm2e}
-\usepackage{url}
-\usepackage{bbm}
-\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
-\usepackage{geometry}
-\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
-\usepackage{rotating}
-\usepackage{graphicx}
-\usepackage{amsmath, amsthm, amssymb}
-\usepackage{setspace}
-\usepackage{lineno}
-\usepackage{hyperref}
-\usepackage{bbm}
-
-%\usepackage{xcolor,framed}
-%\colorlet{shadecolor}{blue!10}
-%\begin{shaded}blabla\end{shaded}
-
-\usepackage{pdfpages}
-
-%\usepackage{xr}
-%\externaldocument{PRS-supp}
-
-%\linenumbers
-\onehalfspacing
-%\usepackage[authoryear]{natbib}
-\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
-
-%Pour les rajouts
-\usepackage{xcolor}
-
-\usepackage{dsfont}
-\usepackage[warn]{textcomp}
-\usepackage{adjustbox}
-\usepackage{multirow}
-\usepackage{graphicx}
-\graphicspath{{figures/}}
-\DeclareMathOperator*{\argmin}{\arg\!\min}
-
-\let\tabbeg\tabular
-\let\tabend\endtabular
-\renewenvironment{tabular}{\begin{adjustbox}{max width=0.75\textwidth}\tabbeg}{\tabend\end{adjustbox}}
-
-\makeatletter
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-%% Bold symbol macro for standard LaTeX users
-%\newcommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
-
-%% Because html converters don't know tabularnewline
-\providecommand{\tabularnewline}{\\}
-\definecolor{clumping}{HTML}{38761D}
-\definecolor{thresholding}{HTML}{1515FF}
-%<span style="color:#38761D">Clumping</span> + <span style="color:#1515FF">Thresholding</span>
-
-\usepackage{babel}
-\makeatother
-
-\begin{document}
-
 \section{Summary of the article}
 
 \subsection{Introduction}
 
 Sample size of GWAS data has rapidly grown due to the reduction in genotyping costs over the years. Moreover, thanks to the imputation of many non-genotyped SNPs, the number of available SNPs for a given dataset has grown to millions. In 2007, there were datasets with 2000 cases and 3000 controls, genotyped over 300K SNPs \cite[]{wellcome2007genome}. Now, there are datasets of 500K individuals, genotyped over 800K SNPs, and imputed over 90M SNPs \cite[]{bycroft2017genome}.
-Genotype data are the first data of the omics family to have grown to such large scale. To analyze these datasets, software have been consistently produced or updated over the years in order to keep up with growing sizes. 
-I think this is one rare field where producing software is really recognized as an important part of research to help advance the field.
-An obvious example in genetics is PLINK, a command line software whose first version has been cited more than 17K times since 2007 and whose second version has already been cited more than 1500 times since 2015 \cite[]{purcell2007plink,chang2015second}. This software is useful for file conversions as well as many types of analyses and is used in plant, animal and human genetics alike.
+Genotype data are the first data of the omics family to have grown to such large scale. To analyze these datasets, software have been consistently produced or updated over the years to keep up with growing sizes. 
+I think this is one of a few fields where producing software is really recognized as an important part of research to help advance the field.
+An obvious example in genetics is PLINK, a command line piece of software whose first version has been cited more than 17K times since 2007 and whose second version has already been cited more than 1500 times since 2015 \cite[]{purcell2007plink,chang2015second}. This software is useful for file conversions as well as many types of SNP data analyses and is used in plant, animal and human genetics alike.
 
 I wanted to use R to analyze data from this field as it provides excellent tools for exploratory analyses. 
 R is a programming language that makes it easy to tie together existing or
 new functions to be used as part of large, interactive and reproducible
 analyses \cite[]{R2018}.
-Yet, most of the R packages that have been developed in Human Genetics are now obsolete because they cannot scale to the size of the data we currently have in the field.
+Yet, most of the R packages that have been developed in human genetics are now obsolete because they cannot scale to the size of the data we currently have in the field.
 The first problem there is to solve is to actually store the data. For example, a standard R matrix of size 500K x 800K would require 3TB of RAM just to access it in memory.
-The second problem is the computation time; if all functions provided by a package take two weeks to run, it is not really useful.
+The second problem concerns computation time; if all functions provided by a package take two weeks to run, it is not really useful.
 
 \subsection{Methods}
 
 We developed two R packages called bigstatsr and bigsnpr. 
-To solve the memory issue, we use a data format stored as a binary file on disk but that can be accessed almost as if it were a standard R matrix. 
+To solve the memory issue, we use a data format stored as a binary file on disk but that can be accessed almost as if it were a standard R matrix in memory. 
 To provide functions with a reasonable computation time, I spent thousands of hours on the performance of code. Moreover, most of the functions provided in these packages are parallelized, which is facilitated by the fact that the data is stored on disk, therefore accessible by each process without the need of any copying.
-The R packages makes extensive uses of some C++ code in order to fully optimized key parts of the provided functions.
+The R packages makes extensive use of some C++ code in order to fully optimize key parts of the available functions.
 
-Specifically, package bigstatsr provides the on-disk data format and some standard statistical algorithms such as Principal Component Analysis (PCA), multiple association testing, matrix products, etc. for this type of data. 
-This package is not specific to genetic data and can be used by other fields of Research.
-Package bigsnpr builds on top of package bigstatsr and provides algorithms specific to GWAS data. It also provides wrappers to commonly-used software such as PLINK in order to perform all the analysis within R, making it both simple and reproducible\footnote{\url{https://hackseq.github.io/2017\_project\_5/all-in-R.html} \cite[]{grande2018hackathon}}.
-To save some disk space and make accesses faster, we store genotype matrices using only  
-byte per element, instead of eight bytes per element for a standard R matrix. With a special format, we are able to store both hard calls (0s, 1s, 2s and NAs) and dosages (expected values from imputation probabilities, $d = 0 \times \mathbb{P}(0) + 1 \times \mathbb{P}(1) + 2 \times \mathbb{P}(2)$).
+Specifically, package bigstatsr provides the on-disk data format and some standard statistical algorithms such as Principal Component Analysis (PCA), multiple association testing (GWAS, EWAS, TWAS, etc.), matrix products, etc.\ for this data format. 
+This package is not specific to genetic data and can be used by other fields.
+Package bigsnpr builds on top of package bigstatsr and provides algorithms specific to GWAS data. It also provides wrappers to widely used software such as PLINK in order to perform all analyses within R, making it both simple and reproducible\footnote{\url{https://hackseq.github.io/2017\_project\_5/all-in-R.html} \cite[]{grande2018hackathon}}.
+To save some disk space and make accesses faster, we store genotype matrices using one  byte per element only, instead of eight bytes per element for a standard R matrix. With a special format, we are able to store both hard calls (0s, 1s, 2s and NAs) and dosages (expected values from imputation probabilities, $d = 0 \times \mathbb{P}(0) + 1 \times \mathbb{P}(1) + 2 \times \mathbb{P}(2)$).
 
 We also developed two new algorithms by building on existing R packages.
 One algorithm is used for the imputation of missing values inside a genotype matrix. Generally, there are less than 1\% of missing data in a genotype matrix, and current algorithms for filling these blanks relies on complex inference algorithms. 
-Notably, these algorithms rely on a first step of phasing, which consists in inferring haplotypes from genotypes. Phasing is very computationally demanding, so that we propose an algorithm based on XGBoost, an efficient algorithm for building decision trees using extreme gradient boosting, which allows for reconstructing data for one SNP based on non-linear combinations of nearby SNPs.
-The other algorithm infer consecutive loadings that capture the structure of long-range LD regions instead of capturing population structure when performing PCA on SNP data.
+Notably, these algorithms rely on a first step of phasing, which consists in inferring haplotypes from genotypes. Phasing is very computationally demanding, so that we propose an algorithm based on XGBoost \cite[]{chen2016xgboost}, an efficient algorithm for building decision trees using extreme gradient boosting, which allows for reconstructing data for one SNP based on non-linear combinations of nearby SNPs.
+The other algorithm we developed infer consecutive loadings that capture the structure of long-range LD regions instead of capturing population structure when performing PCA on SNP data.
 This new algorithm relies on pcadapt, an algorithm that find outlier loadings in PCA \cite[]{luu2017pcadapt}. 
 
 \subsection{Results}
 
-We show that our two R packages are very efficient and can perform standard analyses as fast as dedicated command-line software such as PLINK, and much faster than previously developed R packages.
+We show that our two R packages are very efficient and can perform standard analyses as fast as dedicated command line software such as PLINK, and much faster than previously developed R packages.
 We also show that commonly used software for computing principal components of genomic data are not accurate enough in some cases.
-Finally, we show that, thanks to our two newly developed algorithms, we are able to quickly impute the few missing values in a genotype matrix while being almost as accurate as more complex and computationally demanding software. We also show that our iterative algorithm to detect and remove long-range LD regions while computing PCA makes it possible to automatically retrieve population structure without capturing any LD structure.
+Finally, we show that, thanks to our two newly developed algorithms, we are able to quickly impute the few missing values in a genotype matrix while being almost as accurate as more complex and computationally demanding software. We also show that our PCA algorithm is able to detect and remove long-range LD regions, which makes it possible to automatically retrieve population structure without capturing any LD structure in PCA of SNP data.
 
 \subsection{Discussion}
 
-We developed two very fast R packages for analyzing large genomic data. One of them, bigstatsr, is not specific to SNP data so that it could be used by other fields of Research that need to analyze large matrices.
+We developed two very fast R packages for analyzing large genomic data. One of them, bigstatsr, is not specific to SNP data so that it could be used by other fields that need to analyze large matrices.
 Moreover, we think these packages are simple to use, very well tested and easily maintainable because of relatively simple code.
 The two R packages use a matrix-like format, which makes it
 easy to develop new functions in order to experiment and develop
 new ideas. Integration in R makes it possible to take advantage of
 the vast and diverse R packages.
 
-\bibliographystyle{natbib}
-\bibliography{refs}
 
-\section{Article and supplementary data}
+\section{Article 1 and supplementary materials}
 
 The following article is published in \textit{Bioinformatics}	\footnote{\url{https://doi.org/10.1093/bioinformatics/bty185}}.
 
-\includepdf[pages=-]{paper1.pdf}
-\includepdf[pages=-]{paper1-supp.pdf}
-
-\end{document}
+\includepdf{paper1.pdf}
+\includepdf{paper1-supp.pdf}
